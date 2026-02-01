@@ -1,28 +1,21 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class ShellOpen : MonoBehaviour
 {
-    private Animator animator;
-    private AudioSource audioSource;
+    public Animator part1Animator;
+    public Animator part2Animator;
+    public Animator part3Animator;
+    public string animationTriggerName = "OpenShell";
     private bool hasOpened = false;
-
-    private void Start()
-    {
-        animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>(); 
-    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (!hasOpened && other.CompareTag("Player"))
         {
-            animator.SetBool("Open", true);  
+            part1Animator.SetTrigger(animationTriggerName);
+            part2Animator.SetTrigger(animationTriggerName);
+            part3Animator.SetTrigger(animationTriggerName);
             hasOpened = true;
-
-            if (audioSource != null)
-            {
-                audioSource.Play();
-            }
         }
     }
 }
