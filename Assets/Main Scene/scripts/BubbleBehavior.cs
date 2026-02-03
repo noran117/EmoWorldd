@@ -12,6 +12,12 @@ public class BubbleBehavior : MonoBehaviour
     public float floatSpeed = 0.4f;
     public float horizontalSpeed = 0.25f;
 
+    [Header("Auto Pop Settings")]
+    public float maxHeight = 2.5f;
+    private bool isPopping = false;
+
+
+
     private BubbleSpawner spawner;
     private Collider col;
     private Renderer rend;
@@ -52,23 +58,35 @@ public class BubbleBehavior : MonoBehaviour
             Mathf.Sin(Time.time * 2.2f) * 0.004f,
             Mathf.Cos(Time.time * 1.7f) * 0.003f
         );
+        if (!isPopping && transform.position.y >= maxHeight)
+        {
+            isPopping = true;
+            StartCoroutine(PopRoutine());
+        }
+
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("PlayerHand"))
         {
+            Debug.Log("Bubble popped by player hand.");
             StartCoroutine(PopRoutine());
+            Debug.Log("bubble poped");
         }
+        Debug.Log("Bubble collided with: " + other.name);
     }
 
     IEnumerator PopRoutine()
     {
         if (col != null) col.enabled = false;
 
+        isPopping = true;
+
         if (spawner.popAudioSource != null && popSound != null)
         {
             spawner.popAudioSource.PlayOneShot(popSound.clip);
+            Debug.Log("Playing pop sound.");
         }
         if (popParticles != null) popParticles.Play();
 
