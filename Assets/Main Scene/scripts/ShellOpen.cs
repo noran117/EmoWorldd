@@ -24,7 +24,7 @@ public class ShellOpen : MonoBehaviour
                 audioSource.Play();
             }*/
             OpenShell();
-            Invoke(nameof(CloseShell), 5f);
+            Invoke(nameof(CloseShell), 10f);
         }
     }
 

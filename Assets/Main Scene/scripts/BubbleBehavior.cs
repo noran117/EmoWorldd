@@ -23,6 +23,10 @@ public class BubbleBehavior : MonoBehaviour
     private Renderer rend;
     private Vector3 floatDir;
 
+    public AnimationStateController companion;
+
+
+
     void Awake()
     {
         col = GetComponent<Collider>();
@@ -68,26 +72,35 @@ public class BubbleBehavior : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (isPopping) return;
         if (other.CompareTag("PlayerHand"))
         {
             Debug.Log("Bubble popped by player hand.");
             StartCoroutine(PopRoutine());
-            Debug.Log("bubble poped");
+            isPopping = true;
+
+            companion.ReactToBubble();
         }
         Debug.Log("Bubble collided with: " + other.name);
     }
 
     IEnumerator PopRoutine()
     {
+        if (spawner == null)
+        {
+            Debug.LogWarning("Bubble has no spawner assigned!");
+        }
+
         if (col != null) col.enabled = false;
 
         isPopping = true;
 
-        if (spawner.popAudioSource != null && popSound != null)
+        if (spawner != null && spawner.popAudioSource != null && popSound != null && popSound.clip != null)
         {
             spawner.popAudioSource.PlayOneShot(popSound.clip);
-            Debug.Log("Playing pop sound.");
         }
+
+
         if (popParticles != null) popParticles.Play();
 
         Vector3 start = transform.localScale;
@@ -102,15 +115,13 @@ public class BubbleBehavior : MonoBehaviour
 
         if (rend != null) rend.enabled = false;
 
-        yield return new WaitForSeconds(popSound.clip.length);
+        float waitTime = (popSound != null && popSound.clip != null) ? popSound.clip.length : 0f;
+        yield return new WaitForSeconds(waitTime);
 
         if (spawner != null)
-        {
-            spawner.ReturnToPool(this.gameObject);
-        }
+            spawner.ReturnToPool(gameObject);
         else
-        {
             gameObject.SetActive(false);
-        }
     }
+
 }
