@@ -1,23 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class duckmovementfinal : MonoBehaviour
+public class DuckMovementFinal : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Transform[] waypoints;
+    public float moveSpeed = 2f;
+    public float rotateSpeed = 6f;
+    public float reachDistance = 0.15f;
+    public float turnSpeed = 180f; // سرعة اللفة عند النهاية
 
-    public Transform[] waypoints;     // النقاط اللي بتمشي عليها البطة
-    public float moveSpeed = 2f;      // سرعة الحركة
-    public float rotateSpeed = 5f;    // سرعة لفّة البطة
-    public float reachDistance = 0.1f; // مسافة اعتبر عندها إنّي وصلت للنقطة
+    int currentIndex = 0;
+    bool forward = true;
+    bool isTurning = false;
 
-    int currentIndex = 0;   // رقم النقطة الحالية
-    bool forward = true;   // true = رايحة من 0 → آخر نقطة، false = راجعة العكس
+    Quaternion targetTurnRotation;
 
     void Start()
     {
-        // لو في نقاط، حط البطة على أول نقطة بالبداية
-        if (waypoints != null && waypoints.Length > 0)
+        if (waypoints.Length > 0)
         {
             transform.position = waypoints[0].position;
         }
@@ -25,59 +24,95 @@ public class duckmovementfinal : MonoBehaviour
 
     void Update()
     {
-        if (waypoints == null || waypoints.Length == 0) return;
+        if (waypoints == null || waypoints.Length < 2) return;
 
-        // 1) تحديد الهدف الحالي
+        if (isTurning)
+        {
+            HandleTurning();
+            return;
+        }
+
         Transform target = waypoints[currentIndex];
 
-        // 2) تحريك البطة نحو الهدف
+        // ===== حركة =====
         transform.position = Vector3.MoveTowards(
             transform.position,
             target.position,
             moveSpeed * Time.deltaTime
         );
 
-        // 3) تدوير البطة باتجاه الحركة (بس على محور Y)
-        Vector3 direction = (target.position - transform.position);
-        direction.y = 0f; // عشان ما ترفع رأسها لفوق/لتحت
-        if (direction.sqrMagnitude > 0.0001f)
+        // ===== دوران باتجاه الهدف =====
+        Vector3 dir = (target.position - transform.position);
+        dir.y = 0f;
+
+        if (dir.sqrMagnitude > 0.001f)
         {
-            Quaternion targetRot = Quaternion.LookRotation(direction);
+            Quaternion lookRot = Quaternion.LookRotation(dir);
             transform.rotation = Quaternion.Slerp(
                 transform.rotation,
-                targetRot,
+                lookRot,
                 rotateSpeed * Time.deltaTime
             );
         }
 
-        // 4) لما توصل للنقطة → حدّد النقطة التالية أو اعكس الاتجاه
-        float distance = Vector3.Distance(transform.position, target.position);
-        if (distance <= reachDistance)
+        // ===== وصلت للنقطة =====
+        if (Vector3.Distance(transform.position, target.position) <= reachDistance)
         {
-            if (forward)
+            UpdateWaypointIndex();
+        }
+    }
+
+    void UpdateWaypointIndex()
+    {
+        if (forward)
+        {
+            currentIndex++;
+
+            // ===== آخر نقطة → لف =====
+            if (currentIndex >= waypoints.Length)
             {
-                currentIndex++;
-
-                // لو وصلنا لآخر نقطة → اعكس الاتجاه وابدأ ترجع
-                if (currentIndex >= waypoints.Length)
-                {
-                    currentIndex = waypoints.Length - 2; // النقطة اللي قبل الأخيرة
-                    forward = false;
-                }
+                forward = false;
+                currentIndex = waypoints.Length - 2;
+                StartTurn();
             }
-            else
+        }
+        else
+        {
+            currentIndex--;
+
+            // ===== أول نقطة → لف =====
+            if (currentIndex < 0)
             {
-                currentIndex--;
-
-                // لو رجعنا لأول نقطة → اعكس الاتجاه وابدأ تطلع تاني
-                if (currentIndex < 0)
-                {
-                    currentIndex = 1; // النقطة الثانية
-                    forward = true;
-                }
+                forward = true;
+                currentIndex = 1;
+                StartTurn();
             }
+        }
+    }
 
+    void StartTurn()
+    {
+        isTurning = true;
+
+        // الاتجاه للنقطة الجاية بعد الانعكاس
+        Vector3 nextDir = waypoints[currentIndex].position - transform.position;
+        nextDir.y = 0f;
+
+        targetTurnRotation = Quaternion.LookRotation(nextDir);
+    }
+
+
+    void HandleTurning()
+    {
+        transform.rotation = Quaternion.RotateTowards(
+            transform.rotation,
+            targetTurnRotation,
+            turnSpeed * Time.deltaTime
+        );
+
+        if (Quaternion.Angle(transform.rotation, targetTurnRotation) < 1f)
+        {
+            isTurning = false;
         }
     }
 }
-    

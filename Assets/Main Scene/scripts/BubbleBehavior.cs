@@ -23,7 +23,7 @@ public class BubbleBehavior : MonoBehaviour
     private Renderer rend;
     private Vector3 floatDir;
 
-    public AnimationStateController companion;
+    //public AnimationStateController companion;
 
 
 
@@ -79,7 +79,7 @@ public class BubbleBehavior : MonoBehaviour
             StartCoroutine(PopRoutine());
             isPopping = true;
 
-            companion.ReactToBubble();
+            //companion.ReactToBubble();
         }
         Debug.Log("Bubble collided with: " + other.name);
     }

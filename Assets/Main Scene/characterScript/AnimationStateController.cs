@@ -28,6 +28,7 @@ public class AnimationStateController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
+    Debug.Log("Controller is null? " + (controller == null));
 
         if (!greeted)
         {
@@ -40,7 +41,8 @@ public class AnimationStateController : MonoBehaviour
 
     void Update()
     {
-        ApplyGravity();
+            controller.Move(Vector3.forward * Time.deltaTime);
+        //ApplyGravity();
         FollowPlayer();
     }
 
@@ -68,7 +70,7 @@ public class AnimationStateController : MonoBehaviour
             animator.SetBool(isNPCWalkingHash, false);
 
             //  وهو واقف: يطلع على اللاعب
-            RotateTowards((targetPos - transform.position).normalized);
+           // RotateTowards((targetPos - transform.position).normalized);
         }
     }
 
