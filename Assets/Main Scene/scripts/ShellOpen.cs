@@ -2,20 +2,49 @@ using UnityEngine;
 
 public class ShellOpen : MonoBehaviour
 {
-    public Animator part1Animator;
-    public Animator part2Animator;
-    public Animator part3Animator;
-    public string animationTriggerName = "OpenShell";
-    private bool hasOpened = false;
+    private Animator animator;
+    private AudioSource audioSource;
+    private bool isOpen = false;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!hasOpened && other.CompareTag("Player"))
+        if (other.CompareTag("PlayerHand"))
         {
-            part1Animator.SetTrigger(animationTriggerName);
-            part2Animator.SetTrigger(animationTriggerName);
-            part3Animator.SetTrigger(animationTriggerName);
-            hasOpened = true;
+            /*isOpen = !isOpen;
+            animator.SetBool("Open", isOpen);
+            Debug.Log("Shell state changed: " + (isOpen ? "Opened" : "Closed"));
+            if (audioSource != null)
+            {
+                audioSource.Play();
+            }*/
+            OpenShell();
+            Invoke(nameof(CloseShell), 10f);
         }
+    }
+
+    void OpenShell()
+    {
+        animator.SetBool("Open", true);
+        Debug.Log("Shell opened.");
+        if (audioSource != null)
+        {
+            audioSource.Play();
+        }
+    }
+
+    void CloseShell()
+    {
+        animator.SetBool("Open", false);
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+        }
+        Debug.Log("Shell closed.");
     }
 }

@@ -12,10 +12,20 @@ public class BubbleBehavior : MonoBehaviour
     public float floatSpeed = 0.4f;
     public float horizontalSpeed = 0.25f;
 
+    [Header("Auto Pop Settings")]
+    public float maxHeight = 2.5f;
+    private bool isPopping = false;
+
+
+
     private BubbleSpawner spawner;
     private Collider col;
     private Renderer rend;
     private Vector3 floatDir;
+
+    //public AnimationStateController companion;
+
+
 
     void Awake()
     {
@@ -52,24 +62,45 @@ public class BubbleBehavior : MonoBehaviour
             Mathf.Sin(Time.time * 2.2f) * 0.004f,
             Mathf.Cos(Time.time * 1.7f) * 0.003f
         );
+        if (!isPopping && transform.position.y >= maxHeight)
+        {
+            isPopping = true;
+            StartCoroutine(PopRoutine());
+        }
+
     }
 
     void OnTriggerEnter(Collider other)
     {
+        if (isPopping) return;
         if (other.CompareTag("PlayerHand"))
         {
+            Debug.Log("Bubble popped by player hand.");
             StartCoroutine(PopRoutine());
+            isPopping = true;
+
+            //companion.ReactToBubble();
         }
+        Debug.Log("Bubble collided with: " + other.name);
     }
 
     IEnumerator PopRoutine()
     {
+        if (spawner == null)
+        {
+            Debug.LogWarning("Bubble has no spawner assigned!");
+        }
+
         if (col != null) col.enabled = false;
 
-        if (spawner.popAudioSource != null && popSound != null)
+        isPopping = true;
+
+        if (spawner != null && spawner.popAudioSource != null && popSound != null && popSound.clip != null)
         {
             spawner.popAudioSource.PlayOneShot(popSound.clip);
         }
+
+
         if (popParticles != null) popParticles.Play();
 
         Vector3 start = transform.localScale;
@@ -84,15 +115,13 @@ public class BubbleBehavior : MonoBehaviour
 
         if (rend != null) rend.enabled = false;
 
-        yield return new WaitForSeconds(popSound.clip.length);
+        float waitTime = (popSound != null && popSound.clip != null) ? popSound.clip.length : 0f;
+        yield return new WaitForSeconds(waitTime);
 
         if (spawner != null)
-        {
-            spawner.ReturnToPool(this.gameObject);
-        }
+            spawner.ReturnToPool(gameObject);
         else
-        {
             gameObject.SetActive(false);
-        }
     }
+
 }

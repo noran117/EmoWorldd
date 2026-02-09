@@ -5,14 +5,21 @@ public class AnimationStateController : MonoBehaviour
 {
     [Header("References")]
     public Animator animator;
-    public Transform playerHead;  
+    public Transform playerHead;
 
     [Header("Movement")]
     public float followDistance = 1.5f;
     public float moveSpeed = 1.5f;
+    public float gravity = 9.8f;
+
+    [Header("Look Settings")]
+    public float lookSpeed = 5f;
+
+
+    private CharacterController controller;
+    private Vector3 velocity;
 
     private bool greeted = false;
-
     int isNPCWalkingHash;
 
     AudioSource audio;
@@ -20,6 +27,9 @@ public class AnimationStateController : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        controller = GetComponent<CharacterController>();
+    Debug.Log("Controller is null? " + (controller == null));
+
         if (!greeted)
         {
             animator.SetTrigger("Greet");
@@ -31,74 +41,84 @@ public class AnimationStateController : MonoBehaviour
 
     void Update()
     {
+            controller.Move(Vector3.forward * Time.deltaTime);
+        //ApplyGravity();
         FollowPlayer();
     }
 
-void FollowPlayer()
-{
-    if (playerHead == null) return;
-
-    float distance = Vector3.Distance(transform.position, playerHead.position);
-
-    if (distance > followDistance)
+    void FollowPlayer()
     {
-        animator.SetBool(isNPCWalkingHash, true);
+        if (playerHead == null) return;
 
-        Vector3 direction = (playerHead.position - transform.position).normalized;
-        direction.y = 0; 
+        Vector3 targetPos = playerHead.position;
+        targetPos.y = transform.position.y;
 
-        transform.position += direction * moveSpeed * Time.deltaTime;
+        float distance = Vector3.Distance(transform.position, targetPos);
 
-        // التفات ناعم
+        if (distance > followDistance)
+        {
+            animator.SetBool(isNPCWalkingHash, true);
+
+            Vector3 direction = (targetPos - transform.position).normalized;
+            controller.Move(direction * moveSpeed * Time.deltaTime);
+
+            //  وهو ماشي: يطلع لقدام
+            RotateTowards(direction);
+        }
+        else
+        {
+            animator.SetBool(isNPCWalkingHash, false);
+
+            //  وهو واقف: يطلع على اللاعب
+           // RotateTowards((targetPos - transform.position).normalized);
+        }
+    }
+
+    void RotateTowards(Vector3 direction)
+    {
+        direction.y = 0;
+        if (direction.magnitude < 0.01f) return;
+
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 3f);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            lookRotation,
+            Time.deltaTime * lookSpeed
+        );
     }
-    else
-    {
-        animator.SetBool(isNPCWalkingHash, false);
-    }
-}
-    /// <summary>
-/// AnimationStateController.PlayDialogue(dialogueClip);
-/// </summary>
 
+
+    void ApplyGravity()
+    {
+        if (controller.isGrounded && velocity.y < 0)
+            velocity.y = -2f;
+
+        velocity.y -= gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
+    }
+
+    // ===== Dialogue =====
     public void PlayDialogue(AudioSource audio)
     {
         audio.Play();
-
         animator.SetBool("IsTalking", true);
-
         StartCoroutine(WaitForVoiceEnd());
     }
+
     private System.Collections.IEnumerator WaitForVoiceEnd()
     {
         yield return new WaitWhile(() => audio.isPlaying);
-
         animator.SetBool("IsTalking", false);
     }
-    //  تفاعل البوابة
+
+    // ===== Reactions =====
     public void ReactToGate()
     {
         animator.SetTrigger("NearGate");
     }
 
-    // تفاعل الفقاعة
     public void ReactToBubble()
-{
-    animator.SetTrigger("BubblePopped");
-}
-    //// بالكود تبع الفقاعة 
-    //public CompanionController companion;
-
-    //void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.CompareTag("Player"))
-    //    {
-    //        //نضيف هاد السطر
-    //        companion.ReactToBubble();
-
-    //    }
-    //}
-
-    
+    {
+        animator.SetTrigger("BubblePopped");
+    }
 }
