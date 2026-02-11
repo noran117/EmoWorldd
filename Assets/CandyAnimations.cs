@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class CandyDance : MonoBehaviour
 {
-    [Header("ÅÚÏÇÏÇÊ ÇáÏæäÇÊ (ØÇáÚ äÇÒá)")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)")]
     public Transform donutMesh;
     public float donutFloatSpeed = 2f;
     public float donutFloatHeight = 0.15f;
 
-    [Header("ÅÚÏÇÏÇÊ ÇáßÑÒÉ (ÑŞÕ íãíä ÔãÇá)")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)")]
     public Transform cherryTransform;
-    public float cherryDanceSpeed = 4f; // ÓÑÚÉ ÇáåÒÉ
-    public float cherryDanceAngle = 20f; // ŞæÉ ÇáãíáÇä
+    public float cherryDanceSpeed = 4f; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float cherryDanceAngle = 20f; // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private Vector3 donutStartPos;
     private Quaternion cherryStartRot;
@@ -21,7 +21,7 @@ public class CandyDance : MonoBehaviour
         if (donutMesh) donutStartPos = donutMesh.localPosition;
         if (cherryTransform) cherryStartRot = cherryTransform.localRotation;
 
-        // ÃæİÓÊ ÚÔæÇÆí ÚÔÇä ÇáÍÑßÉ ãÇ Êßæä ãíßÇäíßíÉ ÈÍÊÉ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         randomOffset = Random.Range(0f, 10f);
     }
 
@@ -29,20 +29,20 @@ public class CandyDance : MonoBehaviour
     {
         float time = Time.time + randomOffset;
 
-        // 1. ÍÑßÉ ÇáÏæäÇÊ (Y Position)
+        // 1. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (Y Position)
         if (donutMesh)
         {
             float newY = donutStartPos.y + Mathf.Sin(time * donutFloatSpeed) * donutFloatHeight;
             donutMesh.localPosition = new Vector3(donutStartPos.x, newY, donutStartPos.z);
         }
 
-        // 2. ÍÑßÉ ÇáßÑÒÉ (Z Rotation - ÑŞÕ íãíä æÔãÇá)
+        // 2. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (Z Rotation - ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½)
         if (cherryTransform)
         {
-            // ÍÑßÉ Sin ÊÚØí ÊÃÑÌÍ äÇÚã íãíä æíÓÇÑ
+            // ï¿½ï¿½ï¿½ï¿½ Sin ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
             float angle = Mathf.Sin(time * cherryDanceSpeed) * cherryDanceAngle;
 
-            // ÈäØÈŞ ÇáãíáÇä Úáì ãÍæÑ Z (ÊÃßÏ ãä ÇáãÍæÑ ÇáãäÇÓÈ áãÌÓãß)
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Z (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
             cherryTransform.localRotation = cherryStartRot * Quaternion.Euler(0, 0, angle);
         }
     }
