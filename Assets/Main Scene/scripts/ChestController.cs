@@ -21,12 +21,15 @@ public class ChestController : MonoBehaviour
         if (isOpened) return;
 
         isOpened = true;
-
+        Debug.Log("Open chest");
         if (openSound != null)
             openSound.Play();
 
         if (animator != null)
+        {
             animator.SetTrigger("Open");
+            ShowWinCup();
+        }
     }
 
     public void ShowWinCup()

@@ -17,7 +17,7 @@ public class TrainMove : MonoBehaviour
             speed * Time.deltaTime
         );
 
-        if (Vector3.Distance(transform.position, destination.position) <= 0.01f)
+        if (Vector3.Distance(transform.position, destination.position) <= 0.1f)
         {
             transform.position = destination.position;
             isMoving = false;

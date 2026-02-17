@@ -4,7 +4,7 @@ public class CoinManager : MonoBehaviour
 {
     public static CoinManager Instance;
 
-    public int totalCoins = 5;
+    [SerializeField] int totalCoins = 5;
     private int collectedCoins = 0;
 
     public ChestController chest;

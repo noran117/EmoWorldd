@@ -2,12 +2,12 @@
 
 public class SugarProcessor : MonoBehaviour
 {
-    
+
     public enum MachineState
     {
-        Idle,               
-        WaitingForSugar,    
-        Processing         
+        Idle,
+        WaitingForSugar,
+        Processing
     }
 
     [Header("State")]
@@ -22,6 +22,7 @@ public class SugarProcessor : MonoBehaviour
     public ParticleSystem sugarEffect;
     public AudioSource machineSound;
     public AudioSource spawnCandySound;
+    public AudioSource resultSound;
 
     [Header("Spawn Points")]
     public Transform[] spawnPoints;
@@ -30,6 +31,8 @@ public class SugarProcessor : MonoBehaviour
     public GameObject cottonCandyPrefab;
 
     private float currentSpinSpeed;
+    private Color currentSugarColor;
+
 
     void Update()
     {
@@ -62,8 +65,13 @@ public class SugarProcessor : MonoBehaviour
         if (currentState != MachineState.WaitingForSugar)
             return;
 
+
         if (other.CompareTag("Sugar"))
         {
+            Renderer sugarRenderer = other.GetComponent<Renderer>();
+            if (sugarRenderer != null)
+                currentSugarColor = sugarRenderer.material.color;
+
             other.gameObject.SetActive(false);
             StartProcessing();
         }
@@ -77,7 +85,12 @@ public class SugarProcessor : MonoBehaviour
         Debug.Log("Processing cotton candy");
 
         if (sugarEffect != null)
+        {
+            var main = sugarEffect.main;
+            main.startColor = currentSugarColor;
             sugarEffect.Play();
+
+        }
 
         Invoke(nameof(SpawnCottonCandy), 3f);
     }
@@ -98,6 +111,15 @@ public class SugarProcessor : MonoBehaviour
             chosenPoint.position,
             chosenPoint.rotation
         );
+        CandyColorPart part = cottonCandyPrefab.GetComponentInChildren<CandyColorPart>();
+        if (part != null)
+        {
+            Renderer rend = part.GetComponent<Renderer>();
+            rend.material = new Material(rend.material);
+            rend.material.color = currentSugarColor;
+        }
+        if (resultSound != null)
+            resultSound.Play();
 
         if (spawnCandySound != null)
             spawnCandySound.Play();

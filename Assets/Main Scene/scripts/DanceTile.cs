@@ -42,4 +42,20 @@ public class DanceTile : MonoBehaviour
         isActive = false;
         rend.material.color = originalColor;
     }
+    private void OnTriggerEnter(Collider other)
+{
+    if (other.CompareTag("Player"))
+    {
+        Activate();
+    }
+}
+
+private void OnTriggerExit(Collider other)
+{
+    if (other.CompareTag("Player"))
+    {
+        Deactivate();
+    }
+}
+
 }
