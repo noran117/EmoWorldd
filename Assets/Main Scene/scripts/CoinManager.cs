@@ -4,7 +4,7 @@ public class CoinManager : MonoBehaviour
 {
     public static CoinManager Instance;
 
-    [SerializeField] int totalCoins = 5;
+    [SerializeField] int totalCoins = 8;
     private int collectedCoins = 0;
 
     public ChestController chest;
@@ -22,6 +22,7 @@ public class CoinManager : MonoBehaviour
     public void CollectCoin()
     {
         collectedCoins++;
+        Debug.Log("Coin collected! Total: " + collectedCoins);
 
         if (collectedCoins >= totalCoins)
         {

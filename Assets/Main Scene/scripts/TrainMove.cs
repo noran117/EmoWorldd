@@ -1,31 +1,47 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class TrainMove : MonoBehaviour
 {
     public Transform destination;
     public float speed = 2f;
 
     private bool isMoving = false;
+    public bool IsMoving => isMoving;   
 
-    void Update()
+    private Vector3 targetPos;
+    private Rigidbody rb;
+
+    void Awake()
     {
-        if (!isMoving) return;
+        rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
+        rb.useGravity = false;
+    }
 
-        transform.position = Vector3.MoveTowards(
-            transform.position,
+    void FixedUpdate()
+    {
+        if (!isMoving || destination == null) return;
+
+        Vector3 newPos = Vector3.MoveTowards(
+            rb.position,
             destination.position,
-            speed * Time.deltaTime
+            speed * Time.fixedDeltaTime
         );
 
-        if (Vector3.Distance(transform.position, destination.position) <= 0.1f)
+        rb.MovePosition(newPos);
+
+        if (Vector3.Distance(rb.position, destination.position) <= 0.02f)
         {
-            transform.position = destination.position;
+            rb.MovePosition(destination.position);
             isMoving = false;
         }
     }
 
     public void StartMoving()
     {
+        if (destination == null) return;
+
         isMoving = true;
     }
 }

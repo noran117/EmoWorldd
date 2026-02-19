@@ -4,11 +4,17 @@ public class FlyingPlate : MonoBehaviour
 {
     public Transform pointA;
     public Transform pointB;
+    public Transform pointD;
+    private int currentIndex = 0;
+    private Transform[] path;
     public float speed = 1f;
-
+    public float moveDuration = 2f;
+    public float arcHeight = 2f;
     private CharacterController playerController;
     private bool xrOnPlatform = false;
-    private bool goingToB = true;
+    private float timer = 0f;
+    private Vector3 startPos;
+    private Vector3 endPos;
 
     void Start()
     {
@@ -21,7 +27,7 @@ public class FlyingPlate : MonoBehaviour
         }
 
         playerController = pcObj.GetComponent<CharacterController>();
-
+        path = new Transform[] { pointA, pointB, pointD };
         if (playerController == null)
         {
             Debug.LogError("[Platform] CharacterController NOT FOUND");
@@ -31,34 +37,66 @@ public class FlyingPlate : MonoBehaviour
     void FixedUpdate()
     {
         if (!xrOnPlatform || playerController == null) return;
+        if (currentIndex >= path.Length) return;
 
-        Transform target = goingToB ? pointB : pointA;
+        if (timer == 0f)
+        {
+            startPos = transform.position;
+            endPos = path[currentIndex].position;
+        }
+
+        timer += Time.fixedDeltaTime;
+        float progress = timer / moveDuration;
 
         Vector3 oldPos = transform.position;
 
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            target.position,
-            speed * Time.fixedDeltaTime
-        );
+        if (progress >= 1f)
+        {
+            transform.position = endPos;
+            timer = 0f;
+            currentIndex++;
+        }
+        else
+        {
+            Vector3 linearPos = Vector3.Lerp(startPos, endPos, progress);
+
+            float heightOffset = Mathf.Sin(progress * Mathf.PI) * arcHeight;
+
+            linearPos.y += heightOffset;
+
+            transform.position = linearPos;
+        }
 
         Vector3 delta = transform.position - oldPos;
         playerController.Move(delta);
-
-       
-        if (Vector3.Distance(transform.position, target.position) < 0.01f)
-        {
-            goingToB = !goingToB; 
-        }
     }
 
     public void XR_EnterPlatform()
     {
         xrOnPlatform = true;
+        currentIndex = 0;
+        timer = 0f;
     }
 
     public void XR_ExitPlatform()
     {
         xrOnPlatform = false;
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        //if (other.GetComponent<CharacterController>())
+
+        if (other.CompareTag("Player"))
+        {
+            XR_EnterPlatform();
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            XR_ExitPlatform();
+        }
     }
 }

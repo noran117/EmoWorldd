@@ -12,7 +12,7 @@ public class CandyCoin : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("PlayerHand"))
+        if (other.CompareTag("Player"))
         {
             CoinManager.Instance.CollectCoin();
             audioSource.PlayOneShot(collectSound);
