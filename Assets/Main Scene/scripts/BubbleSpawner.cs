@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,54 +8,55 @@ public class BubbleSpawner : MonoBehaviour
     public GameObject bubblePrefab;
     public int poolSize = 10;
 
-    [Header("Spawn Settings")]
+[Header("Spawn Settings")]
     public float spawnInterval = 3f;
     public float spawnRange = 0.5f;
-    public int maxBubblesActive = 10;
     public AudioSource popAudioSource;
 
-    [Header("Plane Reference")]
+[Header("Plane Reference")]
     public Transform plane;
 
-    private Queue<GameObject> pool = new Queue<GameObject>();
-    private int activeBubbles = 0;
+    private Queue<BubbleBehavior> pool = new Queue<BubbleBehavior>();
 
     void Start()
     {
         for (int i = 0; i < poolSize; i++)
         {
-            GameObject b = Instantiate(bubblePrefab);
-            b.SetActive(false);
-            pool.Enqueue(b);
+            BubbleBehavior bubble = Instantiate(bubblePrefab).GetComponent<BubbleBehavior>();
+
+            bubble.gameObject.SetActive(false);
+            pool.Enqueue(bubble);
         }
 
-        InvokeRepeating(nameof(TrySpawnBubble), spawnInterval, spawnInterval);
+        StartCoroutine(SpawnRoutine());
+    }
+
+    IEnumerator SpawnRoutine()
+    {
+        while (true)
+        {
+            TrySpawnBubble();
+            yield return new WaitForSeconds(spawnInterval);
+        }
     }
 
     void TrySpawnBubble()
     {
-        if (activeBubbles >= maxBubblesActive) return;
         if (pool.Count == 0) return;
 
-        GameObject bubble = pool.Dequeue();
+        BubbleBehavior bubble = pool.Dequeue();
 
-        Vector3 origin = plane.position;
+        Vector2 randomCircle = Random.insideUnitCircle * spawnRange;
+        Vector3 randomOffset = new Vector3(randomCircle.x, 0.2f, randomCircle.y);
 
-        Vector3 randomOffset = Random.insideUnitSphere * spawnRange;
-        randomOffset.y = 0.2f;
-
-        bubble.transform.position = origin + randomOffset;
-
-        bubble.SetActive(true);
-        bubble.GetComponent<BubbleBehavior>().Init(this);
-
-        activeBubbles++;
+        bubble.transform.position = plane.position + randomOffset;
+        bubble.gameObject.SetActive(true);
+        bubble.Init(this);
     }
 
-    public void ReturnToPool(GameObject bubble)
+    public void ReturnToPool(BubbleBehavior bubble)
     {
-        bubble.SetActive(false);
+        bubble.gameObject.SetActive(false);
         pool.Enqueue(bubble);
-        activeBubbles--;
     }
 }

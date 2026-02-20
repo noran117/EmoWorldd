@@ -14,19 +14,21 @@ public class CompanionFollow : MonoBehaviour
     }
     void Update()
     {
+        transform.LookAt(player);
         if (player == null) return;
 
-        float distance = Vector3.Distance(transform.position, player.position);
-       if (distance > followDistance)
+        Vector3 distance = player.position - transform.position;
+       if (distance.magnitude > followDistance)
         {
             agent.isStopped = false;
-            //agent.SetDestination(player.position);
-            agent.destination=player.position;
+            agent.SetDestination(player.position);
         }
         else
         {
             agent.isStopped = true;
-        }            
+            agent.SetDestination(transform.position);
+        }          
+
 
     }
 }

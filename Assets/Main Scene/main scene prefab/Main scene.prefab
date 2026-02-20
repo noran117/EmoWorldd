@@ -6360,7 +6360,6 @@ MonoBehaviour:
   poolSize: 10
   spawnInterval: 3
   spawnRange: 0.5
-  maxBubblesActive: 10
   popAudioSource: {fileID: 7887251629305186746}
   plane: {fileID: 3773392215053326655}
 --- !u!1 &4276918193278387700
@@ -15934,7 +15933,6 @@ GameObject:
   - component: {fileID: 3663209618867677037}
   - component: {fileID: 7282855847693351174}
   - component: {fileID: 2943289284097244667}
-  - component: {fileID: 1376346223576970165}
   - component: {fileID: 5558643728258024191}
   m_Layer: 0
   m_Name: Gate
@@ -16015,27 +16013,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1376346223576970165
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7294926593684626438}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 0.244402, y: 1.6740857, z: 0.12161184}
-  m_Center: {x: -0.0033351672, y: 0.5773957, z: -0.057146803}
 --- !u!64 &5558643728258024191
 MeshCollider:
   m_ObjectHideFlags: 0
