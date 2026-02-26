@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class SugarProcessor : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class SugarProcessor : MonoBehaviour
         WaitingForSugar,    
         Processing         
     }
+
 
     [Header("State")]
     public MachineState currentState = MachineState.Idle;
@@ -24,12 +26,17 @@ public class SugarProcessor : MonoBehaviour
     public AudioSource spawnCandySound;
 
     [Header("Spawn Points")]
-    public Transform[] spawnPoints;
+    public List<GameObject> spawnPoints = new();
 
     [Header("Cotton Candy")]
     public GameObject cottonCandyPrefab;
 
     private float currentSpinSpeed;
+
+    private void Start()
+    {
+        StartMachine();
+    }
 
     void Update()
     {
@@ -45,13 +52,16 @@ public class SugarProcessor : MonoBehaviour
 
     public void StartMachine()
     {
+        sugarEffect.Stop();
+
+        //Debug.Log("[SugarProcessor]: Start Machine");
         if (currentState != MachineState.Idle)
             return;
 
         currentState = MachineState.WaitingForSugar;
         currentSpinSpeed = idleSpinSpeed;
 
-        Debug.Log("Machine started - waiting for sugar");
+        //Debug.Log("Machine started - waiting for sugar");
 
         if (machineSound != null)
             machineSound.Play();
@@ -59,11 +69,17 @@ public class SugarProcessor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //Debug.Log("[SugarProcessor]: Trigger Enter");
+
         if (currentState != MachineState.WaitingForSugar)
             return;
 
+               // Debug.Log("[SugarProcessor]: Trigger Waiting for Sugar");
+
         if (other.CompareTag("Sugar"))
         {
+                //Debug.Log("[SugarProcessor]: Trigger Sugar entered");
+
             other.gameObject.SetActive(false);
             StartProcessing();
         }
@@ -74,7 +90,7 @@ public class SugarProcessor : MonoBehaviour
         currentState = MachineState.Processing;
         currentSpinSpeed = processingSpinSpeed;
 
-        Debug.Log("Processing cotton candy");
+       // Debug.Log("Processing cotton candy");
 
         if (sugarEffect != null)
             sugarEffect.Play();
@@ -84,20 +100,26 @@ public class SugarProcessor : MonoBehaviour
 
     private void SpawnCottonCandy()
     {
-        if (spawnPoints.Length == 0)
+        if (spawnPoints.Count == 0)
         {
             Debug.LogWarning("No spawn points assigned!");
             return;
         }
 
-        Transform chosenPoint =
-            spawnPoints[Random.Range(0, spawnPoints.Length)];
+        GameObject chosenPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+        chosenPoint.SetActive(true);
+        spawnPoints.Remove(chosenPoint);
+        // Transform chosenPoint =
+        //     spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-        Instantiate(
-            cottonCandyPrefab,
-            chosenPoint.position,
-            chosenPoint.rotation
-        );
+        // GameObject spawnedCottonCandy = Instantiate(
+        //     cottonCandyPrefab,
+        //     chosenPoint.position,
+        //     chosenPoint.rotation
+        // );
+
+        // spawnedCottonCandy.transform.SetParent(chosenPoint);
+        
 
         if (spawnCandySound != null)
             spawnCandySound.Play();
@@ -108,8 +130,9 @@ public class SugarProcessor : MonoBehaviour
         if (machineSound != null)
             machineSound.Stop();
 
-        currentState = MachineState.Idle;
+        currentState = MachineState.WaitingForSugar;
         currentSpinSpeed = 0f;
+            sugarEffect.Stop();
 
         Debug.Log("Machine finished");
     }
