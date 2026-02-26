@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: fb5e3e0a6e6f5d641b5f001b447177ad
+guid: fe920d77c4438ad498243e46ad2a8439
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: molesAtlas
+    second: {fileID: 2100000, guid: b886fe7346cfde54c90114a59d9839ae, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

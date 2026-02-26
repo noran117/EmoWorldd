@@ -6,6 +6,7 @@ public class Mole : MonoBehaviour
     [Header("Graphics")]
     public GameObject standardMoleModel;
     public GameObject hardHatModel;
+    public GameObject brokenHardHatModel;
     public GameObject bombModel;
 
 
@@ -30,7 +31,7 @@ public class Mole : MonoBehaviour
 
     // Mole Parameters 
     private bool hittable = true;
-    public enum MoleType { Standard, HardHat, Bomb };
+    public enum MoleType { Standard, HardHat, brokenHatModel, Bomb };
     private MoleType moleType;
     private float hardRate = 0.25f;
     private float bombRate = 0f;
@@ -109,41 +110,44 @@ public class Mole : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.CompareTag("Hammer") && hittable)
+        if (!other.CompareTag("Hammer") && !hittable) return;
+
+        Debug.Log("hit" + moleType);
+        switch (moleType)
         {
-            switch (moleType)
-            {
-                case MoleType.Standard:
+            case MoleType.Standard:
+                gameManager.AddScore(moleIndex);
+                // Stop the animation
+                StopAllCoroutines();
+                StartCoroutine(QuickHide());
+                // Turn off hittable so that we can't keep tapping for score.
+                hittable = false;
+                break;
+            case MoleType.HardHat:
+                // If lives == 2 reduce
+                if (lives == 2)
+                {
+                    lives--;
+                    hardHatModel.SetActive(false);
+                    brokenHardHatModel.SetActive(true);
+                }
+                else
+                {
                     gameManager.AddScore(moleIndex);
                     // Stop the animation
                     StopAllCoroutines();
                     StartCoroutine(QuickHide());
                     // Turn off hittable so that we can't keep tapping for score.
                     hittable = false;
-                    break;
-                case MoleType.HardHat:
-                    // If lives == 2 reduce
-                    if (lives == 2)
-                    {
-                        lives--;
-                    }
-                    else
-                    {
-                        gameManager.AddScore(moleIndex);
-                        // Stop the animation
-                        StopAllCoroutines();
-                        StartCoroutine(QuickHide());
-                        // Turn off hittable so that we can't keep tapping for score.
-                        hittable = false;
-                    }
-                    break;
-                case MoleType.Bomb:
-                    // Game over, 1 for bomb.
-                    gameManager.GameOver(1);
-                    break;
-                default:
-                    break;
-            }
+                }
+                break;
+            case MoleType.Bomb:
+                // Game over, 1 for bomb.
+                gameManager.GameOver(1);
+                break;
+            default:
+                break;
+
         }
     }
 
@@ -151,6 +155,7 @@ public class Mole : MonoBehaviour
     {
         standardMoleModel.SetActive(false);
         hardHatModel.SetActive(false);
+        brokenHardHatModel.SetActive(false);
         bombModel.SetActive(false);
 
         float random = Random.Range(0f, 1f);
@@ -200,7 +205,10 @@ public class Mole : MonoBehaviour
 
     private void Awake()
     {
-        startPosition = startPosition = transform.localPosition;
+        standardMoleModel.SetActive(false);
+        hardHatModel.SetActive(false);
+        bombModel.SetActive(false);
+        startPosition = transform.localPosition;
         endPosition = startPosition + new Vector3(0f, 2f, 0f);
         boxCollider = GetComponent<BoxCollider>();
         // Work out collider values.

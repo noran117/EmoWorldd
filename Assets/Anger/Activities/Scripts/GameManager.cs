@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<Mole> moles;
 
     [Header("UI objects")]
-    [SerializeField] private GameObject playButton;
+    //[SerializeField] private GameObject playButton;
     [SerializeField] private TMPro.TextMeshPro timeText;
     [SerializeField] private TMPro.TextMeshPro scoreText;
 
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         // Hide/show the UI elements we don't/do want to see.
-        playButton.SetActive(false);
+       // playButton.SetActive(false);
 
         // Hide all the visible moles.
         for (int i = 0; i < moles.Count; i++)
@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
         }
         // Stop the game and show the start UI.
         playing = false;
-        playButton.SetActive(true);
+        //playButton.SetActive(true);
     }
 
     // Update is called once per frame
