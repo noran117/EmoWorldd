@@ -5,175 +5,126 @@ using UnityEngine;
 
 public class HandleController : MonoBehaviour
 {
+[Header("Bridge Pieces")]
+    public List<Transform> bridgePieces = new List<Transform>();
 
-    [System.Serializable]
-    public class LeverGroup
-    {
-        public GameObject[] pieces;   // القطع المرتبطة بهذا المقبض
-        public bool correctState;     // الحالة المطلوبة للحل (true = Up)
-        [HideInInspector] public bool currentState;
-        [HideInInspector] public Vector3[] basePositions;
-    }
+    [Header("Movement Settings")]
+    public float moveAmount = 2f;        // المقدار اللي بترفع/بتنزل فيه القطع
+    public float moveDuration = 0.5f;    // مدة الحركة بالثواني
+    public bool animateMovement = true;  // تحريك سلس أو فوري
 
-    public List<LeverGroup> leverGroups = new List<LeverGroup>();
-
-    public float moveHeight = 2f;
-    public float moveSpeed = 3f;
-
-    private bool puzzleSolved = false;
+    // لتتبع الحالة الأصلية لكل قطعة
+    private List<Vector3> originalPositions = new List<Vector3>();
+    private bool isMoving = false;
 
     void Start()
     {
-        foreach (var group in leverGroups)
+        // حفظ المواقع الأصلية لكل القطع
+        foreach (Transform piece in bridgePieces)
         {
-            group.basePositions = new Vector3[group.pieces.Length];
-
-            for (int i = 0; i < group.pieces.Length; i++)
-            {
-                // نحسب مكان المشي السفلي
-                group.basePositions[i] =
-                    group.pieces[i].transform.position - Vector3.up * moveHeight;
-            }
+            originalPositions.Add(piece.position);
         }
     }
-    public void LeverUp(int index)
+      // ترفع كل القطع لمقدار معين
+    public void RaisePieces()
     {
-        if (puzzleSolved) return;
+        if (isMoving) return;
 
-        leverGroups[index].currentState = true;
-        StartCoroutine(MoveGroup(index, true));
-        CheckPuzzle();
+        if (animateMovement)
+            StartCoroutine(MovePieces(Vector3.up * moveAmount));
+        else
+            MovePiecesInstant(Vector3.up * moveAmount);
     }
-
-    public void LeverDown(int index)
+    // تنزّل كل القطع لنفس المقدار
+    public void LowerPieces()
     {
-        if (puzzleSolved) return;
+        if (isMoving) return;
 
-        leverGroups[index].currentState = false;
-        StartCoroutine(MoveGroup(index, false));
-        CheckPuzzle();
+        if (animateMovement)
+            StartCoroutine(MovePieces(Vector3.down * moveAmount));
+        else
+            MovePiecesInstant(Vector3.down * moveAmount);
     }
-    // يتم استدعاؤها من الـ Lever
-    public void LeverChanged(int index, bool isUp)
+    // ترجع القطع لمواقعها الأصلية
+    public void ResetPieces()
     {
-        if (puzzleSolved) return;
+        if (isMoving) return;
 
-        leverGroups[index].currentState = isUp;
-
-        StartCoroutine(MoveGroup(index, isUp));
-        CheckPuzzle();
+        if (animateMovement)
+            StartCoroutine(ResetToOriginal());
+        else
+        {
+            for (int i = 0; i < bridgePieces.Count; i++)
+                bridgePieces[i].position = originalPositions[i];
+        }
     }
-
-    IEnumerator MoveGroup(int index, bool moveUp)
+ // حركة سلسة باستخدام Coroutine
+    private IEnumerator MovePieces(Vector3 direction)
     {
-        var group = leverGroups[index];
+        isMoving = true;
+
+        List<Vector3> startPositions = new List<Vector3>();
+        List<Vector3> targetPositions = new List<Vector3>();
+
+        foreach (Transform piece in bridgePieces)
+        {
+            startPositions.Add(piece.position);
+            targetPositions.Add(piece.position + direction);
+        }
 
         float elapsed = 0f;
-        float duration = 0.6f;
 
-        while (elapsed < duration)
+        while (elapsed < moveDuration)
         {
             elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / moveDuration);
 
-            for (int i = 0; i < group.pieces.Length; i++)
-            {
-                Vector3 target = moveUp
-                    ? group.basePositions[i] + Vector3.up * moveHeight
-                    : group.basePositions[i];
-
-                group.pieces[i].transform.position =
-                    Vector3.Lerp(group.pieces[i].transform.position, target, Time.deltaTime * moveSpeed);
-            }
+            for (int i = 0; i < bridgePieces.Count; i++)
+                bridgePieces[i].position = Vector3.Lerp(startPositions[i], targetPositions[i], t);
 
             yield return null;
         }
+
+        // تأكد إنها وصلت للموقع الصح
+        for (int i = 0; i < bridgePieces.Count; i++)
+            bridgePieces[i].position = targetPositions[i];
+
+        isMoving = false;
     }
 
-    void CheckPuzzle()
+    // حركة فورية بدون animation
+    private void MovePiecesInstant(Vector3 direction)
     {
-        for (int i = 0; i < leverGroups.Count; i++)
+        foreach (Transform piece in bridgePieces)
+            piece.position += direction;
+    }
+ // رجوع سلس للمواقع الأصلية
+    private IEnumerator ResetToOriginal()
+    {
+        isMoving = true;
+
+        List<Vector3> startPositions = new List<Vector3>();
+
+        foreach (Transform piece in bridgePieces)
+            startPositions.Add(piece.position);
+
+        float elapsed = 0f;
+
+        while (elapsed < moveDuration)
         {
-            if (leverGroups[i].currentState != leverGroups[i].correctState)
-                return;
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / moveDuration);
+
+            for (int i = 0; i < bridgePieces.Count; i++)
+                bridgePieces[i].position = Vector3.Lerp(startPositions[i], originalPositions[i], t);
+
+            yield return null;
         }
 
-        puzzleSolved = true;
-        Debug.Log("Puzzle Solved! Bridge Complete!");
+        for (int i = 0; i < bridgePieces.Count; i++)
+            bridgePieces[i].position = originalPositions[i];
+
+        isMoving = false;
     }
 
 }
-
-/*
-[Header("Group 1")]
-    public GameObject[] group1;
-
-    [Header("Group 2")]
-    public GameObject[] group2;
-
-    [Header("Group 3")]
-    public GameObject[] group3;
-
-    [Header("Group 4")]
-    public GameObject[] group4;
-
-    public float moveHeight = 2f;
-    public float moveSpeed = 2f;
-    private Vector3[][] originalPositions;
-
-    void Start()
-    {
-        originalPositions = new Vector3[4][];
-
-        originalPositions[0] = SavePositions(group1);
-        originalPositions[1] = SavePositions(group2);
-        originalPositions[2] = SavePositions(group3);
-        originalPositions[3] = SavePositions(group4);
-    }
-
-    Vector3[] SavePositions(GameObject[] group)
-    {
-        Vector3[] positions = new Vector3[group.Length];
-        for (int i = 0; i < group.Length; i++)
-        {
-            positions[i] = group[i].transform.position;
-        }
-        return positions;
-    }
-    // ===== GROUP 1 =====
-    public void Group1Up() => StartCoroutine(MoveGroup(group1, originalPositions[0], true));
-    public void Group1Down() => StartCoroutine(MoveGroup(group1, originalPositions[0], false));
-
-    // ===== GROUP 2 =====
-    public void Group2Up() => StartCoroutine(MoveGroup(group2, originalPositions[1], true));
-    public void Group2Down() => StartCoroutine(MoveGroup(group2, originalPositions[1], false));
-
-    // ===== GROUP 3 =====
-    public void Group3Up() => StartCoroutine(MoveGroup(group3, originalPositions[2], true));
-    public void Group3Down() => StartCoroutine(MoveGroup(group3, originalPositions[2], false));
-
-    // ===== GROUP 4 =====
-    public void Group4Up() => StartCoroutine(MoveGroup(group4, originalPositions[3], true));
-    public void Group4Down() => StartCoroutine(MoveGroup(group4, originalPositions[3], false));
-
-    IEnumerator MoveGroup(GameObject[] group, Vector3[] basePositions, bool up)
-    {
-        float elapsed = 0f;
-        float duration = 1f;
-
-        Vector3 offset = up ? Vector3.up * moveHeight : Vector3.zero;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-
-            for (int i = 0; i < group.Length; i++)
-            {
-                Vector3 target = basePositions[i] + offset;
-                group[i].transform.position =
-                    Vector3.Lerp(group[i].transform.position, target, Time.deltaTime * moveSpeed);
-            }
-
-            yield return null;
-        }
-    }
-    */
