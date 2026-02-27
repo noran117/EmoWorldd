@@ -85,6 +85,7 @@ public class BubbleBehavior : MonoBehaviour
         if (spawner != null && spawner.popAudioSource != null && popSound != null && popSound.clip != null)
         {
             spawner.popAudioSource.PlayOneShot(popSound.clip);
+           // Debug.Log("Played pop sound");
         }
 
         if (popParticles) popParticles.Play();

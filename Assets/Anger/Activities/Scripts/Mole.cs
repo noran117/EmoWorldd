@@ -94,6 +94,10 @@ public class Mole : MonoBehaviour
         transform.localPosition = startPosition;
         boxCollider.center = boxOffsetHidden;
         boxCollider.size = boxSizeHidden;
+        standardMoleModel.SetActive(false);
+        hardHatModel.SetActive(false);
+        brokenHardHatModel.SetActive(false);
+        bombModel.SetActive(false);
     }
 
     private IEnumerator QuickHide()
@@ -111,7 +115,9 @@ public class Mole : MonoBehaviour
     {
 
         if (!other.CompareTag("Hammer") && !hittable) return;
-
+    // private void OnMouseDown()
+    //{
+        //if (!hittable) return;
         Debug.Log("hit" + moleType);
         switch (moleType)
         {

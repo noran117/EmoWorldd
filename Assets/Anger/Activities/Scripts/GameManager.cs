@@ -6,11 +6,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<Mole> moles;
 
     [Header("UI objects")]
-    //[SerializeField] private GameObject playButton;
+    [SerializeField] private GameObject playButton;
     [SerializeField] private TMPro.TextMeshPro timeText;
     [SerializeField] private TMPro.TextMeshPro scoreText;
 
     // Hardcoded variables you may want to tune.
+    [Header("Game Variables")]
+    [SerializeField]
     private float startingTime = 30f;
 
     // Global variables
@@ -19,16 +21,11 @@ public class GameManager : MonoBehaviour
     private int score;
     private bool playing = false;
 
-    private void Start()
-    {
-        StartGame();
-    }
-
-    // This is public so the play button can see it.        // don't forget to add the play button
+    // This is public so the play button can see it.        
     public void StartGame()
     {
         // Hide/show the UI elements we don't/do want to see.
-       // playButton.SetActive(false);
+        playButton.SetActive(false);
 
         // Hide all the visible moles.
         for (int i = 0; i < moles.Count; i++)
@@ -47,18 +44,15 @@ public class GameManager : MonoBehaviour
 
     public void GameOver(int type)
     {
-        //if(type == 0)
-            //outOfTime.SetActive(true);
-        //else
-            //Bomb!!!!.Active => true
         // Hide all moles.
         foreach (Mole mole in moles)
         {
             mole.StopGame();
         }
+
         // Stop the game and show the start UI.
         playing = false;
-        //playButton.SetActive(true);
+        playButton.SetActive(true);
     }
 
     // Update is called once per frame
