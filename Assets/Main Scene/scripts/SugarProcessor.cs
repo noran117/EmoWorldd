@@ -3,12 +3,11 @@ using System.Collections.Generic;
 
 public class SugarProcessor : MonoBehaviour
 {
-    
     public enum MachineState
     {
-        Idle,               
-        WaitingForSugar,    
-        Processing         
+        Idle,
+        WaitingForSugar,
+        Processing
     }
 
 
@@ -25,18 +24,17 @@ public class SugarProcessor : MonoBehaviour
     public AudioSource machineSound;
     public AudioSource spawnCandySound;
 
+
     [Header("Spawn Points")]
     public List<GameObject> spawnPoints = new();
 
-    [Header("Cotton Candy")]
-    public GameObject cottonCandyPrefab;
-
     private float currentSpinSpeed;
+    private Color currentCandyColor;
 
-    private void Start()
-    {
-        StartMachine();
-    }
+    //private void Start()
+    //{
+    //    StartMachine(); // Start the machine immediately for testing purposes, we can remove this later and add it to the start button 
+    //}
 
     void Update()
     {
@@ -74,13 +72,27 @@ public class SugarProcessor : MonoBehaviour
         if (currentState != MachineState.WaitingForSugar)
             return;
 
-               // Debug.Log("[SugarProcessor]: Trigger Waiting for Sugar");
+        // Debug.Log("[SugarProcessor]: Trigger Waiting for Sugar");
 
         if (other.CompareTag("Sugar"))
         {
-                //Debug.Log("[SugarProcessor]: Trigger Sugar entered");
+            //Debug.Log("[SugarProcessor]: Trigger Sugar entered");
+
+            Renderer rend = other.GetComponentInChildren<Renderer>();
+
+            if (rend == null)
+                return;
+
+            Material mat = rend.material;
+
+            if (mat.HasProperty("_BaseColor"))
+            {
+                currentCandyColor = mat.GetColor("_BaseColor");
+            }
+
 
             other.gameObject.SetActive(false);
+
             StartProcessing();
         }
     }
@@ -90,8 +102,8 @@ public class SugarProcessor : MonoBehaviour
         currentState = MachineState.Processing;
         currentSpinSpeed = processingSpinSpeed;
 
-       // Debug.Log("Processing cotton candy");
-
+        // Debug.Log("Processing cotton candy");
+        ApplyColor();
         if (sugarEffect != null)
             sugarEffect.Play();
 
@@ -107,19 +119,10 @@ public class SugarProcessor : MonoBehaviour
         }
 
         GameObject chosenPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+        ApplyColorToChosenPoint(chosenPoint);
         chosenPoint.SetActive(true);
         spawnPoints.Remove(chosenPoint);
-        // Transform chosenPoint =
-        //     spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-        // GameObject spawnedCottonCandy = Instantiate(
-        //     cottonCandyPrefab,
-        //     chosenPoint.position,
-        //     chosenPoint.rotation
-        // );
-
-        // spawnedCottonCandy.transform.SetParent(chosenPoint);
-        
 
         if (spawnCandySound != null)
             spawnCandySound.Play();
@@ -132,8 +135,42 @@ public class SugarProcessor : MonoBehaviour
 
         currentState = MachineState.WaitingForSugar;
         currentSpinSpeed = 0f;
-            sugarEffect.Stop();
+        sugarEffect.Stop();
 
         Debug.Log("Machine finished");
+    }
+    private void ApplyColor()
+    {
+        if (sugarEffect == null) return;
+
+        // Particle
+        if (sugarEffect != null)
+        {
+            var main = sugarEffect.main;
+            main.startColor = currentCandyColor;
+        }
+
+    }
+    private void ApplyColorToChosenPoint(GameObject chosenPoint)
+    {
+        if (chosenPoint == null)
+            return;
+
+        CandyColorPart colorPart = chosenPoint.GetComponentInChildren<CandyColorPart>();
+
+        if (colorPart != null)
+        {
+            Renderer rend = colorPart.GetComponent<Renderer>();
+
+            if (rend != null)
+            {
+                Material mat = rend.material;
+
+                if (mat.HasProperty("_BaseColor"))
+                {
+                    mat.SetColor("_BaseColor", currentCandyColor);
+                }
+            }
+        }
     }
 }
