@@ -24172,16 +24172,51 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 795822744085385709, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+        type: 3}
+      propertyPath: drumRenderer
+      value: 
+      objectReference: {fileID: 2140140778}
+    - target: {fileID: 915518684425171902, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+        type: 3}
+      propertyPath: drumRenderer
+      value: 
+      objectReference: {fileID: 2140140781}
     - target: {fileID: 1032344168749872718, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
         type: 3}
       propertyPath: m_Name
       value: drumsSet
       objectReference: {fileID: 0}
+    - target: {fileID: 1072742436367402924, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+        type: 3}
+      propertyPath: drumRenderer
+      value: 
+      objectReference: {fileID: 2140140776}
+    - target: {fileID: 1342302796480685898, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+        type: 3}
+      propertyPath: drumRenderer
+      value: 
+      objectReference: {fileID: 2140140779}
+    - target: {fileID: 1968739153882324044, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+        type: 3}
+      propertyPath: drumRenderer
+      value: 
+      objectReference: {fileID: 2140140780}
     - target: {fileID: 4180732136300706250, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
         type: 3}
       propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5332505758545079896, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+        type: 3}
+      propertyPath: drumRenderer
+      value: 
+      objectReference: {fileID: 2140140777}
+    - target: {fileID: 5921921478812669988, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+        type: 3}
+      propertyPath: drumRenderer
+      value: 
+      objectReference: {fileID: 2140140782}
     - target: {fileID: 7270587890467047600, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
         type: 3}
       propertyPath: m_PlayOnAwake
@@ -24198,6 +24233,48 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9fedea243f9bf7f489dc4907c12c4ad6, type: 3}
+--- !u!23 &2140140776 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8292274869010764621, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+    type: 3}
+  m_PrefabInstance: {fileID: 2140140775}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2140140777 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2051889424380013262, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+    type: 3}
+  m_PrefabInstance: {fileID: 2140140775}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2140140778 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 644696848178401850, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+    type: 3}
+  m_PrefabInstance: {fileID: 2140140775}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2140140779 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6116653436577056245, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+    type: 3}
+  m_PrefabInstance: {fileID: 2140140775}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2140140780 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 411244903914263617, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+    type: 3}
+  m_PrefabInstance: {fileID: 2140140775}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2140140781 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 778525534140509269, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+    type: 3}
+  m_PrefabInstance: {fileID: 2140140775}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2140140782 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8747173345156357847, guid: 9fedea243f9bf7f489dc4907c12c4ad6,
+    type: 3}
+  m_PrefabInstance: {fileID: 2140140775}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

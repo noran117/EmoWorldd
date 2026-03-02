@@ -1,0 +1,139 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8951622317952058807
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4784345769143059508}
+  m_Layer: 0
+  m_Name: Slide
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4784345769143059508
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8951622317952058807}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3769844246772395465}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3636295023479582889
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4784345769143059508}
+    m_Modifications:
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.23997569
+      objectReference: {fileID: 0}
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.654
+      objectReference: {fileID: 0}
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.6000023
+      objectReference: {fileID: 0}
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9982042
+      objectReference: {fileID: 0}
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.05990386
+      objectReference: {fileID: 0}
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4020749111589766505, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: quadRenderer
+      value: 
+      objectReference: {fileID: 1586188881108229494}
+    - target: {fileID: 6854271037793866540, guid: 3dd3bd7e777c29445998ceee5c29958c,
+        type: 3}
+      propertyPath: m_Name
+      value: 'PaperQuad '
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3dd3bd7e777c29445998ceee5c29958c, type: 3}
+--- !u!23 &1586188881108229494 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2627271407828217311, guid: 3dd3bd7e777c29445998ceee5c29958c,
+    type: 3}
+  m_PrefabInstance: {fileID: 3636295023479582889}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3769844246772395465 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 443492759499595104, guid: 3dd3bd7e777c29445998ceee5c29958c,
+    type: 3}
+  m_PrefabInstance: {fileID: 3636295023479582889}
+  m_PrefabAsset: {fileID: 0}

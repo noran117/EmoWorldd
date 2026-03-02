@@ -1,33 +1,34 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Collider))]
 public class Drum : MonoBehaviour
 {
-    [Header("Audio Settings")]
-    public AudioClip drumClip;
-    public float minHitForce = 0.5f;      
-    public float maxVolume = 1f;          
-    public float hitCooldown = 0.1f;      
+    [Header("Hit Settings")]
+    public float minHitForce = 0.5f;   
+    public float hitCooldown = 0.08f;  
 
-    [Header("Visual")]
-    public Renderer drumRenderer;
+    [Header("Visual (Optional)")]
+    public bool useColorFlash = true;
+    public Renderer drumRenderer;      
     public Color hitColor = Color.yellow;
-    public float colorFlashDuration = 0.1f;
+    public float colorFlashDuration = 0.08f;
 
     private AudioSource audioSource;
-    private float lastHitTime;
+    private float lastHitTime = -999f;
     private Color originalColor;
 
-    void Start()
+    void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false;
 
-        if (drumRenderer != null)
-        {
+        var col = GetComponent<Collider>();
+        if (col != null) col.isTrigger = false;
+
+        if (useColorFlash && drumRenderer != null)
             originalColor = drumRenderer.material.color;
-        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -39,27 +40,25 @@ public class Drum : MonoBehaviour
             return;
 
         float hitForce = collision.relativeVelocity.magnitude;
-
         if (hitForce < minHitForce)
             return;
 
-        float volume = Mathf.Clamp(hitForce / 5f, 0f, maxVolume);
-
-        if (drumClip != null)
+        if (audioSource.clip != null)
         {
-            audioSource.PlayOneShot(drumClip, volume);
+            audioSource.Stop();
+            audioSource.Play();
         }
 
         lastHitTime = Time.time;
 
-        if (drumRenderer != null)
+        if (useColorFlash && drumRenderer != null)
         {
             StopAllCoroutines();
             StartCoroutine(FlashColor());
         }
     }
 
-    System.Collections.IEnumerator FlashColor()
+    IEnumerator FlashColor()
     {
         drumRenderer.material.color = hitColor;
         yield return new WaitForSeconds(colorFlashDuration);
