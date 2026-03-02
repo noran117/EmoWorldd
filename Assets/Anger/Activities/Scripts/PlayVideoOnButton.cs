@@ -4,6 +4,7 @@ using UnityEngine.Video;
 public class PlayVideoOnButton : MonoBehaviour
 {
     public VideoPlayer videoPlayer;
+    public AudioSource bgSound;
 
     public void PlayVideo()
     {
@@ -12,10 +13,16 @@ public class PlayVideoOnButton : MonoBehaviour
         if (videoPlayer.isPlaying)
         {
             videoPlayer.Pause();
+            if (bgSound != null)
+                bgSound.Play();
         }
         else
         {
-            videoPlayer.Play(); 
+             if (bgSound != null)
+                bgSound.Pause();
+                
+            videoPlayer.Play();
+
         }
     }
 }
