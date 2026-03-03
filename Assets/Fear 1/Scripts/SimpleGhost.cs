@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class SimpleGhost : MonoBehaviour
 {
@@ -15,40 +16,33 @@ public class SimpleGhost : MonoBehaviour
     void Start()
     {
         Anim = GetComponent<Animator>();
-
-        // يبدأ Idle
         Anim.CrossFade(IdleState, 0.1f);
     }
-    void Update()
-    {
-        // تنفيذ الذوبان تدريجياً
-        if (DissolveFlg)
-        {
-            DoDissolve();
-        }
-    }
+  
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !DissolveFlg)
         {
             Anim.CrossFade(DissolveState, 0.1f);
             DissolveFlg = true;
+            StartCoroutine(DissolveRoutine());
         }
     }
-
-    void DoDissolve()
+ private IEnumerator DissolveRoutine()
     {
-        Dissolve_value -= Time.deltaTime;
-
-        foreach (var mesh in MeshR)
+        while (Dissolve_value > 0f)
         {
-            mesh.material.SetFloat("_Dissolve", Dissolve_value);
+            Dissolve_value -= Time.deltaTime;
+
+            foreach (var mesh in MeshR)
+            {
+                mesh.material.SetFloat("_Dissolve", Dissolve_value);
+            }
+
+            yield return null; 
         }
 
-        if (Dissolve_value <= 0)
-        {
-            gameObject.SetActive(false);
-        }
+        gameObject.SetActive(false);
     }
-
+  
 }
