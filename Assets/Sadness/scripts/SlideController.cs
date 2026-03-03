@@ -18,7 +18,7 @@ public class SlideController : MonoBehaviour
     void Awake()
     {
         if (quadRenderer == null)
-            quadRenderer = GetComponentInChildren<MeshRenderer>();
+            quadRenderer = GetComponentInChildren<MeshRenderer>(true);
 
         block = new MaterialPropertyBlock();
     }
@@ -28,27 +28,32 @@ public class SlideController : MonoBehaviour
         finished = false;
     }
 
+    void OnDisable()
+    {
+        // ✅ امنع Fallback يكمل بعد إخفاء/تدمير السلايد
+        if (fallbackCo != null)
+        {
+            StopCoroutine(fallbackCo);
+            fallbackCo = null;
+        }
+    }
+
     public void SetTexture(Texture tex)
     {
         if (quadRenderer == null || tex == null) return;
 
         quadRenderer.GetPropertyBlock(block);
-
         block.SetTexture(MainTex, tex);
         block.SetTexture(BaseMap, tex);
-
         quadRenderer.SetPropertyBlock(block);
     }
 
-    public void OnSlideFinished_AnimEvent()
-    {
-        Finish();
-    }
+    // Animation Event
+    public void OnSlideFinished_AnimEvent() => Finish();
 
-    public void OnSlideFinished()
-    {
-        Finish();
-    }
+    // Manual
+    public void OnSlideFinished() => Finish();
+
     public float GetAnimLength()
     {
         var anim = GetComponentInChildren<Animator>(true);
@@ -68,11 +73,17 @@ public class SlideController : MonoBehaviour
         return max;
     }
 
-
     public void StartFallbackFinish(MonoBehaviour runner, float seconds)
     {
         if (runner == null) return;
-        if (fallbackCo != null) runner.StopCoroutine(fallbackCo);
+
+        // ✅ أوقف أي fallback قديم
+        if (fallbackCo != null)
+        {
+            runner.StopCoroutine(fallbackCo);
+            fallbackCo = null;
+        }
+
         fallbackCo = runner.StartCoroutine(Fallback(seconds));
     }
 
@@ -86,6 +97,13 @@ public class SlideController : MonoBehaviour
     {
         if (finished) return;
         finished = true;
+
+        if (fallbackCo != null)
+        {
+            StopCoroutine(fallbackCo);
+            fallbackCo = null;
+        }
+
         OnFinished?.Invoke();
     }
 }

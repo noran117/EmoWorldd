@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class StatePresentationManager : MonoBehaviour
 {
@@ -25,13 +26,14 @@ public class StatePresentationManager : MonoBehaviour
     public StatePresentation depression;
     public StatePresentation acceptance;
 
-    public System.Action bothFinishedCallback;
+    public Action bothFinishedCallback;
 
     AudioSource currentMusic;
     readonly List<AudioSource> allMusics = new List<AudioSource>();
 
     GameObject currentSlide;
     SlideController currentSlideCtrl;
+    Action slideFinishedHandler;
 
     Coroutine voiceCo;
     Coroutine slideCo;
@@ -44,6 +46,9 @@ public class StatePresentationManager : MonoBehaviour
     readonly List<AudioSource> currentLoops = new List<AudioSource>();
     readonly List<ParticleSystem> currentParticles = new List<ParticleSystem>();
 
+    int runId = 0;
+    bool finishedInvoked = false;
+
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -54,7 +59,6 @@ public class StatePresentationManager : MonoBehaviour
     {
         CacheAllMusics();
         StopAllMusicsImmediate();
-
         StopExtras();
     }
 
@@ -93,25 +97,35 @@ public class StatePresentationManager : MonoBehaviour
         if (finishCo != null) StopCoroutine(finishCo);
         if (destroySlideCo != null) StopCoroutine(destroySlideCo);
 
-        DestroyCurrentSlide();
+        runId++;
+        finishedInvoked = false;
+        int myRun = runId;
 
+        DestroyCurrentSlide();
         StopExtras();
 
-        voiceFinished = (state.voiceOver == null);
-        slideFinished = (slidePrefab == null || state.slideTexture == null);
+        voiceFinished = (state == null || state.voiceOver == null);
+        slideFinished = (state == null || slidePrefab == null || state.slideTexture == null);
+
+        if (state == null)
+        {
+            voiceFinished = true;
+            slideFinished = true;
+            TryFinishBoth(state, myRun);
+            return;
+        }
 
         LightingManager.Instance?.SetLighting(state.lightColor, state.lightIntensity);
         SwitchMusic(state);
-
         PlayExtras(state);
 
         if (state.voiceOver != null)
-            voiceCo = StartCoroutine(VoiceRoutine(state));
+            voiceCo = StartCoroutine(VoiceRoutine(state, myRun));
 
         if (!slideFinished)
-            slideCo = StartCoroutine(SlideRoutine(state));
+            slideCo = StartCoroutine(SlideRoutine(state, myRun));
         else
-            TryFinishBoth(state);
+            TryFinishBoth(state, myRun);
     }
 
     void SwitchMusic(StatePresentation state)
@@ -121,6 +135,7 @@ public class StatePresentationManager : MonoBehaviour
             var m = allMusics[i];
             if (m == null) continue;
             if (m == state.music) continue;
+
             if (m.isPlaying)
                 AudioFader.Instance.FadeOut(m, state.musicFadeOut);
         }
@@ -131,59 +146,79 @@ public class StatePresentationManager : MonoBehaviour
             AudioFader.Instance.FadeIn(currentMusic, state.musicFadeIn, 1f);
     }
 
-    IEnumerator VoiceRoutine(StatePresentation state)
+    IEnumerator VoiceRoutine(StatePresentation state, int myRun)
     {
-        Debug.Log("VOICE START: " + state.voiceOver.name);
-
         yield return new WaitForSeconds(state.voiceDelay);
+
+        if (myRun != runId) yield break;
 
         AudioMixerDucker.Instance?.Duck(state.duckIn);
 
         state.voiceOver.Play();
 
         while (state.voiceOver != null && state.voiceOver.isPlaying)
+        {
+            if (myRun != runId) yield break;
             yield return null;
+        }
+
+        if (myRun != runId) yield break;
 
         AudioMixerDucker.Instance?.Unduck(state.duckOut);
 
         voiceFinished = true;
-
-        Debug.Log("VOICE FINISHED");
-
-        TryFinishBoth(state);
+        TryFinishBoth(state, myRun);
     }
 
-    IEnumerator SlideRoutine(StatePresentation state)
+    IEnumerator SlideRoutine(StatePresentation state, int myRun)
     {
         yield return new WaitForSeconds(state.slideDelay);
+
+        if (myRun != runId) yield break;
 
         DestroyCurrentSlide();
 
         if (slideSpawnPoint == null || slidePrefab == null || state.slideTexture == null)
         {
-            Debug.LogError("SlideRoutine: slideSpawnPoint/slidePrefab/slideTexture is not found!");
+            Debug.LogError("SlideRoutine: slideSpawnPoint/slidePrefab/slideTexture is missing!");
             slideFinished = true;
-            TryFinishBoth(state);
+            TryFinishBoth(state, myRun);
             yield break;
         }
 
         currentSlide = Instantiate(slidePrefab, slideSpawnPoint);
         currentSlide.name = "Slide_Runtime";
 
-        currentSlide.transform.localPosition = new Vector3(0f, 0f, -7.5f);
+        currentSlide.transform.localPosition = new Vector3(0f, 0f, -5.5f); 
         currentSlide.transform.localRotation = Quaternion.identity;
-        currentSlide.transform.localScale = Vector3.one * 5f;
+        currentSlide.transform.localScale = Vector3.one * 3f;
 
         currentSlideCtrl = currentSlide.GetComponentInChildren<SlideController>(true);
         if (currentSlideCtrl == null)
         {
-            Debug.LogError("SlideRoutine: SlideController is not found");
+            Debug.LogError("SlideRoutine: SlideController not found!");
             slideFinished = true;
-            TryFinishBoth(state);
+            TryFinishBoth(state, myRun);
             yield break;
         }
 
         currentSlideCtrl.SetTexture(state.slideTexture);
+
+        if (slideFinishedHandler != null)
+            currentSlideCtrl.OnFinished -= slideFinishedHandler;
+
+        slideFinishedHandler = () =>
+        {
+            if (myRun != runId) return;
+
+            slideFinished = true;
+            TryFinishBoth(state, myRun);
+
+            if (destroySlideCo != null) StopCoroutine(destroySlideCo);
+            destroySlideCo = StartCoroutine(DestroySlideAfter(state.slideStayAfter, myRun));
+        };
+
+        currentSlideCtrl.OnFinished += slideFinishedHandler;
 
         var anim = currentSlide.GetComponentInChildren<Animator>(true);
         if (anim != null)
@@ -192,16 +227,6 @@ public class StatePresentationManager : MonoBehaviour
             anim.Play(0, 0, 0f);
         }
 
-        currentSlideCtrl.OnFinished += () =>
-        {
-            slideFinished = true;
-            Debug.Log("SLIDE FINISHED");
-            TryFinishBoth(state);
-
-            if (destroySlideCo != null) StopCoroutine(destroySlideCo);
-            destroySlideCo = StartCoroutine(DestroySlideAfter(state.slideStayAfter));
-        };
-
         float animLen = currentSlideCtrl.GetAnimLength();
         float fallback = state.slideDurationFallback;
 
@@ -209,49 +234,55 @@ public class StatePresentationManager : MonoBehaviour
         if (animLen > 0f && fallback < animLen) fallback = animLen + 0.2f;
 
         currentSlideCtrl.StartFallbackFinish(this, fallback);
-        Debug.Log("SLIDE FINISHED: " +
-    (state.slideTexture != null ? state.slideTexture.name : "NoSlide"));
     }
 
-    IEnumerator DestroySlideAfter(float seconds)
+    IEnumerator DestroySlideAfter(float seconds, int myRun)
     {
         if (seconds < 0f) seconds = 0f;
         yield return new WaitForSeconds(seconds);
+
+        if (myRun != runId) yield break;
         DestroyCurrentSlide();
     }
 
     void DestroyCurrentSlide()
     {
+        if (currentSlideCtrl != null && slideFinishedHandler != null)
+            currentSlideCtrl.OnFinished -= slideFinishedHandler;
+
+        slideFinishedHandler = null;
+
         if (currentSlide != null) Destroy(currentSlide);
         currentSlide = null;
         currentSlideCtrl = null;
     }
 
-    void TryFinishBoth(StatePresentation state)
+    void TryFinishBoth(StatePresentation state, int myRun)
     {
-        Debug.Log("TryFinishBoth => voice=" + voiceFinished +
-                  " slide=" + slideFinished);
+        if (myRun != runId) return;
+        if (finishedInvoked) return;
+        if (!voiceFinished || !slideFinished) return;
 
-        if (!voiceFinished || !slideFinished)
-            return;
+        finishedInvoked = true;
 
-        Debug.Log("BOTH TRUE - CALLING CALLBACK NOW");
-
-        bothFinishedCallback?.Invoke();
+        if (finishCo != null) StopCoroutine(finishCo);
+        finishCo = StartCoroutine(FinishRoutine(myRun));
     }
 
-    IEnumerator FinishRoutine(StatePresentation state)
+    IEnumerator FinishRoutine(int myRun)
     {
-        Debug.Log("FinishRoutine called");
+        if (myRun != runId) yield break;
 
-        bothFinishedCallback?.Invoke();
-        // bothFinishedCallback = null;
+        var cb = bothFinishedCallback;
+        bothFinishedCallback = null;
 
+        cb?.Invoke();
         yield break;
     }
 
     public void DuckMusic(float seconds) => AudioMixerDucker.Instance?.Duck(seconds);
     public void UnduckMusic(float seconds) => AudioMixerDucker.Instance?.Unduck(seconds);
+
     void PlayExtras(StatePresentation s)
     {
         if (s == null) return;
@@ -314,9 +345,10 @@ public class StatePresentationManager : MonoBehaviour
         {
             var ps = currentParticles[i];
             if (ps == null) continue;
+
             ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             ps.Clear(true);
         }
         currentParticles.Clear();
     }
-}
+}   
