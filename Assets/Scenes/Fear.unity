@@ -474,6 +474,7 @@ GameObject:
   - component: {fileID: 815165872}
   - component: {fileID: 815165871}
   - component: {fileID: 815165873}
+  - component: {fileID: 815165874}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -590,6 +591,19 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &815165874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815165870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e471607641c821f429dddb7e9ac44493, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlackOnStart
+  targetRoot: {fileID: 0}
 --- !u!1001 &1062098058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -686,8 +700,54 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 390966819083896095, guid: 31999ad7f9c54c243adfd19eb79fd70b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1062098064}
+    - targetCorrespondingSourceObject: {fileID: 390966819083896095, guid: 31999ad7f9c54c243adfd19eb79fd70b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1062098063}
   m_SourcePrefab: {fileID: 100100000, guid: 31999ad7f9c54c243adfd19eb79fd70b, type: 3}
+--- !u!1 &1062098059 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 390966819083896095, guid: 31999ad7f9c54c243adfd19eb79fd70b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1062098058}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1062098063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062098059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73bb5bba2f0042b4a8ca99a2757b57c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MagicalReveal
+  DebugReveal: 0
+  blackOnStart: {fileID: 1062098064}
+  revealDuration: 2.5
+  noiseIntensity: 0.4
+  noiseSpeed: 3
+  autoReveal: 0
+  autoRevealDelay: 0.5
+--- !u!114 &1062098064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062098059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5b7d1fcb88a77440a3f040bd44e99db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlackOnStart
+  targetRoot: {fileID: 1062098059}
 --- !u!4 &1079441652 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3158580132578867694, guid: c3af512c53b1c324ab3db6de230503cf,
