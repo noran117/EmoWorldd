@@ -66,7 +66,8 @@ public class MaterialReveal : MonoBehaviour
     private IEnumerator AutoStart()
     {
         if (autoRevealDelay > 0f) yield return new WaitForSeconds(autoRevealDelay);
-        RevealMagical();
+        //RevealMagical();
+        RevealSmooth();
     }
 
     // ── Public API ────────────────────────────────────────────────────────────

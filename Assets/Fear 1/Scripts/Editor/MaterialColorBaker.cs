@@ -3,17 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-/// <summary>
-/// Editor-only tool: scans all Renderers under the target root, stores
-/// original base + emission colors into MaterialColorData, then blacks
-/// out every valid material.
-///
-/// Place this file inside an  Editor/  folder  OR  keep it anywhere —
-/// the #if UNITY_EDITOR guards strip it from builds automatically.
-///
-/// Usage: select the GameObject that has MaterialColorData attached,
-///        then click  "Bake & Black Out"  in the Inspector.
-/// </summary>
 [CustomEditor(typeof(MaterialColorData))]
 public class MaterialColorBaker : Editor
 {
@@ -33,8 +22,8 @@ public class MaterialColorBaker : Editor
             _targetRoot, typeof(GameObject), true);
 
         EditorGUILayout.HelpBox(
-            "Bake & Black Out: scans all Renderers, saves colors, then sets them to black.\n" +
-            "Restore: sets all materials back to their baked original colors.",
+            "Bake & Black Out: scans all Renderers, saves colors, sets them to black.\n" +
+            "Restore: sets materials back to their baked original colors.",
             MessageType.None);
 
         EditorGUILayout.BeginHorizontal();
@@ -65,46 +54,31 @@ public class MaterialColorBaker : Editor
 
         Undo.RecordObject(data, "Bake Material Colors");
 
-        var renderers  = root.GetComponentsInChildren<Renderer>(includeInactive: true);
-        var snapList   = new List<RendererColorSnapshot>(renderers.Length);
+        var renderers = root.GetComponentsInChildren<Renderer>(includeInactive: true);
+        var snapList  = new List<RendererColorSnapshot>(renderers.Length);
 
         foreach (var r in renderers)
         {
-            // r.materials creates instances; use sharedMaterials to read, then
-            // switch to instances only for the ones we actually modify.
-            var shared = r.sharedMaterials;
-            var entries = new List<MaterialColorEntry>(shared.Length);
+            // sharedMaterials — reads the asset directly, no instances, no leaks.
+            var sharedMats = r.sharedMaterials;
+            var entries    = new List<MaterialColorEntry>(sharedMats.Length);
 
-            // Determine which slots need modification before allocating instances.
-            bool anyValid = false;
-            for (int i = 0; i < shared.Length; i++)
+            for (int i = 0; i < sharedMats.Length; i++)
             {
-                var mat = shared[i];
-                if (mat == null || !mat.HasProperty("_Color"))
+                var mat = sharedMats[i];
+                if (mat == null) continue;
+
+                if (!mat.HasProperty("_Color"))
                 {
-                    if (mat != null && !mat.HasProperty("_Color"))
-                        Debug.LogWarning($"[Baker] SKIPPED '{mat.name}' on '{r.gameObject.name}' — no '_Color' (shader: {mat.shader.name}).");
+                    Debug.LogWarning($"[Baker] SKIPPED '{mat.name}' on '{r.gameObject.name}' — no '_Color' (shader: {mat.shader.name}).");
                     continue;
                 }
-                anyValid = true;
-            }
-
-            if (!anyValid) continue;
-
-            // Now get instances so we don't dirty shared assets.
-            Undo.RecordObject(r, "Bake Material Colors");
-            var instMats = r.materials;   // allocates instances
-
-            for (int i = 0; i < instMats.Length; i++)
-            {
-                var mat = instMats[i];
-                if (mat == null || !mat.HasProperty("_Color")) continue;
 
                 var entry = new MaterialColorEntry
                 {
-                    materialIndex   = i,
-                    originalColor   = mat.color,
-                    hasEmission     = mat.HasProperty("_EmissionColor"),
+                    materialIndex    = i,
+                    originalColor    = mat.color,
+                    hasEmission      = mat.HasProperty("_EmissionColor"),
                     originalEmission = Color.black
                 };
 
@@ -112,6 +86,8 @@ public class MaterialColorBaker : Editor
                     entry.originalEmission = mat.GetColor("_EmissionColor");
 
                 entries.Add(entry);
+
+                // Record the material asset itself for undo, then modify it directly.
                 Undo.RecordObject(mat, "Bake Material Colors");
 
                 mat.color = Color.black;
@@ -124,16 +100,12 @@ public class MaterialColorBaker : Editor
                 EditorUtility.SetDirty(mat);
             }
 
-            r.materials = instMats;
-            EditorUtility.SetDirty(r);
-
             if (entries.Count > 0)
                 snapList.Add(new RendererColorSnapshot { renderer = r, entries = entries.ToArray() });
         }
 
         data.snapshots = snapList.ToArray();
         EditorUtility.SetDirty(data);
-        Debug.LogWarning($"[Baker] Baked {snapList.Count} renderer(s) under '{root.name}'.");
     }
 
     // ── Restore ───────────────────────────────────────────────────────────────
@@ -145,13 +117,13 @@ public class MaterialColorBaker : Editor
         foreach (var snap in data.snapshots)
         {
             if (snap.renderer == null) continue;
-            Undo.RecordObject(snap.renderer, "Restore Material Colors");
 
-            var mats = snap.renderer.materials;
+            var sharedMats = snap.renderer.sharedMaterials;
+
             foreach (var e in snap.entries)
             {
-                if (e.materialIndex >= mats.Length) continue;
-                var mat = mats[e.materialIndex];
+                if (e.materialIndex >= sharedMats.Length) continue;
+                var mat = sharedMats[e.materialIndex];
                 if (mat == null) continue;
 
                 Undo.RecordObject(mat, "Restore Material Colors");
@@ -163,8 +135,6 @@ public class MaterialColorBaker : Editor
                 }
                 EditorUtility.SetDirty(mat);
             }
-            snap.renderer.materials = mats;
-            EditorUtility.SetDirty(snap.renderer);
         }
     }
 }
