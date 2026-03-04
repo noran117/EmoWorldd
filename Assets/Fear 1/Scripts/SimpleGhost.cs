@@ -5,6 +5,8 @@ public class SimpleGhost : MonoBehaviour
 {
     private Animator Anim;
 
+    [SerializeField] private MaterialReveal areaReveal;
+
     [SerializeField] private SkinnedMeshRenderer[] MeshR;
 
     private static readonly int IdleState = Animator.StringToHash("Base Layer.idle");
@@ -21,8 +23,10 @@ public class SimpleGhost : MonoBehaviour
   
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Triggered");
         if (other.CompareTag("Player") && !DissolveFlg)
         {
+            Debug.Log("Player");
             Anim.CrossFade(DissolveState, 0.1f);
             DissolveFlg = true;
             StartCoroutine(DissolveRoutine());
@@ -30,6 +34,8 @@ public class SimpleGhost : MonoBehaviour
     }
  private IEnumerator DissolveRoutine()
     {
+                    Debug.Log("Dissolve Routine");
+
         while (Dissolve_value > 0f)
         {
             Dissolve_value -= Time.deltaTime;
@@ -42,7 +48,14 @@ public class SimpleGhost : MonoBehaviour
             yield return null; 
         }
 
-        gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+
+        if (areaReveal != null) areaReveal.RevealMagical();
+
+        //gameObject.SetActive(false);
+        Anim.enabled = false;
+        foreach (var rend in MeshR)
+            rend.enabled = false;
     }
   
 }
