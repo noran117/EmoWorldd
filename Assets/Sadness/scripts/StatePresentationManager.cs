@@ -115,8 +115,12 @@ public class StatePresentationManager : MonoBehaviour
             return;
         }
 
+        // ✅ تغيير لون + شدة الإضاءة حسب المرحلة
         LightingManager.Instance?.SetLighting(state.lightColor, state.lightIntensity);
+
+        // ✅ فصلها بسطر لحالها (مهم)
         SwitchMusic(state);
+
         PlayExtras(state);
 
         if (state.voiceOver != null)
@@ -189,7 +193,7 @@ public class StatePresentationManager : MonoBehaviour
         currentSlide = Instantiate(slidePrefab, slideSpawnPoint);
         currentSlide.name = "Slide_Runtime";
 
-        currentSlide.transform.localPosition = new Vector3(0f, 0f, -5.5f); 
+        currentSlide.transform.localPosition = new Vector3(0f, 0f, -5.5f);
         currentSlide.transform.localRotation = Quaternion.identity;
         currentSlide.transform.localScale = Vector3.one * 3f;
 
@@ -252,7 +256,9 @@ public class StatePresentationManager : MonoBehaviour
 
         slideFinishedHandler = null;
 
-        if (currentSlide != null) Destroy(currentSlide);
+        if (currentSlide != null)
+            Destroy(currentSlide);
+
         currentSlide = null;
         currentSlideCtrl = null;
     }
@@ -351,4 +357,4 @@ public class StatePresentationManager : MonoBehaviour
         }
         currentParticles.Clear();
     }
-}   
+}

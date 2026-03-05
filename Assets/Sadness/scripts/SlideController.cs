@@ -8,7 +8,9 @@ public class SlideController : MonoBehaviour
     public event Action OnFinished;
 
     bool finished;
+
     Coroutine fallbackCo;
+    MonoBehaviour fallbackRunner;
 
     static readonly int MainTex = Shader.PropertyToID("_MainTex");
     static readonly int BaseMap = Shader.PropertyToID("_BaseMap");
@@ -30,12 +32,18 @@ public class SlideController : MonoBehaviour
 
     void OnDisable()
     {
-        // ✅ امنع Fallback يكمل بعد إخفاء/تدمير السلايد
-        if (fallbackCo != null)
-        {
-            StopCoroutine(fallbackCo);
-            fallbackCo = null;
-        }
+        if (!finished)
+            Finish();
+        else
+            StopFallback();
+    }
+
+    void OnDestroy()
+    {
+        if (!finished)
+            Finish();
+        else
+            StopFallback();
     }
 
     public void SetTexture(Texture tex)
@@ -48,20 +56,14 @@ public class SlideController : MonoBehaviour
         quadRenderer.SetPropertyBlock(block);
     }
 
-    // Animation Event
     public void OnSlideFinished_AnimEvent() => Finish();
 
-    // Manual
     public void OnSlideFinished() => Finish();
 
     public float GetAnimLength()
     {
         var anim = GetComponentInChildren<Animator>(true);
         if (anim == null || anim.runtimeAnimatorController == null) return 0f;
-
-        var clipsInfo = anim.GetCurrentAnimatorClipInfo(0);
-        if (clipsInfo != null && clipsInfo.Length > 0 && clipsInfo[0].clip != null)
-            return clipsInfo[0].clip.length;
 
         var clips = anim.runtimeAnimatorController.animationClips;
         float max = 0f;
@@ -77,13 +79,9 @@ public class SlideController : MonoBehaviour
     {
         if (runner == null) return;
 
-        // ✅ أوقف أي fallback قديم
-        if (fallbackCo != null)
-        {
-            runner.StopCoroutine(fallbackCo);
-            fallbackCo = null;
-        }
+        StopFallback();
 
+        fallbackRunner = runner;
         fallbackCo = runner.StartCoroutine(Fallback(seconds));
     }
 
@@ -93,16 +91,23 @@ public class SlideController : MonoBehaviour
         Finish();
     }
 
+    void StopFallback()
+    {
+        if (fallbackCo != null && fallbackRunner != null)
+        {
+            fallbackRunner.StopCoroutine(fallbackCo); 
+        }
+
+        fallbackCo = null;
+        fallbackRunner = null;
+    }
+
     public void Finish()
     {
         if (finished) return;
         finished = true;
 
-        if (fallbackCo != null)
-        {
-            StopCoroutine(fallbackCo);
-            fallbackCo = null;
-        }
+        StopFallback();
 
         OnFinished?.Invoke();
     }

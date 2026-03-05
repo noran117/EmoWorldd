@@ -5,116 +5,87 @@ public class LightingManager : MonoBehaviour
 {
     public static LightingManager Instance;
 
-    [Header("Main Light")]
+    [Header("Directional Light")]
     public Light directionalLight;
-
-    [Header("Play")]
-    public Color playColor = new Color(1f, 0.95f, 0.85f);
-    public float playIntensity = 1.2f;
-
-    [Header("Shock")]
-    public Color shockColor = new Color(1f, 1f, 1f);
-    public float shockIntensity = 2.5f;
-
-    [Header("Denial")]
-    public Color denialColor = new Color(0.7f, 0.75f, 0.85f);
-    public float denialIntensity = 0.8f;
-
-    [Header("Anger")]
-    public Color angerColor = new Color(1f, 0.3f, 0.3f);
-    public float angerIntensity = 1.8f;
-
-    [Header("Bargaining")]
-    public Color bargainingColor = new Color(0.5f, 0.5f, 0.7f);
-    public float bargainingIntensity = 1.0f;
-
-    [Header("Depression")]
-    public Color depressionColor = new Color(0.5f, 0.55f, 0.6f);
-    public float depressionIntensity = 0.4f;
-
-    [Header("Acceptance")]
-    public Color acceptanceColor = new Color(1f, 0.9f, 0.75f);
-    public float acceptanceIntensity = 1.3f;
 
     [Header("Fade Settings")]
     public float fadeDuration = 2f;
 
-    private void Awake()
+    Coroutine fadeRoutine;
+
+    void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
-        Debug.Log("LightingManager Awake ✔");
+
+        if (directionalLight == null)
+        {
+            directionalLight = RenderSettings.sun;
+        }
     }
 
-    public void SetLighting(Color color, float intensity)
+    // ✅ لون + شدة
+    public void SetLighting(Color targetColor, float targetIntensity)
     {
-        Debug.Log("SetLighting CALLED -> Target Intensity: " + intensity);
+        if (directionalLight == null)
+        {
+            Debug.LogError("Directional Light is not assigned!");
+            return;
+        }
 
-        StopAllCoroutines();
-        StartCoroutine(FadeLight(color, intensity, fadeDuration));
+        if (fadeRoutine != null)
+            StopCoroutine(fadeRoutine);
+
+        fadeRoutine = StartCoroutine(FadeLight(targetColor, targetIntensity));
     }
 
-    IEnumerator FadeLight(Color targetColor, float targetIntensity, float duration)
+    // ✅ (اختياري) شدة فقط (يبقي اللون الحالي)
+    public void SetIntensity(float targetIntensity)
     {
-        Debug.Log("FadeLight STARTED");
+        if (directionalLight == null)
+        {
+            Debug.LogError("Directional Light is not assigned!");
+            return;
+        }
 
-        float time = 0f;
+        if (fadeRoutine != null)
+            StopCoroutine(fadeRoutine);
+
+        fadeRoutine = StartCoroutine(FadeLight(directionalLight.color, targetIntensity));
+    }
+
+    IEnumerator FadeLight(Color targetColor, float targetIntensity)
+    {
         Color startColor = directionalLight.color;
         float startIntensity = directionalLight.intensity;
 
-        while (time < duration)
+        float time = 0f;
+
+        float dur = fadeDuration;
+        if (dur <= 0.01f)
+        {
+            directionalLight.color = targetColor;
+            directionalLight.intensity = targetIntensity;
+            yield break;
+        }
+
+        while (time < dur)
         {
             time += Time.deltaTime;
-            float t = time / duration;
+            float t = time / dur;
+
             directionalLight.color = Color.Lerp(startColor, targetColor, t);
             directionalLight.intensity = Mathf.Lerp(startIntensity, targetIntensity, t);
+
             yield return null;
         }
 
         directionalLight.color = targetColor;
         directionalLight.intensity = targetIntensity;
-
-        Debug.Log("FadeLight FINISHED ✔");
-    }
-
-    public void PlayPhase()
-    {
-        Debug.Log("Lighting Phase -> PLAY");
-        SetLighting(playColor, playIntensity);
-    }
-
-    public void ShockPhase()
-    {
-        Debug.Log("Lighting Phase -> SHOCK");
-        SetLighting(shockColor, shockIntensity);
-    }
-
-    public void DenialPhase()
-    {
-        Debug.Log("Lighting Phase -> DENIAL");
-        SetLighting(denialColor, denialIntensity);
-    }
-
-    public void AngerPhase()
-    {
-        Debug.Log("Lighting Phase -> ANGER");
-        SetLighting(angerColor, angerIntensity);
-    }
-
-    public void BargainingPhase()
-    {
-        Debug.Log("Lighting Phase -> BARGAINING");
-        SetLighting(bargainingColor, bargainingIntensity);
-    }
-
-    public void DepressionPhase()
-    {
-        Debug.Log("Lighting Phase -> DEPRESSION");
-        SetLighting(depressionColor, depressionIntensity);
-    }
-
-    public void AcceptancePhase()
-    {
-        Debug.Log("Lighting Phase -> ACCEPTANCE");
-        SetLighting(acceptanceColor, acceptanceIntensity);
     }
 }
