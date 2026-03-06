@@ -369,6 +369,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 675648666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &791286312 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5326079581855936972, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+    type: 3}
+  m_PrefabInstance: {fileID: 1075988413}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &791286314 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3390040010451189527, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+    type: 3}
+  m_PrefabInstance: {fileID: 1075988413}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791286312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e3d033e1b430041aa6731c6b7f3af9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stone
 --- !u!1001 &1024553885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -458,6 +476,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sadness
       objectReference: {fileID: 0}
+    - target: {fileID: 2204722060804942121, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: xrRigRoot
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2217565127453241786, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_IsActive
@@ -523,6 +546,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3702303331587193474, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: stonesRoot
+      value: 
+      objectReference: {fileID: 791286312}
+    - target: {fileID: 3702303331587193474, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: stones.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3702303331587193474, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: 'stones.Array.data[0]'
+      value: 
+      objectReference: {fileID: 791286314}
+    - target: {fileID: 3702303331587193474, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: 'stones.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1373561315}
     - target: {fileID: 4183677321541801654, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_Size.x
@@ -632,6 +675,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 58.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4984960634364527327, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4984960634364527327, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: prewarm
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5198464125912940885, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: m_Name
+      value: basket
       objectReference: {fileID: 0}
     - target: {fileID: 5488455195096480398, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
@@ -1486,6 +1544,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1075988413}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1373561315 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7697956684605279132, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+    type: 3}
+  m_PrefabInstance: {fileID: 1075988413}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e3d033e1b430041aa6731c6b7f3af9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stone
 --- !u!4 &1759429494 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2683195716791022646, guid: 4ac7df741a9c0a2418ec19477729ee3d,

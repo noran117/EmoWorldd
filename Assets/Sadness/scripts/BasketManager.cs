@@ -10,7 +10,7 @@ public class BasketManager : MonoBehaviour
     public GameObject basketRoot;
 
     [Header("Stones")]
-    public GameObject stonesRoot;
+    public Stone[] stones;
 
     [Header("Dissolve Settings")]
     [SerializeField] private float dissolveTime = 1.2f;
@@ -67,14 +67,19 @@ public class BasketManager : MonoBehaviour
 
         CacheBasketMaterials();
 
-        // خليه مخفي من البداية
         SetDissolveInstant(hiddenValue);
 
         if (basketRoot != null)
             basketRoot.SetActive(false);
 
-        if (stonesRoot != null)
-            stonesRoot.SetActive(false);
+        if (stones != null)
+        {
+            for (int i = 0; i < stones.Length; i++)
+            {
+                if (stones[i] != null)
+                    stones[i].gameObject.SetActive(false);
+            }
+        }
     }
 
     void CacheBasketMaterials()
@@ -145,32 +150,62 @@ public class BasketManager : MonoBehaviour
         if (dissolveRoutine != null)
             StopCoroutine(dissolveRoutine);
 
-        // مهم جدًا: نخليها active أول
         basketRoot.SetActive(true);
 
-        if (stonesRoot != null)
-            stonesRoot.SetActive(true);
+        if (stones != null)
+        {
+            for (int i = 0; i < stones.Length; i++)
+            {
+                if (stones[i] != null)
+                    stones[i].gameObject.SetActive(true);
+            }
+        }
 
-        // نرجعها مخفية قبل بدء الظهور
         SetDissolveInstant(hiddenValue);
 
-        dissolveRoutine = StartCoroutine(AppearDissolve());
+        dissolveRoutine = StartCoroutine(ShowBasketRoutine());
+    }
 
-        foreach (Stone stone in basketRoot.GetComponentsInChildren<Stone>(true))
-            stone.EnableGlow();
+    private IEnumerator ShowBasketRoutine()
+    {
+        yield return null;
+
+        Debug.Log("Stones Count = " + (stones != null ? stones.Length : 0));
+
+        if (stones != null)
+        {
+            for (int i = 0; i < stones.Length; i++)
+            {
+                if (stones[i] != null)
+                    stones[i].EnableGlow();
+            }
+        }
+
+        yield return StartCoroutine(AppearDissolve());
     }
 
     public void HideBasket()
     {
         if (basketRoot == null) return;
 
-        foreach (Stone stone in basketRoot.GetComponentsInChildren<Stone>(true))
-            stone.DisableGlow();
-
         if (dissolveRoutine != null)
             StopCoroutine(dissolveRoutine);
 
-        dissolveRoutine = StartCoroutine(VanishAndDisable());
+        dissolveRoutine = StartCoroutine(HideBasketRoutine());
+    }
+
+    private IEnumerator HideBasketRoutine()
+    {
+        if (stones != null)
+        {
+            for (int i = 0; i < stones.Length; i++)
+            {
+                if (stones[i] != null)
+                    stones[i].DisableGlow();
+            }
+        }
+
+        yield return StartCoroutine(VanishAndDisable());
     }
 
     IEnumerator AppearDissolve()
@@ -194,9 +229,6 @@ public class BasketManager : MonoBehaviour
 
     IEnumerator VanishAndDisable()
     {
-        if (stonesRoot != null)
-            stonesRoot.SetActive(false);
-
         float elapsedTime = 0f;
 
         while (elapsedTime < dissolveTime)
@@ -211,6 +243,15 @@ public class BasketManager : MonoBehaviour
         }
 
         ApplyDissolve(hiddenValue);
+
+        if (stones != null)
+        {
+            for (int i = 0; i < stones.Length; i++)
+            {
+                if (stones[i] != null)
+                    stones[i].gameObject.SetActive(false);
+            }
+        }
 
         basketRoot.SetActive(false);
         dissolveRoutine = null;
