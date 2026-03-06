@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81f719194d2ecaf44846febd5d292ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimpleGhost
-  areaReveal: {fileID: 0}
+  areaReveal: {fileID: 5934170505303422913}
   MeshR:
   - {fileID: 3133656008738898717}
 --- !u!114 &5934170505303422913
@@ -199,7 +199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MaterialReveal
   revealDuration: 2.5
   maxStagger: 0.4
-  autoReveal: 1
+  autoReveal: 0
   autoRevealDelay: 0.5
   noiseIntensity: 0.35
   noiseSpeed: 3
