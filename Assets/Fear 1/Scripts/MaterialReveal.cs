@@ -19,10 +19,10 @@ using UnityEngine;
 public class MaterialReveal : MonoBehaviour
 {
     [Header("Timing")]
-    public float revealDuration  = 2.5f;
+    public float revealDuration = 2.5f;
     [Tooltip("Max random start delay per material, creates a staggered wave.")]
-    public float maxStagger      = 0.4f;
-    public bool  autoReveal      = true;
+    public float maxStagger = 0.4f;
+    public bool autoReveal = true;
     public float autoRevealDelay = 0.5f;
 
     [Header("Magical Effect")]
@@ -32,20 +32,20 @@ public class MaterialReveal : MonoBehaviour
     // ── Internals ─────────────────────────────────────────────────────────────
 
     private MaterialColorData _data;
-    private Coroutine         _activeRoutine;
+    private Coroutine _activeRoutine;
 
     // Flat job-like struct — avoids per-frame dictionary lookups in the hot loop.
     private struct MatJob
     {
         public Material mat;
-        public Color    startColor;
-        public Color    targetColor;
-        public bool     hasEmission;
-        public Color    startEmission;
-        public Color    targetEmission;
-        public float    startTime;        // absolute time this material begins
-        public float    noiseOffX;
-        public float    noiseOffY;
+        public Color startColor;
+        public Color targetColor;
+        public bool hasEmission;
+        public Color startEmission;
+        public Color targetEmission;
+        public float startTime;        // absolute time this material begins
+        public float noiseOffX;
+        public float noiseOffY;
     }
 
     private static readonly WaitForEndOfFrame _waitEOF = new WaitForEndOfFrame();
@@ -73,10 +73,10 @@ public class MaterialReveal : MonoBehaviour
     // ── Public API ────────────────────────────────────────────────────────────
 
     /// <summary>Perlin-noise shimmer that bursts mid-transition then settles.</summary>
-    public void RevealMagical()  => StartEffect(magical: true);
+    public void RevealMagical() => StartEffect(magical: true);
 
     /// <summary>Smooth, flicker-free smoothstep lerp to original colors.</summary>
-    public void RevealSmooth()   => StartEffect(magical: false);
+    public void RevealSmooth() => StartEffect(magical: false);
 
     // ── Core ──────────────────────────────────────────────────────────────────
 
@@ -95,7 +95,7 @@ public class MaterialReveal : MonoBehaviour
         foreach (var s in snaps) if (s.renderer != null) total += s.entries.Length;
 
         var jobs = new MatJob[total];
-        int idx  = 0;
+        int idx = 0;
         float now = Time.time;
 
         foreach (var snap in snaps)
@@ -111,15 +111,15 @@ public class MaterialReveal : MonoBehaviour
 
                 jobs[idx] = new MatJob
                 {
-                    mat            = mat,
-                    startColor     = mat.color,
-                    targetColor    = e.originalColor,
-                    hasEmission    = e.hasEmission,
-                    startEmission  = e.hasEmission ? mat.GetColor("_EmissionColor") : Color.black,
+                    mat = mat,
+                    startColor = mat.color,
+                    targetColor = e.originalColor,
+                    hasEmission = e.hasEmission,
+                    startEmission = e.hasEmission ? mat.GetColor("_EmissionColor") : Color.black,
                     targetEmission = e.originalEmission,
-                    startTime      = now + Random.Range(0f, maxStagger),
-                    noiseOffX      = Random.Range(0f, 100f),
-                    noiseOffY      = Random.Range(0f, 100f),
+                    startTime = now + Random.Range(0f, maxStagger),
+                    noiseOffX = Random.Range(0f, 100f),
+                    noiseOffY = Random.Range(0f, 100f),
                 };
 
                 if (e.hasEmission) mat.EnableKeyword("_EMISSION");
@@ -135,7 +135,7 @@ public class MaterialReveal : MonoBehaviour
     private IEnumerator RunMagical()
     {
         yield return null;   // let Awake/Start finish on all objects
-        var jobs     = BuildJobs();
+        var jobs = BuildJobs();
         int remaining = jobs.Length;
 
         while (remaining > 0)
@@ -164,10 +164,10 @@ public class MaterialReveal : MonoBehaviour
                 remaining++;
 
                 float envelope = Mathf.Sin(t * Mathf.PI);
-                float noise    = Mathf.PerlinNoise(
+                float noise = Mathf.PerlinNoise(
                     j.noiseOffX + elapsed * noiseSpeed,
                     j.noiseOffY + elapsed * noiseSpeed * 0.7f);
-                float shimmer  = (noise - 0.5f) * 2f * noiseIntensity * envelope;
+                float shimmer = (noise - 0.5f) * 2f * noiseIntensity * envelope;
 
                 ApplyColor(j, t, shimmer);
             }
@@ -183,7 +183,7 @@ public class MaterialReveal : MonoBehaviour
     private IEnumerator RunSmooth()
     {
         yield return null;
-        var jobs      = BuildJobs();
+        var jobs = BuildJobs();
         int remaining = jobs.Length;
 
         while (remaining > 0)

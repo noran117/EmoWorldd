@@ -9,16 +9,16 @@ using UnityEngine;
 [Serializable]
 public class RendererColorSnapshot
 {
-    public Renderer           renderer;
+    public Renderer renderer;
     public MaterialColorEntry[] entries;
 }
 
 [Serializable]
 public class MaterialColorEntry
 {
-    public int   materialIndex;   // index into renderer.sharedMaterials
+    public int materialIndex;   // index into renderer.sharedMaterials
     public Color originalColor;
-    public bool  hasEmission;
+    public bool hasEmission;
     public Color originalEmission;
 }
 
