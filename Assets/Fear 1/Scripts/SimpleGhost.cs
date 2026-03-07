@@ -7,6 +7,7 @@ public class SimpleGhost : MonoBehaviour
     private Animator Anim;
 
     [SerializeField] private MaterialReveal areaReveal;
+    [SerializeField] private ParticleSystem vanishEffect;
     enum RevealType
     {
         Magical,
@@ -55,8 +56,13 @@ public class SimpleGhost : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
 
+        if (vanishEffect != null)
+        {
+            vanishEffect.transform.parent = null;
+            vanishEffect.Play();
+        }
         if (areaReveal != null)
         {
             if (revealType == RevealType.Magical)
@@ -70,5 +76,7 @@ public class SimpleGhost : MonoBehaviour
         foreach (var rend in MeshR)
             rend.enabled = false;
     }
+
+   
 
 }
