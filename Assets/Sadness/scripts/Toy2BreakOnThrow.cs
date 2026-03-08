@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using BNG;
 
 public class Toy2BreakOnThrow : MonoBehaviour
 {
@@ -30,13 +31,26 @@ public class Toy2BreakOnThrow : MonoBehaviour
     {
         broken = true;
 
+        GameObject spawnedBroken = null;
+
         if (brokenModelPrefab != null)
         {
-            Instantiate(
+            spawnedBroken = Instantiate(
                 brokenModelPrefab,
                 transform.position,
                 transform.rotation
             );
+
+            SnapZone[] snapZones = spawnedBroken.GetComponentsInChildren<SnapZone>(true);
+            Debug.Log("SnapZones found = " + snapZones.Length);
+
+            for (int i = 0; i < snapZones.Length; i++)
+            {
+                if (snapZones[i] != null)
+                    snapZones[i].enabled = false;
+            }
+
+            StartCoroutine(EnableSnapZonesLater(spawnedBroken));
         }
         else
         {
@@ -46,6 +60,25 @@ public class Toy2BreakOnThrow : MonoBehaviour
         gameObject.SetActive(false);
 
         StartCoroutine(GoNext());
+    }
+
+    IEnumerator EnableSnapZonesLater(GameObject spawnedBroken)
+    {
+        yield return null;
+
+        if (spawnedBroken == null) yield break;
+
+        SnapZone[] snapZones = spawnedBroken.GetComponentsInChildren<SnapZone>(true);
+        Debug.Log("Enabling SnapZones Count = " + snapZones.Length);
+
+        for (int i = 0; i < snapZones.Length; i++)
+        {
+            if (snapZones[i] != null)
+            {
+                snapZones[i].enabled = true;
+                Debug.Log("Enabled SnapZone on: " + snapZones[i].gameObject.name);
+            }
+        }
     }
 
     IEnumerator GoNext()

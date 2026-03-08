@@ -54,6 +54,8 @@ public class ShockTrigger : MonoBehaviour
 
     IEnumerator ShockSequence()
     {
+        StopAllStoneGlow();
+
         electricSound?.Play();
 
         StopPS(particleToStop);
@@ -89,6 +91,17 @@ public class ShockTrigger : MonoBehaviour
         };
 
         StatePresentationManager.Instance.PlayState(StatePresentationManager.Instance.shock);
+    }
+
+    void StopAllStoneGlow()
+    {
+        Stone[] stones = FindObjectsOfType<Stone>(true);
+
+        foreach (Stone stone in stones)
+        {
+            if (stone != null)
+                stone.DisableGlow();
+        }
     }
 
     void StopPS(ParticleSystem ps)
