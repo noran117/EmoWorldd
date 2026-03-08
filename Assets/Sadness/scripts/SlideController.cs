@@ -8,6 +8,7 @@ public class SlideController : MonoBehaviour
     public event Action OnFinished;
 
     bool finished;
+    bool isQuittingOrDestroying;
 
     Coroutine fallbackCo;
     MonoBehaviour fallbackRunner;
@@ -28,22 +29,19 @@ public class SlideController : MonoBehaviour
     void OnEnable()
     {
         finished = false;
+        isQuittingOrDestroying = false;
     }
 
     void OnDisable()
     {
-        if (!finished)
-            Finish();
-        else
-            StopFallback();
+        // فقط وقف الـ fallback، لا تنادي Finish من هون
+        StopFallback();
     }
 
     void OnDestroy()
     {
-        if (!finished)
-            Finish();
-        else
-            StopFallback();
+        isQuittingOrDestroying = true;
+        StopFallback();
     }
 
     public void SetTexture(Texture tex)
@@ -56,9 +54,15 @@ public class SlideController : MonoBehaviour
         quadRenderer.SetPropertyBlock(block);
     }
 
-    public void OnSlideFinished_AnimEvent() => Finish();
+    public void OnSlideFinished_AnimEvent()
+    {
+        Finish();
+    }
 
-    public void OnSlideFinished() => Finish();
+    public void OnSlideFinished()
+    {
+        Finish();
+    }
 
     public float GetAnimLength()
     {
@@ -67,11 +71,16 @@ public class SlideController : MonoBehaviour
 
         var clips = anim.runtimeAnimatorController.animationClips;
         float max = 0f;
+
         if (clips != null)
         {
             for (int i = 0; i < clips.Length; i++)
-                if (clips[i] != null && clips[i].length > max) max = clips[i].length;
+            {
+                if (clips[i] != null && clips[i].length > max)
+                    max = clips[i].length;
+            }
         }
+
         return max;
     }
 
@@ -88,6 +97,10 @@ public class SlideController : MonoBehaviour
     IEnumerator Fallback(float s)
     {
         yield return new WaitForSeconds(s);
+
+        // لو object انمسح، لا تكمل
+        if (this == null || isQuittingOrDestroying) yield break;
+
         Finish();
     }
 
@@ -95,7 +108,8 @@ public class SlideController : MonoBehaviour
     {
         if (fallbackCo != null && fallbackRunner != null)
         {
-            fallbackRunner.StopCoroutine(fallbackCo); 
+            if (fallbackRunner != null)
+                fallbackRunner.StopCoroutine(fallbackCo);
         }
 
         fallbackCo = null;
@@ -105,8 +119,9 @@ public class SlideController : MonoBehaviour
     public void Finish()
     {
         if (finished) return;
-        finished = true;
+        if (isQuittingOrDestroying) return;
 
+        finished = true;
         StopFallback();
 
         OnFinished?.Invoke();
