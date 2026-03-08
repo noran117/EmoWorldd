@@ -9,16 +9,17 @@ public class SaberGameManager : MonoBehaviour
     [Header("Game State")]
     public bool gameRunning;
     public int score;
-    public int winScore = 20;
+    public int winScore = 100;
     public bool gameLocked;
+
     [Header("UI")]
     public TMP_Text scoreText;
     public GameObject winPanel;
     public GameObject wrongX;
 
     [Header("Red Screen Overlay")]
-    public Image redOverlay;          
-    [Range(0f, 1f)] public float startRedAlpha = 0.6f;  
+    public GameObject redOverlay;
+    [Range(0f, 1f)] public float startRedAlpha = 0.6f;
 
     [Header("Audio")]
     public AudioSource sfx;
@@ -26,21 +27,57 @@ public class SaberGameManager : MonoBehaviour
     public AudioClip hitWrong;
     public AudioClip winClip;
 
+    [Header("Music")]
+    public AudioSource gameMusic;
+    public AudioSource backgroundMusic;
+
     void Awake()
     {
         Instance = this;
-        SetRunning(false);
+
+        score = 0;
+        gameRunning = false;
+        gameLocked = false;
+
         RefreshUI();
+
         if (winPanel) winPanel.SetActive(false);
         if (wrongX) wrongX.SetActive(false);
+
+        if (redOverlay) redOverlay.SetActive(false);
+  
+        if (scoreText) scoreText.gameObject.SetActive(false);
+
         UpdateRedOverlay();
     }
 
     public void SetRunning(bool running)
     {
+        if (gameLocked && running)
+            return;
+
         gameRunning = running;
-        // UpdateRedOverlay();
+
+        if (running)
+        {
+            if (redOverlay) redOverlay.SetActive(true);
+
+            if (scoreText) scoreText.gameObject.SetActive(true);
+
+            if (backgroundMusic) backgroundMusic.Stop();
+            if (gameMusic && !gameMusic.isPlaying) gameMusic.Play();
+
+            UpdateRedOverlay();
+        }
+        else
+        {
+            if (scoreText) scoreText.gameObject.SetActive(false);
+
+            if (gameMusic) gameMusic.Stop();
+            if (backgroundMusic && !backgroundMusic.isPlaying) backgroundMusic.Play();
+        }
     }
+
     public void RestartGame()
     {
         score = 0;
@@ -49,19 +86,21 @@ public class SaberGameManager : MonoBehaviour
         gameLocked = false;
 
         if (winPanel) winPanel.SetActive(false);
+        if (wrongX) wrongX.SetActive(false);
 
-        NoteHitState[] notes = FindObjectsByType<NoteHitState>(
-            FindObjectsSortMode.None
-        );
+        NoteHitState[] notes = FindObjectsByType<NoteHitState>(FindObjectsSortMode.None);
 
         foreach (var n in notes)
         {
             Destroy(n.gameObject);
         }
 
+        if (redOverlay) redOverlay.SetActive(false);
+
         SetRunning(false);
         UpdateRedOverlay();
     }
+
     public void AddScore(int amount)
     {
         score += amount;
@@ -76,12 +115,15 @@ public class SaberGameManager : MonoBehaviour
     {
         if (!redOverlay) return;
 
-        float t = (winScore <= 0) ? 1f : Mathf.Clamp01((float)score / winScore);
+        Image img = redOverlay.GetComponent<Image>();
+        if (!img) return;
+
+        float t = Mathf.Clamp01((float)score / winScore);
         float alpha = Mathf.Lerp(startRedAlpha, 0f, t);
 
-        Color c = redOverlay.color;
+        Color c = img.color;
         c.a = alpha;
-        redOverlay.color = c;
+        img.color = c;
     }
 
     public void PlayCorrect()
@@ -104,27 +146,20 @@ public class SaberGameManager : MonoBehaviour
 
     void Win()
     {
-        gameLocked = true;  
+        gameLocked = true;
 
         SetRunning(false);
+
+        if (gameMusic) gameMusic.Stop();
 
         if (sfx && winClip) sfx.PlayOneShot(winClip);
         if (winPanel) winPanel.SetActive(true);
 
-        UpdateRedOverlay();
+        if (redOverlay) redOverlay.SetActive(false);
     }
 
     void RefreshUI()
     {
         if (scoreText) scoreText.text = $"Score: {score}";
-    }
-
-    public void ResetGame()
-    {
-        score = 0;
-        RefreshUI();
-        if (winPanel) winPanel.SetActive(false);
-        SetRunning(false);
-        UpdateRedOverlay();
     }
 }
