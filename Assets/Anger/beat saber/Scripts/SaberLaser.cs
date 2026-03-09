@@ -48,8 +48,6 @@ public class SaberLaser : MonoBehaviour
         if (!state.canBeHit) return;
         if (state.wasHit) return;
 
-        if (velocity.magnitude < minCutSpeed) return;
-
         var noteColor = col.GetComponentInParent<NoteColor>();
         var myColor = (saberColor != null) ? saberColor.color : SaberColorType.Red;
 
@@ -57,13 +55,12 @@ public class SaberLaser : MonoBehaviour
 
         if (noteColor != null && noteColor.color == myColor)
         {
-            SaberGameManager.Instance.AddScore(1);
+            SaberGameManager.Instance.AddScore(10);
             SaberGameManager.Instance.PlayCorrect();
         }
         else
         {
             SaberGameManager.Instance.PlayWrong();
-            // بدون خصم + بدون زيادة
         }
 
         Destroy(state.gameObject);

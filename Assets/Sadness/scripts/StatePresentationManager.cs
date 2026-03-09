@@ -115,10 +115,8 @@ public class StatePresentationManager : MonoBehaviour
             return;
         }
 
-        // ✅ تغيير لون + شدة الإضاءة حسب المرحلة
         LightingManager.Instance?.SetLighting(state.lightColor, state.lightIntensity);
 
-        // ✅ فصلها بسطر لحالها (مهم)
         SwitchMusic(state);
 
         PlayExtras(state);
@@ -213,12 +211,16 @@ public class StatePresentationManager : MonoBehaviour
 
         slideFinishedHandler = () =>
         {
+            if (this == null) return;
+            if (!isActiveAndEnabled) return;
             if (myRun != runId) return;
 
             slideFinished = true;
             TryFinishBoth(state, myRun);
 
-            if (destroySlideCo != null) StopCoroutine(destroySlideCo);
+            if (destroySlideCo != null)
+                StopCoroutine(destroySlideCo);
+
             destroySlideCo = StartCoroutine(DestroySlideAfter(state.slideStayAfter, myRun));
         };
 
@@ -248,7 +250,16 @@ public class StatePresentationManager : MonoBehaviour
         if (myRun != runId) yield break;
         DestroyCurrentSlide();
     }
+    void OnDestroy()
+    {
+        if (voiceCo != null) StopCoroutine(voiceCo);
+        if (slideCo != null) StopCoroutine(slideCo);
+        if (finishCo != null) StopCoroutine(finishCo);
+        if (destroySlideCo != null) StopCoroutine(destroySlideCo);
 
+        if (currentSlideCtrl != null && slideFinishedHandler != null)
+            currentSlideCtrl.OnFinished -= slideFinishedHandler;
+    }
     void DestroyCurrentSlide()
     {
         if (currentSlideCtrl != null && slideFinishedHandler != null)
