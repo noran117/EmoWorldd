@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 public class SimpleGhost : MonoBehaviour
 {
     private Animator Anim;
+    private int count = 0;
 
     [SerializeField] private MaterialReveal areaReveal;
     [SerializeField] private ParticleSystem vanishEffect;
@@ -14,8 +15,10 @@ public class SimpleGhost : MonoBehaviour
         Smooth
     }
     [SerializeField] private RevealType revealType = RevealType.Smooth;
-
     [SerializeField] private SkinnedMeshRenderer[] MeshR;
+    [SerializeField] private AudioSource vanishGhostSound;
+    [SerializeField] private AudioSource revealAreaSound;
+    [SerializeField] private GameObject fireworkEffect;
 
     private static readonly int IdleState = Animator.StringToHash("Base Layer.idle");
     private static readonly int DissolveState = Animator.StringToHash("Base Layer.dissolve");
@@ -31,18 +34,24 @@ public class SimpleGhost : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Triggered");
-        if (other.CompareTag("Player") && !DissolveFlg)
+        //Debug.Log("Triggered");
+        if (other.CompareTag("PlayerHand") && !DissolveFlg)
         {
-            Debug.Log("Player");
             Anim.CrossFade(DissolveState, 0.1f);
             DissolveFlg = true;
+            count++;
+            if (vanishGhostSound != null)
+                vanishGhostSound.Play();
             StartCoroutine(DissolveRoutine());
+            if (count == 1)
+            {
+                FindObjectOfType<BigEffectController>().PlayFinalEffect();
+            }
         }
     }
     private IEnumerator DissolveRoutine()
     {
-        Debug.Log("Dissolve Routine");
+        //Debug.Log("Dissolve Routine");
 
         while (Dissolve_value > 0f)
         {
@@ -63,6 +72,8 @@ public class SimpleGhost : MonoBehaviour
             vanishEffect.transform.parent = null;
             vanishEffect.Play();
         }
+        if (revealAreaSound != null)
+            revealAreaSound.Play();
         if (areaReveal != null)
         {
             if (revealType == RevealType.Magical)
@@ -77,6 +88,6 @@ public class SimpleGhost : MonoBehaviour
             rend.enabled = false;
     }
 
-   
+
 
 }
