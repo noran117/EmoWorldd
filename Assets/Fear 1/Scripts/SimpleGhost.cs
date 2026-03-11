@@ -5,7 +5,6 @@ using Unity.VisualScripting;
 public class SimpleGhost : MonoBehaviour
 {
     private Animator Anim;
-    private int count = 0;
 
     [SerializeField] private MaterialReveal areaReveal;
     [SerializeField] private ParticleSystem vanishEffect;
@@ -18,7 +17,6 @@ public class SimpleGhost : MonoBehaviour
     [SerializeField] private SkinnedMeshRenderer[] MeshR;
     [SerializeField] private AudioSource vanishGhostSound;
     [SerializeField] private AudioSource revealAreaSound;
-    [SerializeField] private GameObject fireworkEffect;
 
     private static readonly int IdleState = Animator.StringToHash("Base Layer.idle");
     private static readonly int DissolveState = Animator.StringToHash("Base Layer.dissolve");
@@ -39,14 +37,9 @@ public class SimpleGhost : MonoBehaviour
         {
             Anim.CrossFade(DissolveState, 0.1f);
             DissolveFlg = true;
-            count++;
             if (vanishGhostSound != null)
                 vanishGhostSound.Play();
             StartCoroutine(DissolveRoutine());
-            if (count == 1)
-            {
-                FindObjectOfType<BigEffectController>().PlayFinalEffect();
-            }
         }
     }
     private IEnumerator DissolveRoutine()
@@ -66,6 +59,8 @@ public class SimpleGhost : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.3f);
+
+        BigEffectController.Instance.GhostDestroyed();
 
         if (vanishEffect != null)
         {
