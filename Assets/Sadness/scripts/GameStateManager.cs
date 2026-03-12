@@ -47,20 +47,56 @@ public class GameStateManager : MonoBehaviour
         {
             case GameState.Play:
 
+                Debug.Log("Entered PLAY state");
+
+                Debug.Log("StatePresentationManager.Instance = " + StatePresentationManager.Instance);
+
+                if (StatePresentationManager.Instance == null)
+                {
+                    Debug.LogError("StatePresentationManager.Instance is NULL");
+                    return;
+                }
+
+                Debug.Log("play state data = " + StatePresentationManager.Instance.play);
+
                 StatePresentationManager.Instance.bothFinishedCallback = () =>
                 {
+                    Debug.Log("Play presentation finished");
+
                     if (brotherMovement != null)
-                    StatePresentationManager.Instance.DuckMusic(0.5f);
-                    brotherMovement.BeginSequence();
+                        StatePresentationManager.Instance.DuckMusic(0.5f);
+
+                    if (brotherMovement != null)
+                        brotherMovement.BeginSequence();
+
                     StatePresentationManager.Instance.UnduckMusic(0.5f);
+
                     Debug.Log("Slide + Voice Over finished .. starting brother sequence");
                 };
 
+                Debug.Log("About to call PlayState");
                 StatePresentationManager.Instance.PlayState(
                     StatePresentationManager.Instance.play
                 );
+                Debug.Log("PlayState called");
 
                 break;
+            //case GameState.Play:
+
+            //    StatePresentationManager.Instance.bothFinishedCallback = () =>
+            //    {
+            //        if (brotherMovement != null)
+            //        StatePresentationManager.Instance.DuckMusic(0.5f);
+            //        brotherMovement.BeginSequence();
+            //        StatePresentationManager.Instance.UnduckMusic(0.5f);
+            //        Debug.Log("Slide + Voice Over finished .. starting brother sequence");
+            //    };
+
+            //    StatePresentationManager.Instance.PlayState(
+            //        StatePresentationManager.Instance.play
+            //    );
+
+            //    break;
 
             case GameState.Shock:
                 if (shockTrigger != null) shockTrigger.StartShock();

@@ -92,6 +92,8 @@ public class StatePresentationManager : MonoBehaviour
 
     public void PlayState(StatePresentation state)
     {
+        Debug.Log("PlayState ENTERED");
+
         if (voiceCo != null) StopCoroutine(voiceCo);
         if (slideCo != null) StopCoroutine(slideCo);
         if (finishCo != null) StopCoroutine(finishCo);
@@ -174,6 +176,7 @@ public class StatePresentationManager : MonoBehaviour
 
     IEnumerator SlideRoutine(StatePresentation state, int myRun)
     {
+        Debug.Log("SlideRoutine START");
         yield return new WaitForSeconds(state.slideDelay);
 
         if (myRun != runId) yield break;
@@ -191,10 +194,20 @@ public class StatePresentationManager : MonoBehaviour
         currentSlide = Instantiate(slidePrefab, slideSpawnPoint);
         currentSlide.name = "Slide_Runtime";
 
-        currentSlide.transform.localPosition = new Vector3(0f, 0f, -5.5f);
+        currentSlide.transform.localPosition = Vector3.zero;
         currentSlide.transform.localRotation = Quaternion.identity;
         currentSlide.transform.localScale = Vector3.one * 3f;
 
+        Debug.Log("SLIDE SPAWNED");
+        Debug.Log("Spawn point world = " + slideSpawnPoint.position);
+        Debug.Log("Slide root world = " + currentSlide.transform.position);
+
+        Transform paper = currentSlide.transform.Find("paperQuad");
+        if (paper != null)
+        {
+            Debug.Log("paperQuad local = " + paper.localPosition);
+            Debug.Log("paperQuad world = " + paper.position);
+        }
         currentSlideCtrl = currentSlide.GetComponentInChildren<SlideController>(true);
         if (currentSlideCtrl == null)
         {
@@ -230,7 +243,10 @@ public class StatePresentationManager : MonoBehaviour
         if (anim != null)
         {
             anim.enabled = true;
+            anim.Rebind();
+            anim.Update(0f);
             anim.Play(0, 0, 0f);
+            anim.Update(0f);
         }
 
         float animLen = currentSlideCtrl.GetAnimLength();
@@ -250,6 +266,7 @@ public class StatePresentationManager : MonoBehaviour
         if (myRun != runId) yield break;
         DestroyCurrentSlide();
     }
+
     void OnDestroy()
     {
         if (voiceCo != null) StopCoroutine(voiceCo);
@@ -260,6 +277,7 @@ public class StatePresentationManager : MonoBehaviour
         if (currentSlideCtrl != null && slideFinishedHandler != null)
             currentSlideCtrl.OnFinished -= slideFinishedHandler;
     }
+
     void DestroyCurrentSlide()
     {
         if (currentSlideCtrl != null && slideFinishedHandler != null)
