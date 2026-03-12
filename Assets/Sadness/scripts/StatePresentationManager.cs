@@ -196,18 +196,18 @@ public class StatePresentationManager : MonoBehaviour
 
         currentSlide.transform.localPosition = Vector3.zero;
         currentSlide.transform.localRotation = Quaternion.identity;
-        currentSlide.transform.localScale = Vector3.one * 3f;
+        currentSlide.transform.localScale = Vector3.one * 1f;
 
         Debug.Log("SLIDE SPAWNED");
         Debug.Log("Spawn point world = " + slideSpawnPoint.position);
         Debug.Log("Slide root world = " + currentSlide.transform.position);
 
-        Transform paper = currentSlide.transform.Find("paperQuad");
-        if (paper != null)
-        {
-            Debug.Log("paperQuad local = " + paper.localPosition);
-            Debug.Log("paperQuad world = " + paper.position);
-        }
+        //Transform paper = currentSlide.transform.Find("paperQuad");
+        //if (paper != null)
+        //{
+        //    Debug.Log("paperQuad local = " + paper.localPosition);
+        //    Debug.Log("paperQuad world = " + paper.position);
+        //}
         currentSlideCtrl = currentSlide.GetComponentInChildren<SlideController>(true);
         if (currentSlideCtrl == null)
         {
