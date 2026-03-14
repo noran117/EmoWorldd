@@ -77,10 +77,12 @@ public class SimpleGhost : MonoBehaviour
                 areaReveal.RevealSmooth();
         }
 
-        //gameObject.SetActive(false);
         Anim.enabled = false;
         foreach (var rend in MeshR)
             rend.enabled = false;
+
+        yield return new WaitForSeconds(10f);
+        gameObject.SetActive(false);
     }
 
 
