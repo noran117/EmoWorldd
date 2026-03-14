@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BigEffectController : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class BigEffectController : MonoBehaviour
 
     [Header("Skybox Settings")]
     public Material skyboxMaterial;
+    public float initialExposure = 0.5f;
     public float exposurePerGhost = 0.05f;
     [Header("Lighting Settings")]
     public Light sceneLight;
@@ -20,6 +23,7 @@ public class BigEffectController : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        skyboxMaterial.SetFloat("_Exposure", initialExposure);
     }
 
     public void GhostDestroyed()
@@ -36,6 +40,7 @@ public class BigEffectController : MonoBehaviour
         if (ghostCounter >= totalGhosts)
         {
             PlayFinalEffect();
+            StartCoroutine(LoadSceneAfterDelay());
         }
     }
 
@@ -46,9 +51,14 @@ public class BigEffectController : MonoBehaviour
 
         if (finalMusic != null)
             finalMusic.Play();
-            
+
         if (sceneLight != null)
             sceneLight.intensity = 1.8f;
 
+    }
+    IEnumerator LoadSceneAfterDelay()
+    {
+        yield return new WaitForSeconds(30f);
+        SceneManager.LoadScene("Main Scene");
     }
 }
