@@ -150,9 +150,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   ghostCounter: 0
   totalGhosts: 12
-  skyboxMaterial: {fileID: 2100000, guid: 10f54767c0ad0284c84093a45321330e, type: 2}
-  initialExposure: 0.5
+  skyboxMaterial: {fileID: 2100000, guid: 4e5cbff1b8c5d9a47b660ae1148910b9, type: 2}
+  initialPanorama: {fileID: 2800000, guid: b131d03f5562e8d458649e1f59589436, type: 3}
+  finalPanorama: {fileID: 2800000, guid: 9cf73ed99713cff41843480951fb908e, type: 3}
+  initialExposure: 0.05
   exposurePerGhost: 0.05
+  exposureTransitionDuration: 1.5
+  finalTransitionDuration: 4
+  finalExposure: 1
   sceneLight: {fileID: 815165871}
   finalParticles: {fileID: 1232912992}
   finalMusic: {fileID: 0}
@@ -28496,7 +28501,6 @@ GameObject:
   - component: {fileID: 815165872}
   - component: {fileID: 815165871}
   - component: {fileID: 815165873}
-  - component: {fileID: 815165874}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -28515,7 +28519,7 @@ Light:
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -28613,19 +28617,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!114 &815165874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 815165870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e471607641c821f429dddb7e9ac44493, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlackOnStart
-  targetRoot: {fileID: 0}
 --- !u!21 &817299308
 Material:
   serializedVersion: 8
