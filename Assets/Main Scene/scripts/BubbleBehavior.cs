@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class BubbleBehavior : MonoBehaviour
@@ -8,14 +8,31 @@ public class BubbleBehavior : MonoBehaviour
     public AudioSource popSound;
     public float popScaleTime = 0.12f;
 
-[Header("Floating Movement")]
+    [Header("Floating Movement")]
     public float floatSpeed = 0.4f;
     public float horizontalSpeed = 0.25f;
 
-[Header("Auto Pop Settings")]
+    [Header("Auto Pop Settings")]
     public float maxHeight = 2.5f;
 
+    //[Header("Optional Companion Reaction")]
+    //public followPlayer companion;   // الرفيق (اختياري)
+
+
+
+
+
+    [Header("Optional Companion Reaction")]
+    public followPlayer companion;   // الرفيق (اختياري)
+    public Transform player;         // اللاعب (اختياري)
+
+
+
+
+
     private bool isPopping = false;
+    private bool poppedByPlayer = false;
+
     private BubbleSpawner spawner;
     private Collider col;
     private Renderer rend;
@@ -34,6 +51,7 @@ public class BubbleBehavior : MonoBehaviour
     {
         spawner = owner;
         isPopping = false;
+        poppedByPlayer = false;
 
         transform.localScale = Vector3.one * Random.Range(0.5f, 1.1f);
 
@@ -59,8 +77,10 @@ public class BubbleBehavior : MonoBehaviour
             Mathf.Cos(Time.time * 1.7f) * 0.003f
         );
 
+        // الانفجار التلقائي (بدون تصفيق)
         if (transform.position.y >= maxHeight)
         {
+            poppedByPlayer = false;
             StartCoroutine(PopRoutine());
         }
     }
@@ -71,6 +91,7 @@ public class BubbleBehavior : MonoBehaviour
 
         if (other.CompareTag("PlayerHand"))
         {
+            poppedByPlayer = true;
             StartCoroutine(PopRoutine());
         }
     }
@@ -82,10 +103,16 @@ public class BubbleBehavior : MonoBehaviour
 
         if (col) col.enabled = false;
 
+        // صوت الانفجار
         if (spawner != null && spawner.popAudioSource != null && popSound != null && popSound.clip != null)
         {
             spawner.popAudioSource.PlayOneShot(popSound.clip);
-           // Debug.Log("Played pop sound");
+        }
+
+        // تشغيل تصفيق الرفيق فقط إذا اللاعب فقع البابل
+        if (poppedByPlayer && companion != null)
+        {
+            StartCoroutine(CheerRoutine());
         }
 
         if (popParticles) popParticles.Play();
@@ -110,5 +137,25 @@ public class BubbleBehavior : MonoBehaviour
             spawner.ReturnToPool(this);
         else
             gameObject.SetActive(false);
+    }
+
+    IEnumerator CheerRoutine()
+    {
+        if (companion != null && player != null)
+        {
+            Vector3 dir = player.position - companion.transform.position;
+            dir.y = 0;
+
+            if (dir != Vector3.zero)
+            {
+                companion.transform.rotation = Quaternion.LookRotation(dir);
+            }
+        }
+
+        companion.SetCheer(true);
+
+        yield return new WaitForSeconds(2f);
+
+        companion.SetCheer(false);
     }
 }
