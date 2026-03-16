@@ -19,17 +19,38 @@ public class SimpleGhost : MonoBehaviour
     [SerializeField] private AudioSource revealAreaSound;
 
     private static readonly int IdleState = Animator.StringToHash("Base Layer.idle");
+    private static readonly int AttackState = Animator.StringToHash("Base Layer.attack_shift");
     private static readonly int DissolveState = Animator.StringToHash("Base Layer.dissolve");
 
     private float Dissolve_value = 1f;
     private bool DissolveFlg = false;
+
+    public Transform player;
+    public float triggerDistance = 2f;
 
     void Start()
     {
         Anim = GetComponent<Animator>();
         Anim.CrossFade(IdleState, 0.1f);
     }
-
+    void Update()
+    {
+        float distance = Vector3.Distance(transform.position, player.position);
+        if (distance > triggerDistance)
+        {
+            StartCoroutine(ReactToPlayer());
+        }
+    }
+    IEnumerator ReactToPlayer()
+    {
+        Vector3 direction = player.position - transform.position;
+        direction.y = 0;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        
+        yield return new WaitForSeconds(0.5f);
+        Anim.CrossFade(AttackState, 0.1f, 0, 0);
+    }
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log("Triggered");
@@ -45,7 +66,6 @@ public class SimpleGhost : MonoBehaviour
     private IEnumerator DissolveRoutine()
     {
         //Debug.Log("Dissolve Routine");
-
         while (Dissolve_value > 0f)
         {
             Dissolve_value -= Time.deltaTime;

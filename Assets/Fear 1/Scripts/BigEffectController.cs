@@ -55,12 +55,12 @@ public class BigEffectController : MonoBehaviour
         float targetExposure = currentExposure + exposurePerGhost;
         StartCoroutine(SmoothExposureTransition(currentExposure, targetExposure));
 
-        if (ghostCounter >= 3)
+        /*if (ghostCounter >= 3)
         {
             PlayFinalEffect();
             StartCoroutine(FinalSkyboxTransition());
-        }
-        // لو انتهت الأشباح
+        }*/
+        // انتهت الأشباح
         if (ghostCounter >= totalGhosts)
         {
             PlayFinalEffect();
