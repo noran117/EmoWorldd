@@ -6,6 +6,6 @@ public class NoteMover : MonoBehaviour
 
     void Update()
     {
-        transform.position += transform.forward * speed * Time.deltaTime;
+        transform.position -= transform.right * speed * Time.deltaTime;
     }
 }

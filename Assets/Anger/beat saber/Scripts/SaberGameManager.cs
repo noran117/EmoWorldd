@@ -31,9 +31,12 @@ public class SaberGameManager : MonoBehaviour
     public AudioSource gameMusic;
     public AudioSource backgroundMusic;
 
+    public Spawner spawner;
+
     void Awake()
     {
         Instance = this;
+        Debug.Log("GameManager Awake on object: " + gameObject.name);
 
         score = 0;
         gameRunning = false;
@@ -43,9 +46,7 @@ public class SaberGameManager : MonoBehaviour
 
         if (winPanel) winPanel.SetActive(false);
         if (wrongX) wrongX.SetActive(false);
-
         if (redOverlay) redOverlay.SetActive(false);
-  
         if (scoreText) scoreText.gameObject.SetActive(false);
 
         UpdateRedOverlay();
@@ -58,10 +59,13 @@ public class SaberGameManager : MonoBehaviour
 
         gameRunning = running;
 
+        if (spawner) spawner.SetSpawnerRunning(running);
+
+        Debug.Log("SetRunning called on: " + gameObject.name + " | gameRunning = " + gameRunning);
+
         if (running)
         {
             if (redOverlay) redOverlay.SetActive(true);
-
             if (scoreText) scoreText.gameObject.SetActive(true);
 
             if (backgroundMusic) backgroundMusic.Stop();
@@ -77,7 +81,6 @@ public class SaberGameManager : MonoBehaviour
             if (backgroundMusic && !backgroundMusic.isPlaying) backgroundMusic.Play();
         }
     }
-
     public void RestartGame()
     {
         score = 0;

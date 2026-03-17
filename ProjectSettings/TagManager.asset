@@ -8,6 +8,18 @@ TagManager:
   - Canvas
   - Hammer
   - PlayerHand
+  - Playerr
+  - Ball
+  - Brother
+  - EventArea
+  - Floor
+  - nose
+  - leftFoot
+  - rightFoot
+  - leftHand
+  - rightHand
+  - HitZone
+  - Sticks
   layers:
   - Default
   - TransparentFX
@@ -20,7 +32,7 @@ TagManager:
   - Restricted
   - Player
   - Grabbable
-  - 
+  - Note
   - 
   - 
   - 

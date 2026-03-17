@@ -7,8 +7,10 @@ public class Spawner : MonoBehaviour
 
     public float bpm = 130f;
     public int spawnEveryBeats = 2;
+
     float beatInterval;
     float timer;
+    bool canSpawn = false;
 
     void Start()
     {
@@ -17,20 +19,28 @@ public class Spawner : MonoBehaviour
 
     void Update()
     {
-        if (SaberGameManager.Instance != null && !SaberGameManager.Instance.gameRunning)
-            return;
+        if (!canSpawn) return;
 
         timer += Time.deltaTime;
 
         if (timer >= beatInterval)
         {
             Spawn();
-            timer -= beatInterval;
+            timer = 0f;
         }
+    }
+
+    public void SetSpawnerRunning(bool value)
+    {
+        canSpawn = value;
+        if (!value) timer = 0f;
     }
 
     void Spawn()
     {
+        if (notes == null || notes.Length == 0) return;
+        if (points == null || points.Length == 0) return;
+
         var prefab = notes[Random.Range(0, notes.Length)];
         var p = points[Random.Range(0, points.Length)];
 
