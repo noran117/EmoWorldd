@@ -124,6 +124,6 @@ public class BigEffectController : MonoBehaviour
     IEnumerator LoadSceneAfterDelay()
     {
         yield return new WaitForSeconds(30f);
-        SceneManager.LoadScene("Main Scene");
+        SceneManager.LoadScene("Main_Scene");
     }
 }
