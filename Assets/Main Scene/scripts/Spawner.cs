@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
@@ -9,42 +10,68 @@ public class Spawner : MonoBehaviour
     public int spawnEveryBeats = 2;
 
     float beatInterval;
-    float timer;
-    bool canSpawn = false;
+    Coroutine spawnRoutine;
 
     void Start()
     {
         beatInterval = (60f / bpm) * spawnEveryBeats;
+        Debug.Log("Spawner START | notes = " + notes.Length + " | points = " + points.Length);
     }
 
-    void Update()
+    public void StartSpawning()
     {
-        if (!canSpawn) return;
+        if (spawnRoutine != null) return;
 
-        timer += Time.deltaTime;
+        Debug.Log("StartSpawning()");
+        spawnRoutine = StartCoroutine(SpawnLoop());
+    }
 
-        if (timer >= beatInterval)
+    public void StopSpawning()
+    {
+        if (spawnRoutine != null)
+        {
+            StopCoroutine(spawnRoutine);
+            spawnRoutine = null;
+        }
+
+        Debug.Log("StopSpawning()");
+    }
+
+    IEnumerator SpawnLoop()
+    {
+        while (true)
         {
             Spawn();
-            timer = 0f;
+            yield return new WaitForSeconds(beatInterval);
         }
-    }
-
-    public void SetSpawnerRunning(bool value)
-    {
-        canSpawn = value;
-        if (!value) timer = 0f;
     }
 
     void Spawn()
     {
-        if (notes == null || notes.Length == 0) return;
-        if (points == null || points.Length == 0) return;
+        if (notes == null || notes.Length == 0)
+        {
+            Debug.LogError("notes array is empty!");
+            return;
+        }
+
+        if (points == null || points.Length == 0)
+        {
+            Debug.LogError("points array is empty!");
+            return;
+        }
 
         var prefab = notes[Random.Range(0, notes.Length)];
         var p = points[Random.Range(0, points.Length)];
 
+        if (prefab == null || p == null)
+        {
+            Debug.LogError("Prefab or SpawnPoint is null!");
+            return;
+        }
+
         GameObject note = Instantiate(prefab, p.position, p.rotation);
-        note.transform.Rotate(Vector3.forward, 90f * Random.Range(0, 4), Space.Self);
+
+        note.transform.Rotate(0f, 90f, 0f);
+        Debug.Log("Spawned note: " + note.name);
     }
 }

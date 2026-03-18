@@ -13,6 +13,7 @@ public class SaberGameManager : MonoBehaviour
     public bool gameLocked;
 
     [Header("UI")]
+    public GameObject gameUIRoot;   // الأب تبع UI كله
     public TMP_Text scoreText;
     public GameObject winPanel;
     public GameObject wrongX;
@@ -31,24 +32,26 @@ public class SaberGameManager : MonoBehaviour
     public AudioSource gameMusic;
     public AudioSource backgroundMusic;
 
+    [Header("Spawner")]
     public Spawner spawner;
-
+   
     void Awake()
     {
         Instance = this;
-        Debug.Log("GameManager Awake on object: " + gameObject.name);
+
+        if (spawner == null)
+            spawner = FindFirstObjectByType<Spawner>();
 
         score = 0;
         gameRunning = false;
         gameLocked = false;
 
-        RefreshUI();
-
+        if (gameUIRoot) gameUIRoot.SetActive(false);
         if (winPanel) winPanel.SetActive(false);
         if (wrongX) wrongX.SetActive(false);
         if (redOverlay) redOverlay.SetActive(false);
-        if (scoreText) scoreText.gameObject.SetActive(false);
 
+        RefreshUI();
         UpdateRedOverlay();
     }
 
@@ -58,50 +61,78 @@ public class SaberGameManager : MonoBehaviour
             return;
 
         gameRunning = running;
+        Debug.Log("SetRunning called | gameRunning = " + gameRunning);
 
-        if (spawner) spawner.SetSpawnerRunning(running);
-
-        Debug.Log("SetRunning called on: " + gameObject.name + " | gameRunning = " + gameRunning);
+        if (spawner != null)
+        {
+            if (running) spawner.StartSpawning();
+            else spawner.StopSpawning();
+        }
 
         if (running)
         {
-            if (redOverlay) redOverlay.SetActive(true);
-            if (scoreText) scoreText.gameObject.SetActive(true);
+            ShowGameplayUI();
 
             if (backgroundMusic) backgroundMusic.Stop();
             if (gameMusic && !gameMusic.isPlaying) gameMusic.Play();
-
-            UpdateRedOverlay();
         }
         else
         {
-            if (scoreText) scoreText.gameObject.SetActive(false);
+            HideGameplayUI();
 
             if (gameMusic) gameMusic.Stop();
             if (backgroundMusic && !backgroundMusic.isPlaying) backgroundMusic.Play();
         }
     }
+
+    void ShowGameplayUI()
+    {
+        if (gameUIRoot) gameUIRoot.SetActive(true);
+
+        if (scoreText)
+        {
+            scoreText.gameObject.SetActive(true);
+            scoreText.alpha = 1f;
+            scoreText.text = $"Score: {score}";
+        }
+
+        if (redOverlay)
+        {
+            redOverlay.SetActive(true);
+
+            Image img = redOverlay.GetComponent<Image>();
+            if (img)
+            {
+                Color c = img.color;
+                c.a = startRedAlpha;
+                img.color = c;
+            }
+        }
+    }
+
+    void HideGameplayUI()
+    {
+        if (gameUIRoot) gameUIRoot.SetActive(false);
+    }
+
     public void RestartGame()
     {
         score = 0;
-        RefreshUI();
-
         gameLocked = false;
+
+        RefreshUI();
 
         if (winPanel) winPanel.SetActive(false);
         if (wrongX) wrongX.SetActive(false);
 
         NoteHitState[] notes = FindObjectsByType<NoteHitState>(FindObjectsSortMode.None);
-
         foreach (var n in notes)
-        {
             Destroy(n.gameObject);
-        }
-
-        if (redOverlay) redOverlay.SetActive(false);
 
         SetRunning(false);
-        UpdateRedOverlay();
+
+        if (GameStartGate.Instance != null)
+            GameStartGate.Instance.Check();
     }
 
     public void AddScore(int amount)
@@ -150,19 +181,15 @@ public class SaberGameManager : MonoBehaviour
     void Win()
     {
         gameLocked = true;
-
         SetRunning(false);
-
-        if (gameMusic) gameMusic.Stop();
 
         if (sfx && winClip) sfx.PlayOneShot(winClip);
         if (winPanel) winPanel.SetActive(true);
-
-        if (redOverlay) redOverlay.SetActive(false);
     }
 
     void RefreshUI()
     {
-        if (scoreText) scoreText.text = $"Score: {score}";
+        if (scoreText)
+            scoreText.text = $"Score: {score}";
     }
 }

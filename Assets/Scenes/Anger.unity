@@ -14406,13 +14406,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1252052940}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.95526195, w: -0.29576114}
-  m_LocalPosition: {x: 90.77, y: 1.2599992, z: -716.76}
+  m_LocalRotation: {x: 0, y: 0, z: -0.027170883, w: 0.9996308}
+  m_LocalPosition: {x: 90.77, y: 1.89, z: -716.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7934673569149817431}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -505.594}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -723.114}
 --- !u!1 &1263677741
 GameObject:
   m_ObjectHideFlags: 0
@@ -22110,6 +22110,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.1863045, y: 4.355969, z: 1.2561661}
   m_Center: {x: -0.09315197, y: -2.1786718, z: -0.1280831}
+--- !u!1 &1945047402
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1945047403}
+  - component: {fileID: 1945047404}
+  m_Layer: 0
+  m_Name: DestroyZone
+  m_TagString: DestroyZone
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1945047403
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945047402}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7056812, z: -0, w: 0.70852953}
+  m_LocalPosition: {x: 17.27, y: 0.12, z: 4.9885}
+  m_LocalScale: {x: 0.28458995, y: 0.28458995, z: 0.28458995}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8901100554424989595}
+  m_LocalEulerAnglesHint: {x: 0, y: -89.769, z: 0}
+--- !u!65 &1945047404
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945047402}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 64.52443, y: 15.866034, z: 2.8128417}
+  m_Center: {x: -17.389496, y: 7.4330173, z: 32.757416}
 --- !u!4 &1957321263 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9055748129025181054, guid: 8518fd734c31a8440aebd39198b21a8a,
@@ -25264,6 +25317,7 @@ MonoBehaviour:
   score: 0
   winScore: 20
   gameLocked: 0
+  gameUIRoot: {fileID: 5995638563611685197}
   scoreText: {fileID: 3467656208314835168}
   winPanel: {fileID: 2139546544430991298}
   wrongX: {fileID: 2019425039666710275}
@@ -26116,13 +26170,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4838838884789817689}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.8056717, z: -0, w: 0.5923624}
-  m_LocalPosition: {x: 4.78, y: 5.5735, z: 7.3448}
+  m_LocalRotation: {x: -0, y: -0.7056812, z: -0, w: 0.70852953}
+  m_LocalPosition: {x: 10.91, y: 0.15, z: 4.9885}
   m_LocalScale: {x: 0.28458995, y: 0.28458995, z: 0.28458995}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8901100554424989595}
-  m_LocalEulerAnglesHint: {x: 0, y: -107.35, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -89.769, z: 0}
 --- !u!222 &7376093682579552915
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -26754,8 +26808,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 64.52443, y: 15.866034, z: 9.960334}
-  m_Center: {x: -17.38949, y: 7.4330173, z: 30.011591}
+  m_Size: {x: 64.52443, y: 15.866034, z: 2.8128417}
+  m_Center: {x: -17.389496, y: 7.4330173, z: 32.757416}
 --- !u!1 &8806902176282877950
 GameObject:
   m_ObjectHideFlags: 0
@@ -26830,6 +26884,7 @@ Transform:
   - {fileID: 1655643260745765782}
   - {fileID: 7934673569149817431}
   - {fileID: 7152039673239004120}
+  - {fileID: 1945047403}
   - {fileID: 4162353458193676542}
   - {fileID: 5358520430637564619}
   - {fileID: 970320378174564197}

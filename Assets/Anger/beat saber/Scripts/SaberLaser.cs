@@ -45,7 +45,6 @@ public class SaberLaser : MonoBehaviour
     {
         var state = col.GetComponentInParent<NoteHitState>();
         if (state == null) return;
-        if (!state.canBeHit) return;
         if (state.wasHit) return;
 
         var noteColor = col.GetComponentInParent<NoteColor>();
