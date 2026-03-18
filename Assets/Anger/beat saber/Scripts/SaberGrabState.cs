@@ -7,12 +7,15 @@ public class SaberGrabState : MonoBehaviour
     public void OnGrabbed()
     {
         isHeld = true;
-        GameStartGate.Instance.Check();
+        Debug.Log(gameObject.name + " grabbed");
+
+        if (GameStartGate.Instance != null)
+            GameStartGate.Instance.Check();
     }
 
     public void OnReleased()
     {
         isHeld = false;
-        GameStartGate.Instance.Check();
+        Debug.Log(gameObject.name + " released");
     }
 }

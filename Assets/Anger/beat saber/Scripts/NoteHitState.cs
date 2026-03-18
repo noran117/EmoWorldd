@@ -8,21 +8,27 @@ public class NoteHitState : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("HitZone"))
+        {
             canBeHit = true;
+        }
+
+        if (other.CompareTag("DestroyZone"))
+        {
+            DestroyNow();
+        }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("HitZone")) return;
-
-        canBeHit = false;
-
-        if (!wasHit)
+        if (other.CompareTag("HitZone"))
         {
-            // Miss (اختياري: نداء GameManager)
-            // GameManager.Instance.Miss();
+            canBeHit = false;
         }
+    }
 
+    public void DestroyNow()
+    {
+        Debug.Log("Destroying: " + gameObject.name);
         Destroy(gameObject);
     }
 }

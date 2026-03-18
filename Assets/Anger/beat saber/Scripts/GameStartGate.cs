@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameStartGate : MonoBehaviour
 {
@@ -7,14 +7,24 @@ public class GameStartGate : MonoBehaviour
     public SaberGrabState leftSaber;
     public SaberGrabState rightSaber;
 
-    void Awake() => Instance = this;
+    void Awake()
+    {
+        Instance = this;
+    }
 
     public void Check()
     {
-        bool both = leftSaber != null && rightSaber != null && leftSaber.isHeld && rightSaber.isHeld;
+        bool leftHeld = leftSaber != null && leftSaber.isHeld;
+        bool rightHeld = rightSaber != null && rightSaber.isHeld;
+        bool both = leftHeld && rightHeld;
+
+        Debug.Log("Gate Check | left = " + leftHeld + " | right = " + rightHeld + " | both = " + both);
 
         if (SaberGameManager.Instance == null) return;
 
-        SaberGameManager.Instance.SetRunning(both);
+        if (both)
+        {
+            SaberGameManager.Instance.SetRunning(true);
+        }
     }
 }
