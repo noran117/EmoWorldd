@@ -21,7 +21,10 @@ public class LoadScene : MonoBehaviour
     public void LoadFearScene()
     {
         SceneManager.LoadScene("Fear");
-
+    }
+    public void LoadMaiScene()
+    {
+        SceneManager.LoadScene("Main_Scene");
     }
     /// <summary>
     /// Restart the Current level, maybe we can use it in sadness scene 
