@@ -6,6 +6,11 @@ public class BigEffectController : MonoBehaviour
 {
     public static BigEffectController Instance;
 
+    [Header("Scene Load Settings")]
+    public float loadSceneAfter = 30f;
+    public string sceneName = "Main_Scene";
+
+    [Header("Ghost Counter")]
     public int ghostCounter = 0;
     public int totalGhosts = 12;
 
@@ -123,7 +128,7 @@ public class BigEffectController : MonoBehaviour
     }
     IEnumerator LoadSceneAfterDelay()
     {
-        yield return new WaitForSeconds(30f);
-        SceneManager.LoadScene("Main_Scene");
+        yield return new WaitForSeconds(loadSceneAfter);
+        SceneManager.LoadScene(sceneName);
     }
 }

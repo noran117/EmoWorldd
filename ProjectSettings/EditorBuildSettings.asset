@@ -6,26 +6,20 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/BNG Framework/Scenes/Weapons.unity
-    guid: 2626939ed08e1ec41bee0433a7f068d9
+    path: Assets/Scenes/Anger.unity
+    guid: 4b0febfd30153f64b857c8ed8d9b23c5
   - enabled: 1
-    path: Assets/BNG Framework/Scenes/XR Demo.unity
-    guid: a1360534006d3f845bc79b46b93cfec5
+    path: Assets/Scenes/Fear.unity
+    guid: 367c27d6a94c59441ac44e4908fd7513
   - enabled: 1
-    path: Assets/BNG Framework/Scenes/Scene Transitioning.unity
-    guid: 9d7c9629abf9c99449e358b0938b47d0
+    path: Assets/Scenes/Happiness.unity
+    guid: 3e607920eb16ed148a6c8c5f546d061f
   - enabled: 1
-    path: Assets/BNG Framework/Scenes/Physics Hands.unity
-    guid: 34a4579517c578e4080d0a6ef2c96294
+    path: Assets/Scenes/Main_Scene.unity
+    guid: 28a565b6799548941bf844c4f9ece9b5
   - enabled: 1
-    path: Assets/BNG Framework/Scenes/Rigidbody Player.unity
-    guid: 57fc97c5771a777449aa8bd02514df22
-  - enabled: 1
-    path: Assets/BNG Framework/Scenes/Vehicle Example.unity
-    guid: d96233ee44d985d4fb8dc23a907c06eb
-  - enabled: 1
-    path: Assets/BNG Framework/Scenes/Quest Demo.unity
-    guid: 20abffae0ea5004438fe0e95b6627841
+    path: Assets/Scenes/Sadness.unity
+    guid: 1fc580235fb722c4eb5b4bce5d519068
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: c4fcd69eb47cc6e49aadf924d6ec3bf1,
       type: 2}
