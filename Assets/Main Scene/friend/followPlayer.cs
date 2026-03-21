@@ -27,8 +27,6 @@ public class followPlayer : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
 
-
-
         StartCoroutine(IntroWave());
 
     }
@@ -38,10 +36,7 @@ public class followPlayer : MonoBehaviour
 
         if (introPlaying) return;
 
-
-
-
-        if (player == null) return;
+       if (player == null) return;
 
         // إذا كان في حالة مفاجأة يبقى واقف
         if (reacting)
@@ -112,24 +107,6 @@ public class followPlayer : MonoBehaviour
 
     IEnumerator IntroWave()
     {
-        //agent.isStopped = true;
-
-        //Vector3 dir = player.position - transform.position;
-        //dir.y = 0;
-
-        //transform.rotation = Quaternion.LookRotation(dir);
-
-        //yield return new WaitForSeconds(0.5f);
-
-        //anim.SetTrigger("Wave");
-
-        //yield return new WaitForSeconds(3f);
-
-        //introPlaying = false;
-        //agent.isStopped = false;
-
-
-
         agent.isStopped = true;
 
         Vector3 dir = player.position - transform.position;
@@ -137,7 +114,7 @@ public class followPlayer : MonoBehaviour
 
         transform.rotation = Quaternion.LookRotation(dir);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(5f);
 
         // اظهار الغيمة
         waveMessage.SetActive(true);
@@ -152,14 +129,6 @@ public class followPlayer : MonoBehaviour
         introPlaying = false;
         agent.isStopped = false;
 
-
-
-
-
-
-
-
-
     }
 
 
@@ -170,49 +139,33 @@ public class followPlayer : MonoBehaviour
     }
 
     IEnumerator TalkRoutine(Transform player)
-    { 
-   //     agent.isStopped = true;
-
-    //     Vector3 dir = player.position - transform.position;
-    //     dir.y = 0;
-
-    //     transform.rotation = Quaternion.LookRotation(dir);
-
-    //     //anim.SetTrigger("Talk");
-    //     anim.SetBool("Talking", true);
-
-    //     yield return new WaitForSeconds(4f); // مدة الكلام
-    //     anim.SetBool("Talking", false);  // إيقاف الكلام
-
-
-    //     agent.isStopped = false;
-
-
+    {
+        
         agent.isStopped = true;
 
-    Vector3 dir = player.position - transform.position;
-    dir.y = 0;
+        Vector3 dir = player.position - transform.position;
+        dir.y = 0;
 
-    transform.rotation = Quaternion.LookRotation(dir);
+        transform.rotation = Quaternion.LookRotation(dir);
 
-    // إظهار الغيمة
-    talkMessage.SetActive(true);
+        // إظهار الغيمة
+        talkMessage.SetActive(true);
 
-    anim.SetBool("Talking", true);
+        anim.SetBool("Talking", true);
 
-    yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(5f);
 
-    anim.SetBool("Talking", false);
+        anim.SetBool("Talking", false);
 
-    // إخفاء الغيمة
-    talkMessage.SetActive(false);
+        // إخفاء الغيمة
+        talkMessage.SetActive(false);
 
-       // agent.ResetPath();
+        // agent.ResetPath();
 
         agent.isStopped = false;
 
 
-        
+
     }
 
 

@@ -9,7 +9,7 @@ public class ShellOpen : MonoBehaviour
 
 
 
-    public GameObject openMessage;  
+    public GameObject openMessage;
     public GameObject thanksMessage;
     private void Start()
     {
@@ -42,14 +42,7 @@ public class ShellOpen : MonoBehaviour
     void OpenShell()
     {
         animator.SetBool("Open", true);
-        /*
-                if (companion != null)
-                {
-                    companion.SetSurprise();
-                }
-        */
 
-       
         if (openMessage != null)
             openMessage.SetActive(false);
 
@@ -80,6 +73,10 @@ public class ShellOpen : MonoBehaviour
         {
             audioSource.Stop();
         }
-        Debug.Log("Shell closed.");
+        if (openMessage != null)
+            openMessage.SetActive(true);
+
+        if (thanksMessage != null)
+            thanksMessage.SetActive(false);
     }
 }
