@@ -4678,6 +4678,7 @@ GameObject:
   m_Component:
   - component: {fileID: 278837377}
   - component: {fileID: 278837378}
+  - component: {fileID: 278837379}
   m_Layer: 0
   m_Name: leftWall
   m_TagString: Untagged
@@ -4721,6 +4722,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.7107034, y: 1.575428, z: 0.20649786}
   m_Center: {x: -0.022975946, y: -0.2367902, z: -1.0366397}
+--- !u!114 &278837379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278837376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0238667cd762914dbb78dc290dbe024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  hitEffectPrefab: {fileID: 8353633999020187807, guid: fb89afc3b3b703f4697edffbf66c07ca,
+    type: 3}
+  hitSounds:
+  - {fileID: 8300000, guid: 60a9c02a41619af4eaa02e7ed1676c65, type: 3}
+  - {fileID: 8300000, guid: 0c67231f0d031064aa40ea53d95558a8, type: 3}
+  - {fileID: 8300000, guid: f3c2b66926266d0458df9fda1fdd0b54, type: 3}
+  - {fileID: 8300000, guid: 6698df44c6431a040bf7168981190a0f, type: 3}
+  - {fileID: 8300000, guid: d48b967a1596ae643896a2e2cc3bf1e0, type: 3}
+  - {fileID: 8300000, guid: 287db249a25936e4288dcd92d863f36f, type: 3}
+  - {fileID: 8300000, guid: 829e1a3b20e9d8d48b84627258ddc3fc, type: 3}
 --- !u!1 &288142441
 GameObject:
   m_ObjectHideFlags: 0
@@ -13313,6 +13336,7 @@ GameObject:
   m_Component:
   - component: {fileID: 791877758}
   - component: {fileID: 791877759}
+  - component: {fileID: 791877760}
   m_Layer: 0
   m_Name: rightWall
   m_TagString: Untagged
@@ -13356,6 +13380,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.756658, y: 1.5380559, z: 0.20194668}
   m_Center: {x: 0.0000009650277, y: -0.18903652, z: -1.1235646}
+--- !u!114 &791877760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791877757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0238667cd762914dbb78dc290dbe024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  hitEffectPrefab: {fileID: 8353633999020187807, guid: fb89afc3b3b703f4697edffbf66c07ca,
+    type: 3}
+  hitSounds:
+  - {fileID: 8300000, guid: 60a9c02a41619af4eaa02e7ed1676c65, type: 3}
+  - {fileID: 8300000, guid: 0c67231f0d031064aa40ea53d95558a8, type: 3}
+  - {fileID: 8300000, guid: f3c2b66926266d0458df9fda1fdd0b54, type: 3}
+  - {fileID: 8300000, guid: 6698df44c6431a040bf7168981190a0f, type: 3}
+  - {fileID: 8300000, guid: d48b967a1596ae643896a2e2cc3bf1e0, type: 3}
+  - {fileID: 8300000, guid: 287db249a25936e4288dcd92d863f36f, type: 3}
+  - {fileID: 8300000, guid: 829e1a3b20e9d8d48b84627258ddc3fc, type: 3}
 --- !u!1001 &794245565
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22046,6 +22092,7 @@ GameObject:
   - component: {fileID: 1306519748}
   - component: {fileID: 1306519747}
   - component: {fileID: 1306519746}
+  - component: {fileID: 1306519749}
   m_Layer: 0
   m_Name: frontWall
   m_TagString: Untagged
@@ -22131,6 +22178,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.92218304, y: 0.9085239, z: 0.11729669}
   m_Center: {x: -0.015458043, y: 0.6332813, z: -1.0812299}
+--- !u!114 &1306519749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306519744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0238667cd762914dbb78dc290dbe024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  hitEffectPrefab: {fileID: 8353633999020187807, guid: fb89afc3b3b703f4697edffbf66c07ca,
+    type: 3}
+  hitSounds:
+  - {fileID: 8300000, guid: 60a9c02a41619af4eaa02e7ed1676c65, type: 3}
+  - {fileID: 8300000, guid: 0c67231f0d031064aa40ea53d95558a8, type: 3}
+  - {fileID: 8300000, guid: f3c2b66926266d0458df9fda1fdd0b54, type: 3}
+  - {fileID: 8300000, guid: 6698df44c6431a040bf7168981190a0f, type: 3}
+  - {fileID: 8300000, guid: d48b967a1596ae643896a2e2cc3bf1e0, type: 3}
+  - {fileID: 8300000, guid: 287db249a25936e4288dcd92d863f36f, type: 3}
+  - {fileID: 8300000, guid: 829e1a3b20e9d8d48b84627258ddc3fc, type: 3}
 --- !u!1 &1307598441
 GameObject:
   m_ObjectHideFlags: 0
@@ -32744,6 +32813,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1971364663}
   - component: {fileID: 1971364664}
+  - component: {fileID: 1971364665}
   m_Layer: 0
   m_Name: backWall
   m_TagString: Untagged
@@ -32787,6 +32857,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.1697876, y: 1.7625599, z: 0.15115915}
   m_Center: {x: 0.026419502, y: -0.22575392, z: -1.0981704}
+--- !u!114 &1971364665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971364662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0238667cd762914dbb78dc290dbe024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  hitEffectPrefab: {fileID: 8353633999020187807, guid: fb89afc3b3b703f4697edffbf66c07ca,
+    type: 3}
+  hitSounds:
+  - {fileID: 8300000, guid: 60a9c02a41619af4eaa02e7ed1676c65, type: 3}
+  - {fileID: 8300000, guid: 0c67231f0d031064aa40ea53d95558a8, type: 3}
+  - {fileID: 8300000, guid: f3c2b66926266d0458df9fda1fdd0b54, type: 3}
+  - {fileID: 8300000, guid: 6698df44c6431a040bf7168981190a0f, type: 3}
+  - {fileID: 8300000, guid: d48b967a1596ae643896a2e2cc3bf1e0, type: 3}
+  - {fileID: 8300000, guid: 287db249a25936e4288dcd92d863f36f, type: 3}
+  - {fileID: 8300000, guid: 829e1a3b20e9d8d48b84627258ddc3fc, type: 3}
 --- !u!1 &1975511572
 GameObject:
   m_ObjectHideFlags: 0
@@ -62101,7 +62193,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4118435067846870441}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0238667cd762914dbb78dc290dbe024, type: 3}
   m_Name: 
