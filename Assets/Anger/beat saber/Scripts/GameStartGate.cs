@@ -21,10 +21,8 @@ public class GameStartGate : MonoBehaviour
         Debug.Log("Gate Check | left = " + leftHeld + " | right = " + rightHeld + " | both = " + both);
 
         if (SaberGameManager.Instance == null) return;
+        if (SaberGameManager.Instance.gameLocked) return;
 
-        if (both)
-        {
-            SaberGameManager.Instance.SetRunning(true);
-        }
+        SaberGameManager.Instance.SetRunning(both);
     }
 }

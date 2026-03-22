@@ -125,9 +125,14 @@ public class SaberGameManager : MonoBehaviour
         if (winPanel) winPanel.SetActive(false);
         if (wrongX) wrongX.SetActive(false);
 
-        NoteHitState[] notes = FindObjectsByType<NoteHitState>(FindObjectsSortMode.None);
-        foreach (var n in notes)
-            Destroy(n.gameObject);
+        if (spawner != null)
+            spawner.ClearAllNotes();
+        else
+        {
+            NoteHitState[] notes = FindObjectsByType<NoteHitState>(FindObjectsSortMode.None);
+            foreach (var n in notes)
+                Destroy(n.gameObject);
+        }
 
         SetRunning(false);
 
