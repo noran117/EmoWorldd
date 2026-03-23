@@ -10,16 +10,23 @@ public class NoteColor : MonoBehaviour
 
     void Awake()
     {
-        rend = GetComponentInChildren<Renderer>();
+        if (rend == null)
+            rend = GetComponentInChildren<Renderer>();
     }
+
     void Start()
     {
-        if (!rend) rend = GetComponentInChildren<Renderer>();
+        Debug.Log(gameObject.name + " -> NoteColor = " + color);
 
-        if (rend)
+        if (rend == null)
         {
-            if (color == SaberColorType.Red && redMat) rend.material = redMat;
-            if (color == SaberColorType.Blue && blueMat) rend.material = blueMat;
+            Debug.LogWarning(gameObject.name + " -> Renderer is NULL");
+            return;
         }
+
+        if (color == SaberColorType.Red && redMat != null)
+            rend.material = redMat;
+        else if (color == SaberColorType.Blue && blueMat != null)
+            rend.material = blueMat;
     }
 }

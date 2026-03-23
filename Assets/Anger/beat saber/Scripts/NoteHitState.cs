@@ -10,11 +10,13 @@ public class NoteHitState : MonoBehaviour
         if (other.CompareTag("HitZone"))
         {
             canBeHit = true;
+            Debug.Log(gameObject.name + " entered HitZone");
         }
 
         if (other.CompareTag("DestroyZone"))
         {
-            DestroyNow();
+            Debug.Log(gameObject.name + " entered DestroyZone");
+            Destroy(gameObject);
         }
     }
 
@@ -23,12 +25,7 @@ public class NoteHitState : MonoBehaviour
         if (other.CompareTag("HitZone"))
         {
             canBeHit = false;
+            Debug.Log(gameObject.name + " exited HitZone");
         }
-    }
-
-    public void DestroyNow()
-    {
-        Debug.Log("Destroying: " + gameObject.name);
-        Destroy(gameObject);
     }
 }

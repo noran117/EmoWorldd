@@ -2,66 +2,92 @@
 
 public class SaberLaser : MonoBehaviour
 {
-    public LayerMask noteLayer;
-    public float castRadius = 0.05f;
-    public float minCutSpeed = 0.8f;
+    public float minCutSpeed = 0f;
 
-    Vector3 prevPos;
-    Vector3 velocity;
-
-    SaberColor saberColor;
+    private Vector3 lastPos;
+    private float currentSpeed;
+    private SaberColor saberColor;
 
     void Start()
     {
-        prevPos = transform.position;
-        saberColor = GetComponent<SaberColor>();
+        lastPos = transform.position;
+        saberColor = GetComponentInParent<SaberColor>();
+
+        Debug.Log(gameObject.name + " START | saberColor = " + (saberColor != null ? saberColor.color.ToString() : "NULL"));
     }
 
     void Update()
     {
-        if (SaberGameManager.Instance != null && !SaberGameManager.Instance.gameRunning)
+        currentSpeed = (transform.position - lastPos).magnitude / Mathf.Max(Time.deltaTime, 0.0001f);
+        lastPos = transform.position;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+      //  Debug.Log("---- ON TRIGGER ENTER with: " + other.name);
+
+        if (SaberGameManager.Instance == null)
         {
-            prevPos = transform.position;
+            Debug.Log("STOP: SaberGameManager.Instance is NULL");
             return;
         }
 
-        velocity = (transform.position - prevPos) / Mathf.Max(Time.deltaTime, 0.0001f);
-
-        Vector3 dir = transform.position - prevPos;
-        float dist = dir.magnitude;
-
-        if (dist > 0.0001f)
+        if (!SaberGameManager.Instance.gameRunning)
         {
-            if (Physics.SphereCast(prevPos, castRadius, dir.normalized, out RaycastHit hit, dist, noteLayer))
-            {
-                TryHit(hit.collider);
-            }
+            Debug.Log("STOP: gameRunning is FALSE");
+            return;
         }
 
-        prevPos = transform.position;
-    }
+        //if (currentSpeed < minCutSpeed)
+        //{
+        //    Debug.Log("STOP: Saber too slow = " + currentSpeed);
+        //    return;
+        //}
 
-    void TryHit(Collider col)
-    {
-        var state = col.GetComponentInParent<NoteHitState>();
-        if (state == null) return;
-        if (state.wasHit) return;
+        NoteHitState state = other.GetComponentInParent<NoteHitState>();
+        NoteColor noteColor = other.GetComponentInParent<NoteColor>();
 
-        var noteColor = col.GetComponentInParent<NoteColor>();
-        var myColor = (saberColor != null) ? saberColor.color : SaberColorType.Red;
-
-        state.wasHit = true;
-
-        if (noteColor != null && noteColor.color == myColor)
+        if (state == null)
         {
+            Debug.Log("STOP: No NoteHitState on " + other.name);
+            return;
+        }
+
+        if (noteColor == null)
+        {
+            Debug.Log("STOP: No NoteColor on " + other.name);
+            return;
+        }
+
+        if (saberColor == null)
+        {
+            Debug.Log("STOP: saberColor is NULL");
+            return;
+        }
+
+        Debug.Log("HIT CHECK | saber = " + saberColor.color + " | note = " + noteColor.color + " | wasHit = " + state.wasHit + " | speed = " + currentSpeed);
+
+        if (state.wasHit)
+        {
+            Debug.Log("STOP: Note already hit");
+            return;
+        }
+
+        if (noteColor.color == saberColor.color)
+        {
+            Debug.Log("CORRECT HIT");
+
+            state.wasHit = true;
             SaberGameManager.Instance.AddScore(10);
             SaberGameManager.Instance.PlayCorrect();
+
+            Destroy(state.gameObject);
         }
         else
         {
+            Debug.Log("WRONG HIT");
+            SaberGameManager.Instance.AddScore(-10);
             SaberGameManager.Instance.PlayWrong();
         }
-
-        Destroy(state.gameObject);
     }
 }
