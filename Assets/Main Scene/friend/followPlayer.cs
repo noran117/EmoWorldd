@@ -19,7 +19,6 @@ public class followPlayer : MonoBehaviour
 
     bool introPlaying = true;
 
-    // هل الرفيق في حالة رد فعل؟
     private bool reacting = false;
 
     void Start()
@@ -38,16 +37,17 @@ public class followPlayer : MonoBehaviour
 
        if (player == null) return;
 
-        // إذا كان في حالة مفاجأة يبقى واقف
         if (reacting)
         {
             float dist = Vector3.Distance(player.position, transform.position);
 
-            // إذا اللاعب تحرك نرجع نمشي
             if (dist > 2f)
             {
                 reacting = false;
                 agent.isStopped = false;
+
+              //  anim.ResetTrigger("Surprise");
+
             }
             else
             {
@@ -56,7 +56,6 @@ public class followPlayer : MonoBehaviour
             }
         }
 
-        // المكان الذي يقف فيه الصديق بجانب اللاعب
         Vector3 desiredPosition =
             player.position +
             player.right * sideOffset +
@@ -87,7 +86,6 @@ public class followPlayer : MonoBehaviour
         anim.SetBool("IsCheering", value);
     }
 
-    // رد فعل عند فتح المحارة
     public void ReactToShell()
     {
         reacting = true;
@@ -116,14 +114,12 @@ public class followPlayer : MonoBehaviour
 
         yield return new WaitForSeconds(5f);
 
-        // اظهار الغيمة
         waveMessage.SetActive(true);
 
         anim.SetTrigger("Wave");
 
         yield return new WaitForSeconds(5f);
 
-        // اخفاء الغيمة
         waveMessage.SetActive(false);
 
         introPlaying = false;
@@ -148,7 +144,6 @@ public class followPlayer : MonoBehaviour
 
         transform.rotation = Quaternion.LookRotation(dir);
 
-        // إظهار الغيمة
         talkMessage.SetActive(true);
 
         anim.SetBool("Talking", true);
@@ -157,10 +152,8 @@ public class followPlayer : MonoBehaviour
 
         anim.SetBool("Talking", false);
 
-        // إخفاء الغيمة
         talkMessage.SetActive(false);
 
-        // agent.ResetPath();
 
         agent.isStopped = false;
 

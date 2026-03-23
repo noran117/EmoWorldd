@@ -5,17 +5,20 @@ public class ShellOpen : MonoBehaviour
     private Animator animator;
     private AudioSource audioSource;
     private bool isOpen = false;
+
     public followPlayer companion;
-
-
 
     public GameObject openMessage;
     public GameObject thanksMessage;
+
+    private bool playerInside = false; 
+
     private void Start()
     {
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
 
+        // البداية
         if (openMessage != null)
             openMessage.SetActive(true);
 
@@ -23,56 +26,64 @@ public class ShellOpen : MonoBehaviour
             thanksMessage.SetActive(false);
     }
 
-    private void OnTriggerEnter(Collider other)
+   private void OnTriggerEnter(Collider other)
+{
+    if (other.CompareTag("PlayerHand"))
+    {
+        if (!playerInside && !isOpen) 
+        {
+            playerInside = true;
+            OpenShell();
+        }
+    }
+}
+
+
+
+    private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("PlayerHand"))
         {
-            /*isOpen = !isOpen;
-            animator.SetBool("Open", isOpen);
-            Debug.Log("Shell state changed: " + (isOpen ? "Opened" : "Closed"));
-            if (audioSource != null)
-            {
-                audioSource.Play();
-            }*/
-            OpenShell();
-            Invoke(nameof(CloseShell), 10f);
+            playerInside = false; 
         }
     }
 
     void OpenShell()
     {
+        isOpen = true;
+
         animator.SetBool("Open", true);
+
+        if (thanksMessage != null)
+        {
+           // thanksMessage.SetActive(false);
+            thanksMessage.SetActive(true);
+        }
 
         if (openMessage != null)
             openMessage.SetActive(false);
 
-        // اظهار شكرا
-        if (thanksMessage != null)
-            thanksMessage.SetActive(true);
-
         if (companion != null)
-        {
             companion.ReactToShell();
-        }
-
-
-
 
         Debug.Log("Shell opened.");
-        if (audioSource != null)
-        {
-            audioSource.Play();
-        }
 
+        if (audioSource != null)
+            audioSource.Play();
+        
+        CancelInvoke();
+        Invoke(nameof(CloseShell),5f);
     }
 
     void CloseShell()
     {
+        isOpen = false;
+
         animator.SetBool("Open", false);
+
         if (audioSource != null)
-        {
             audioSource.Stop();
-        }
+
         if (openMessage != null)
             openMessage.SetActive(true);
 
@@ -80,3 +91,30 @@ public class ShellOpen : MonoBehaviour
             thanksMessage.SetActive(false);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
