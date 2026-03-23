@@ -163,7 +163,20 @@ public class SaberGameManager : MonoBehaviour
         Debug.Log("WIN CALLED");
 
         gameLocked = true;
-        SetRunning(false);
+
+        if (spawner != null)
+            spawner.StopSpawning();
+
+        gameRunning = false;
+
+        if (gameMusic && gameMusic.isPlaying)
+            gameMusic.Stop();
+
+        if (backgroundMusic && !backgroundMusic.isPlaying)
+            backgroundMusic.Play();
+
+        if (gameUIRoot)
+            gameUIRoot.SetActive(true);
 
         if (sfx && winClip)
             sfx.PlayOneShot(winClip);
