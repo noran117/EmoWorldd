@@ -22310,7 +22310,7 @@ Transform:
   m_GameObject: {fileID: 1945047402}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7056812, z: -0, w: 0.70852953}
-  m_LocalPosition: {x: 17.27, y: 0.12, z: 4.9885}
+  m_LocalPosition: {x: 18.23, y: 0.12, z: 4.9885}
   m_LocalScale: {x: 0.28458995, y: 0.28458995, z: 0.28458995}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25003,7 +25003,7 @@ Transform:
   m_GameObject: {fileID: 5518717007918019510}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.68932, z: -0, w: 0.724457}
-  m_LocalPosition: {x: 1.61, y: 1.11, z: 0.47}
+  m_LocalPosition: {x: 1.7937006, y: 1.11, z: 0.47}
   m_LocalScale: {x: 0.42017, y: 0.42017, z: 0.42017}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -25020,7 +25020,7 @@ Transform:
   m_GameObject: {fileID: 2851920558691506683}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.68932, z: -0, w: 0.724457}
-  m_LocalPosition: {x: 1.6162996, y: 1.1099987, z: 1.1896002}
+  m_LocalPosition: {x: 1.8, y: 1.1099987, z: 1.1896002}
   m_LocalScale: {x: 0.106113926, y: 1.1157889, z: 0.106113926}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -25209,10 +25209,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5396053a2a57c57468b37b3c010db9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaberLaser
-  noteLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  castRadius: 0.05
   minCutSpeed: 0.8
 --- !u!114 &1885449332444758860
 MonoBehaviour:
@@ -25276,13 +25272,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notes:
-  - {fileID: 1782884533092850867, guid: 6825a03c4c825b84a888c73dcd468af0, type: 3}
-  - {fileID: 1782884533092850867, guid: 9f92d2148bd89b8488a18d55c34f4f2e, type: 3}
+  - prefab: {fileID: 1782884533092850867, guid: 9f92d2148bd89b8488a18d55c34f4f2e,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 1782884533092850867, guid: 6825a03c4c825b84a888c73dcd468af0,
+      type: 3}
+    weight: 1
   points:
-  - {fileID: 1252052941}
-  - {fileID: 1171920542}
-  bpm: 130
-  spawnEveryBeats: 2
+  - point: {fileID: 1252052941}
+    enabled: 1
+  - point: {fileID: 1171920542}
+    enabled: 1
+  minSpawnDelay: 0.4
+  maxSpawnDelay: 0.8
+  maxActiveNotes: 100
+  randomRotationY: 0
 --- !u!1 &2139546544430991298
 GameObject:
   m_ObjectHideFlags: 0
@@ -25328,10 +25332,10 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5943732655590410287}
   - {fileID: 6345350761023800763}
   - {fileID: 8124958806391277514}
   - {fileID: 7772310403162499712}
-  - {fileID: 5943732655590410287}
   m_Father: {fileID: 8901100554424989595}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -25488,9 +25492,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   gameRunning: 0
-  score: 0
-  winScore: 20
   gameLocked: 0
+  score: 0
+  winScore: 10
   gameUIRoot: {fileID: 5995638563611685197}
   scoreText: {fileID: 3467656208314835168}
   winPanel: {fileID: 2139546544430991298}
@@ -26345,7 +26349,7 @@ Transform:
   m_GameObject: {fileID: 4838838884789817689}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7056812, z: -0, w: 0.70852953}
-  m_LocalPosition: {x: 10.91, y: 0.15, z: 4.9885}
+  m_LocalPosition: {x: 10, y: 0.15, z: 4.9885}
   m_LocalScale: {x: 0.28458995, y: 0.28458995, z: 0.28458995}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26429,10 +26433,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5396053a2a57c57468b37b3c010db9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaberLaser
-  noteLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  castRadius: 0.05
   minCutSpeed: 0.8
 --- !u!136 &7854611127468902861
 CapsuleCollider:
@@ -26449,7 +26449,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -26753,7 +26753,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2

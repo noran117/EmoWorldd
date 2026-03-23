@@ -7,22 +7,28 @@ public class GameStartGate : MonoBehaviour
     public SaberGrabState leftSaber;
     public SaberGrabState rightSaber;
 
+    bool lastBoth;
+
     void Awake()
     {
         Instance = this;
+        Debug.Log("GameStartGate Awake");
     }
 
-    public void Check()
+    void Update()
     {
+        if (SaberGameManager.Instance == null) return;
+        if (SaberGameManager.Instance.gameLocked) return;
+
         bool leftHeld = leftSaber != null && leftSaber.isHeld;
         bool rightHeld = rightSaber != null && rightSaber.isHeld;
         bool both = leftHeld && rightHeld;
 
-        Debug.Log("Gate Check | left = " + leftHeld + " | right = " + rightHeld + " | both = " + both);
-
-        if (SaberGameManager.Instance == null) return;
-        if (SaberGameManager.Instance.gameLocked) return;
-
-        SaberGameManager.Instance.SetRunning(both);
+        if (both != lastBoth)
+        {
+            Debug.Log("Gate Update | left = " + leftHeld + " | right = " + rightHeld + " | both = " + both);
+            SaberGameManager.Instance.SetRunning(both);
+            lastBoth = both;
+        }
     }
 }

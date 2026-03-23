@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class SaberGameManager : MonoBehaviour
 {
@@ -8,17 +9,15 @@ public class SaberGameManager : MonoBehaviour
 
     [Header("Game State")]
     public bool gameRunning;
-    public int score;
-    public int winScore = 100;
     public bool gameLocked;
+    public int score;
+    public int winScore = 1000;
 
     [Header("UI")]
-    public GameObject gameUIRoot;   // الأب تبع UI كله
+    public GameObject gameUIRoot;
     public TMP_Text scoreText;
     public GameObject winPanel;
     public GameObject wrongX;
-
-    [Header("Red Screen Overlay")]
     public GameObject redOverlay;
     [Range(0f, 1f)] public float startRedAlpha = 0.6f;
 
@@ -34,13 +33,20 @@ public class SaberGameManager : MonoBehaviour
 
     [Header("Spawner")]
     public Spawner spawner;
-   
+
     void Awake()
     {
         Instance = this;
+        Debug.Log("SaberGameManager Awake on: " + gameObject.name);
 
         if (spawner == null)
             spawner = FindFirstObjectByType<Spawner>();
+
+        Debug.Log("Spawner ref = " + (spawner ? spawner.name : "NULL"));
+        Debug.Log("gameUIRoot ref = " + (gameUIRoot ? gameUIRoot.name : "NULL"));
+        Debug.Log("redOverlay ref = " + (redOverlay ? redOverlay.name : "NULL"));
+        Debug.Log("gameMusic ref = " + (gameMusic ? gameMusic.name : "NULL"));
+        Debug.Log("backgroundMusic ref = " + (backgroundMusic ? backgroundMusic.name : "NULL"));
 
         score = 0;
         gameRunning = false;
@@ -57,8 +63,7 @@ public class SaberGameManager : MonoBehaviour
 
     public void SetRunning(bool running)
     {
-        if (gameLocked && running)
-            return;
+        if (gameLocked && running) return;
 
         gameRunning = running;
         Debug.Log("SetRunning called | gameRunning = " + gameRunning);
@@ -71,83 +76,51 @@ public class SaberGameManager : MonoBehaviour
 
         if (running)
         {
-            ShowGameplayUI();
+            if (gameUIRoot) gameUIRoot.SetActive(true);
+            if (redOverlay) redOverlay.SetActive(true);
 
-            if (backgroundMusic) backgroundMusic.Stop();
-            if (gameMusic && !gameMusic.isPlaying) gameMusic.Play();
+            if (backgroundMusic && backgroundMusic.isPlaying)
+                backgroundMusic.Stop();
+
+            if (gameMusic && !gameMusic.isPlaying)
+                gameMusic.Play();
         }
         else
         {
-            HideGameplayUI();
+            if (gameUIRoot) gameUIRoot.SetActive(false);
+            if (redOverlay) redOverlay.SetActive(false);
 
-            if (gameMusic) gameMusic.Stop();
-            if (backgroundMusic && !backgroundMusic.isPlaying) backgroundMusic.Play();
+            if (gameMusic && gameMusic.isPlaying)
+                gameMusic.Stop();
+
+            if (backgroundMusic && !backgroundMusic.isPlaying)
+                backgroundMusic.Play();
         }
-    }
-
-    void ShowGameplayUI()
-    {
-        if (gameUIRoot) gameUIRoot.SetActive(true);
-
-        if (scoreText)
-        {
-            scoreText.gameObject.SetActive(true);
-            scoreText.alpha = 1f;
-            scoreText.text = $"Score: {score}";
-        }
-
-        if (redOverlay)
-        {
-            redOverlay.SetActive(true);
-
-            Image img = redOverlay.GetComponent<Image>();
-            if (img)
-            {
-                Color c = img.color;
-                c.a = startRedAlpha;
-                img.color = c;
-            }
-        }
-    }
-
-    void HideGameplayUI()
-    {
-        if (gameUIRoot) gameUIRoot.SetActive(false);
-    }
-
-    public void RestartGame()
-    {
-        score = 0;
-        gameLocked = false;
 
         RefreshUI();
-
-        if (winPanel) winPanel.SetActive(false);
-        if (wrongX) wrongX.SetActive(false);
-
-        if (spawner != null)
-            spawner.ClearAllNotes();
-        else
-        {
-            NoteHitState[] notes = FindObjectsByType<NoteHitState>(FindObjectsSortMode.None);
-            foreach (var n in notes)
-                Destroy(n.gameObject);
-        }
-
-        SetRunning(false);
-
-        if (GameStartGate.Instance != null)
-            GameStartGate.Instance.Check();
     }
+
 
     public void AddScore(int amount)
     {
         score += amount;
+
+        if (score < 0)
+            score = 0;
+
+        Debug.Log("Score = " + score);
+
         RefreshUI();
         UpdateRedOverlay();
 
         if (score >= winScore)
             Win();
+    }
+
+    void RefreshUI()
+    {
+        if (scoreText)
+            scoreText.text = "Score: " + score;
     }
 
     void UpdateRedOverlay()
@@ -173,10 +146,12 @@ public class SaberGameManager : MonoBehaviour
     public void PlayWrong()
     {
         if (sfx && hitWrong) sfx.PlayOneShot(hitWrong);
-        if (wrongX) StartCoroutine(ShowX());
+
+        if (wrongX)
+            StartCoroutine(ShowWrongX());
     }
 
-    System.Collections.IEnumerator ShowX()
+    IEnumerator ShowWrongX()
     {
         wrongX.SetActive(true);
         yield return new WaitForSeconds(0.35f);
@@ -185,16 +160,22 @@ public class SaberGameManager : MonoBehaviour
 
     void Win()
     {
+        Debug.Log("WIN CALLED");
+
         gameLocked = true;
         SetRunning(false);
 
-        if (sfx && winClip) sfx.PlayOneShot(winClip);
-        if (winPanel) winPanel.SetActive(true);
-    }
+        if (sfx && winClip)
+            sfx.PlayOneShot(winClip);
 
-    void RefreshUI()
-    {
-        if (scoreText)
-            scoreText.text = $"Score: {score}";
+        if (winPanel != null)
+        {
+            Debug.Log("Activating winPanel: " + winPanel.name);
+            winPanel.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("winPanel is NULL");
+        }
     }
 }
