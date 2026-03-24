@@ -10,7 +10,7 @@ public class XRRigSlowMovement : MonoBehaviour
 
     [Header("Speed")]
     public float normalSpeed = 1.5f;
-    public float slowSpeed = 0.4f;
+    public float slowSpeed = 0.08f;
 
     Component targetComponent;
     MemberInfo speedMember;   
