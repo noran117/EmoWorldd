@@ -3,6 +3,10 @@ using UnityEngine.Video;
 
 public class PlayVideoOnButton : MonoBehaviour
 {
+     public Renderer screenRenderer;
+
+    public Material idleMaterial;
+    public Material videoMaterial;
     public VideoPlayer videoPlayer;
     public AudioSource bgSound;
 
@@ -13,6 +17,7 @@ public class PlayVideoOnButton : MonoBehaviour
         if (videoPlayer.isPlaying)
         {
             videoPlayer.Pause();
+            screenRenderer.material = idleMaterial;
             if (bgSound != null)
                 bgSound.Play();
         }
@@ -22,6 +27,7 @@ public class PlayVideoOnButton : MonoBehaviour
                 bgSound.Pause();
                 
             videoPlayer.Play();
+            screenRenderer.material = videoMaterial;
 
         }
     }
