@@ -34,7 +34,6 @@ public class SlideController : MonoBehaviour
 
     void OnDisable()
     {
-        // فقط وقف الـ fallback، لا تنادي Finish من هون
         StopFallback();
     }
 

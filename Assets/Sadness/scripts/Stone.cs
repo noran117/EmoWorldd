@@ -22,11 +22,11 @@ public class Stone : MonoBehaviour
     {
         if (glowParticles == null)
         {
-            Debug.LogWarning("EnableGlow failed: glowParticles is NULL on " + gameObject.name);
+            //Debug.LogWarning("EnableGlow failed: glowParticles is NULL on " + gameObject.name);
             return;
         }
 
-        Debug.Log("EnableGlow called on " + gameObject.name);
+        //Debug.Log("EnableGlow called on " + gameObject.name);
 
         glowParticles.gameObject.SetActive(true);
         glowParticles.transform.position = transform.position + Vector3.up * 0.1f;
@@ -40,7 +40,7 @@ public class Stone : MonoBehaviour
     {
         if (glowParticles == null) return;
 
-        Debug.Log("DisableGlow called on " + gameObject.name);
+        //Debug.Log("DisableGlow called on " + gameObject.name);
 
         glowParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         glowParticles.Clear(true);

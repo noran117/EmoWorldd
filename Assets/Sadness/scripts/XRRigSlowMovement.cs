@@ -72,7 +72,7 @@ public class XRRigSlowMovement : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("XRRigSlowMovement is not found");
+        //Debug.LogWarning("XRRigSlowMovement is not found");
     }
 
     void CacheNormalSpeed()

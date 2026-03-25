@@ -65,8 +65,10 @@ public class AcceptanceManager : MonoBehaviour
         }
     }
 
-    public void OnBookGrabbed()
+    public void OnBookTouched()
     {
+        Debug.Log("BOOK TOUCHED CALLED");
+
         if (started) return;
         started = true;
 
@@ -86,7 +88,11 @@ public class AcceptanceManager : MonoBehaviour
         else
         {
             if (bookAnimator != null)
+            {
                 bookAnimator.SetTrigger(openTriggerName);
+                bookFinished = true;
+                TryEndAcceptance();
+            }
         }
     }
 
