@@ -47,6 +47,8 @@ public class Cardsanimate : MonoBehaviour
 
     public void StartMemories()
     {
+        Debug.Log("StartMemories called | started = " + started);
+
         if (started) return;
         started = true;
 
@@ -56,6 +58,8 @@ public class Cardsanimate : MonoBehaviour
 
     IEnumerator OpenBookThenMemories()
     {
+        Debug.Log("OpenBookThenMemories started");
+
         yield return new WaitForSeconds(closedGlowTime);
         yield return new WaitForSeconds(delayBeforeOpen);
 
@@ -66,22 +70,29 @@ public class Cardsanimate : MonoBehaviour
         }
 
         if (bookAnimator != null)
+        {
+            Debug.Log("Trigger Open");
             bookAnimator.SetTrigger("Open");
+        }
 
         yield return new WaitForSeconds(0.5f);
 
         if (memoriesLight != null)
+        {
+            Debug.Log("Memories light ON");
             memoriesLight.SetActive(true);
+        }
 
         yield return new WaitForSeconds(1f);
 
-        if (mem1 != null) { yield return new WaitForSeconds(delay1); mem1.SetTrigger("Play1"); }
-        if (mem2 != null) { yield return new WaitForSeconds(delay2); mem2.SetTrigger("Play2"); }
-        if (mem3 != null) { yield return new WaitForSeconds(delay3); mem3.SetTrigger("Play3"); }
-        if (mem4 != null) { yield return new WaitForSeconds(delay4); mem4.SetTrigger("Play4"); }
+        if (mem1 != null) { yield return new WaitForSeconds(delay1); Debug.Log("Trigger Play1"); mem1.SetTrigger("Play1"); }
+        if (mem2 != null) { yield return new WaitForSeconds(delay2); Debug.Log("Trigger Play2"); mem2.SetTrigger("Play2"); }
+        if (mem3 != null) { yield return new WaitForSeconds(delay3); Debug.Log("Trigger Play3"); mem3.SetTrigger("Play3"); }
+        if (mem4 != null) { yield return new WaitForSeconds(delay4); Debug.Log("Trigger Play4"); mem4.SetTrigger("Play4"); }
 
         yield return new WaitForSeconds(finishDelayAfterLastMemory);
 
+        Debug.Log("Cardsanimate finished");
         onFinished?.Invoke();
     }
 }

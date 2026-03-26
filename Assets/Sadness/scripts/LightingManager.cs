@@ -34,7 +34,7 @@ public class LightingManager : MonoBehaviour
     {
         if (directionalLight == null)
         {
-            Debug.LogError("Directional Light is not assigned!");
+            //Debug.LogError("Directional Light is not assigned!");
             return;
         }
 
@@ -49,7 +49,7 @@ public class LightingManager : MonoBehaviour
     {
         if (directionalLight == null)
         {
-            Debug.LogError("Directional Light is not assigned!");
+            //Debug.LogError("Directional Light is not assigned!");
             return;
         }
 

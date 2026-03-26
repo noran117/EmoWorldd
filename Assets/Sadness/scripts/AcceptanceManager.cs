@@ -65,13 +65,19 @@ public class AcceptanceManager : MonoBehaviour
         }
     }
 
-    public void OnBookGrabbed()
+    public void OnBookTouched()
     {
+        Debug.Log("BOOK TOUCHED CALLED");
+
         if (started) return;
         started = true;
 
         if (outsideYellowLight != null)
             outsideYellowLight.SetActive(false);
+
+        Debug.Log("useCardsAnimate = " + useCardsAnimate);
+        Debug.Log("cardsAnimate = " + cardsAnimate);
+        Debug.Log("bookAnimator = " + bookAnimator);
 
         if (cardsAnimate != null)
         {
@@ -81,12 +87,19 @@ public class AcceptanceManager : MonoBehaviour
 
         if (useCardsAnimate && cardsAnimate != null)
         {
+            Debug.Log("Calling StartMemories()");
             cardsAnimate.StartMemories();
         }
         else
         {
+            Debug.Log("Fallback: opening only bookAnimator");
+
             if (bookAnimator != null)
+            {
                 bookAnimator.SetTrigger(openTriggerName);
+                bookFinished = true;
+                TryEndAcceptance();
+            }
         }
     }
 

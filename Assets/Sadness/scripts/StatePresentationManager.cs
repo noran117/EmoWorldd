@@ -92,7 +92,7 @@ public class StatePresentationManager : MonoBehaviour
 
     public void PlayState(StatePresentation state)
     {
-        Debug.Log("PlayState ENTERED");
+        //Debug.Log("PlayState ENTERED");
 
         if (voiceCo != null) StopCoroutine(voiceCo);
         if (slideCo != null) StopCoroutine(slideCo);
@@ -176,7 +176,7 @@ public class StatePresentationManager : MonoBehaviour
 
     IEnumerator SlideRoutine(StatePresentation state, int myRun)
     {
-        Debug.Log("SlideRoutine START");
+        //Debug.Log("SlideRoutine START");
         yield return new WaitForSeconds(state.slideDelay);
 
         if (myRun != runId) yield break;
@@ -185,7 +185,7 @@ public class StatePresentationManager : MonoBehaviour
 
         if (slideSpawnPoint == null || slidePrefab == null || state.slideTexture == null)
         {
-            Debug.LogError("SlideRoutine: slideSpawnPoint/slidePrefab/slideTexture is missing!");
+            //Debug.LogError("SlideRoutine: slideSpawnPoint/slidePrefab/slideTexture is missing!");
             slideFinished = true;
             TryFinishBoth(state, myRun);
             yield break;
@@ -198,9 +198,9 @@ public class StatePresentationManager : MonoBehaviour
         currentSlide.transform.localRotation = Quaternion.identity;
         currentSlide.transform.localScale = Vector3.one * 1f;
 
-        Debug.Log("SLIDE SPAWNED");
-        Debug.Log("Spawn point world = " + slideSpawnPoint.position);
-        Debug.Log("Slide root world = " + currentSlide.transform.position);
+        //Debug.Log("SLIDE SPAWNED");
+        //Debug.Log("Spawn point world = " + slideSpawnPoint.position);
+        //Debug.Log("Slide root world = " + currentSlide.transform.position);
 
         //Transform paper = currentSlide.transform.Find("paperQuad");
         //if (paper != null)

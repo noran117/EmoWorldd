@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -32,9 +33,16 @@ public class GameStateManager : MonoBehaviour
 
     private void Start()
     {
-        //ChangeState(GameState.Play);
-        ChangeState(GameState.Depression);
+        //StartCoroutine(StartAfterDelay());
+        ChangeState(GameState.Acceptance);
 
+    }
+
+    IEnumerator StartAfterDelay()
+    {
+        yield return new WaitForSeconds(10f);
+
+        ChangeState(GameState.Play);
     }
 
     public void ChangeState(GameState newState)
@@ -49,21 +57,21 @@ public class GameStateManager : MonoBehaviour
         {
             case GameState.Play:
 
-                Debug.Log("Entered PLAY state");
+                //Debug.Log("Entered PLAY state");
 
-                Debug.Log("StatePresentationManager.Instance = " + StatePresentationManager.Instance);
+                //Debug.Log("StatePresentationManager.Instance = " + StatePresentationManager.Instance);
 
                 if (StatePresentationManager.Instance == null)
                 {
-                    Debug.LogError("StatePresentationManager.Instance is NULL");
+                    //Debug.LogError("StatePresentationManager.Instance is NULL");
                     return;
                 }
 
-                Debug.Log("play state data = " + StatePresentationManager.Instance.play);
+                //Debug.Log("play state data = " + StatePresentationManager.Instance.play);
 
                 StatePresentationManager.Instance.bothFinishedCallback = () =>
                 {
-                    Debug.Log("Play presentation finished");
+                    //Debug.Log("Play presentation finished");
 
                     if (brotherMovement != null)
                         StatePresentationManager.Instance.DuckMusic(0.5f);
@@ -73,14 +81,14 @@ public class GameStateManager : MonoBehaviour
 
                     StatePresentationManager.Instance.UnduckMusic(0.5f);
 
-                    Debug.Log("Slide + Voice Over finished .. starting brother sequence");
+                    //Debug.Log("Slide + Voice Over finished .. starting brother sequence");
                 };
 
-                Debug.Log("About to call PlayState");
+                //Debug.Log("About to call PlayState");
                 StatePresentationManager.Instance.PlayState(
                     StatePresentationManager.Instance.play
                 );
-                Debug.Log("PlayState called");
+                //Debug.Log("PlayState called");
 
                 break;
             //case GameState.Play:
@@ -102,7 +110,8 @@ public class GameStateManager : MonoBehaviour
 
             case GameState.Shock:
                 if (shockTrigger != null) shockTrigger.StartShock();
-                else Debug.LogError("shockTrigger NULL");
+                else 
+                    Debug.LogError("shockTrigger NULL");
                 break;
 
             case GameState.Denial:
@@ -145,7 +154,7 @@ public class GameStateManager : MonoBehaviour
                         if (BargainingManager.Instance != null)
                             BargainingManager.Instance.OnPresentationFinished();
                         else
-                            Debug.LogError("BargainingManager.Instance NULL (OnPresentationFinished)");
+                            Debug.LogError("BargainingManager.Instance NULL");
                     };
 
                     StatePresentationManager.Instance.PlayState(
@@ -193,6 +202,8 @@ public class GameStateManager : MonoBehaviour
                 StatePresentationManager.Instance.bothFinishedCallback = () =>
                 {
                     AcceptanceManager.Instance.NotifyPresentationFinished();
+
+                    StartCoroutine(LoadSceneAfterDelay());
                 };
 
                 StatePresentationManager.Instance.PlayState(
@@ -204,12 +215,12 @@ public class GameStateManager : MonoBehaviour
 
         }
     }
-
-    void StartPlay()
+    IEnumerator LoadSceneAfterDelay()
     {
-        if (brotherMovement != null)
-            brotherMovement.BeginSequence();
+        yield return new WaitForSeconds(30f);
+        SceneManager.LoadScene("Main_Scene");
     }
+
     void EnableAngerObjects()
     {
         ToyBreakableInAngerState[] toys = Object.FindObjectsByType<ToyBreakableInAngerState>(
