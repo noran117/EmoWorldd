@@ -34,7 +34,7 @@ public class GameStateManager : MonoBehaviour
     private void Start()
     {
         //StartCoroutine(StartAfterDelay());
-        ChangeState(GameState.Acceptance);
+        ChangeState(GameState.Depression);
 
     }
 

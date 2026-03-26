@@ -54,8 +54,6 @@ public class DepressionManager : MonoBehaviour
 
             g.enabled = false;
         }
-
-        Debug.Log("DepressionManager: All interactions locked");
     }
 
     void UnlockAllInteractions()
@@ -67,7 +65,6 @@ public class DepressionManager : MonoBehaviour
         }
 
         locked = false;
-        Debug.Log("DepressionManager: All interactions unlocked");
     }
 
     void SetObjectsActive(GameObject[] arr, bool active)
@@ -85,7 +82,6 @@ public class DepressionManager : MonoBehaviour
     {
         if (src == null)
         {
-            Debug.LogWarning("DepressionManager: " + label + " AudioSource is NULL");
             return;
         }
 
@@ -99,12 +95,10 @@ public class DepressionManager : MonoBehaviour
         if (AudioFader.Instance != null)
         {
             AudioFader.Instance.FadeIn(src, 2f, targetVolume);
-            Debug.Log("DepressionManager: FadeIn " + label);
         }
         else
         {
             src.volume = targetVolume;
-            Debug.LogWarning("DepressionManager: AudioFader not found, playing " + label + " مباشرة");
         }
     }
 
@@ -115,7 +109,6 @@ public class DepressionManager : MonoBehaviour
         if (AudioFader.Instance != null)
         {
             AudioFader.Instance.FadeOut(src, 1.5f);
-            Debug.Log("DepressionManager: FadeOut " + label);
         }
         else
         {
@@ -126,8 +119,6 @@ public class DepressionManager : MonoBehaviour
 
     public void StartDepression()
     {
-        Debug.Log("DepressionManager: StartDepression CALLED");
-
         SetObjectsActive(disableOnStart, false);
         SetObjectsActive(enableOnStart, true);
 
@@ -139,7 +130,6 @@ public class DepressionManager : MonoBehaviour
         if (XRRigSlowMovement.Instance != null)
         {
             XRRigSlowMovement.Instance.StartDepressionSlowdown();
-            Debug.Log("DepressionManager: StartDepressionSlowdown CALLED");
         }
         else
         {
@@ -149,8 +139,6 @@ public class DepressionManager : MonoBehaviour
 
     public void EndDepression()
     {
-        Debug.Log("DepressionManager: EndDepression CALLED");
-
         StopLoopedSound(breathingSfx, "Breathing");
         StopLoopedSound(heartbeatSfx, "Heartbeat");
 
@@ -160,7 +148,6 @@ public class DepressionManager : MonoBehaviour
         if (XRRigSlowMovement.Instance != null)
         {
             XRRigSlowMovement.Instance.ResetSpeed();
-            Debug.Log("DepressionManager: ResetSpeed CALLED");
         }
         else
         {
