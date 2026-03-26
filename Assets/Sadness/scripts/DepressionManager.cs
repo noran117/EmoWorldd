@@ -12,6 +12,8 @@ public class DepressionManager : MonoBehaviour
     [Header("SFX")]
     public AudioSource breathingSfx;
     public AudioSource heartbeatSfx;
+    [Range(0f, 1f)] public float breathingTargetVolume = 0.4f;
+    [Range(0f, 1f)] public float heartbeatTargetVolume = 0.3f;
 
     [Header("Lock Interaction")]
     public Grabbable[] ignore;
@@ -30,8 +32,13 @@ public class DepressionManager : MonoBehaviour
     bool IsIgnored(Grabbable g)
     {
         if (ignore == null) return false;
+
         foreach (var item in ignore)
-            if (item == g) return true;
+        {
+            if (item == g)
+                return true;
+        }
+
         return false;
     }
 
@@ -44,8 +51,11 @@ public class DepressionManager : MonoBehaviour
         {
             if (g == null) continue;
             if (IsIgnored(g)) continue;
+
             g.enabled = false;
         }
+
+        Debug.Log("DepressionManager: All interactions locked");
     }
 
     void UnlockAllInteractions()
@@ -57,37 +67,106 @@ public class DepressionManager : MonoBehaviour
         }
 
         locked = false;
+        Debug.Log("DepressionManager: All interactions unlocked");
     }
 
     void SetObjectsActive(GameObject[] arr, bool active)
     {
         if (arr == null) return;
+
         foreach (var obj in arr)
-            if (obj != null) obj.SetActive(active);
+        {
+            if (obj != null)
+                obj.SetActive(active);
+        }
+    }
+
+    void StartLoopedSound(AudioSource src, float targetVolume, string label)
+    {
+        if (src == null)
+        {
+            Debug.LogWarning("DepressionManager: " + label + " AudioSource is NULL");
+            return;
+        }
+
+        src.loop = true;
+        src.playOnAwake = false;
+        src.volume = 0f;
+
+        if (!src.isPlaying)
+            src.Play();
+
+        if (AudioFader.Instance != null)
+        {
+            AudioFader.Instance.FadeIn(src, 2f, targetVolume);
+            Debug.Log("DepressionManager: FadeIn " + label);
+        }
+        else
+        {
+            src.volume = targetVolume;
+            Debug.LogWarning("DepressionManager: AudioFader not found, playing " + label + " مباشرة");
+        }
+    }
+
+    void StopLoopedSound(AudioSource src, string label)
+    {
+        if (src == null) return;
+
+        if (AudioFader.Instance != null)
+        {
+            AudioFader.Instance.FadeOut(src, 1.5f);
+            Debug.Log("DepressionManager: FadeOut " + label);
+        }
+        else
+        {
+            src.Stop();
+            Debug.LogWarning("DepressionManager: AudioFader not found, stopped " + label + " مباشرة");
+        }
     }
 
     public void StartDepression()
     {
+        Debug.Log("DepressionManager: StartDepression CALLED");
+
         SetObjectsActive(disableOnStart, false);
         SetObjectsActive(enableOnStart, true);
 
         LockAllInteractions();
 
-        AudioFader.Instance?.FadeIn(breathingSfx, 2f, 0.4f);
-        AudioFader.Instance?.FadeIn(heartbeatSfx, 2f, 0.3f);
+        StartLoopedSound(breathingSfx, breathingTargetVolume, "Breathing");
+        StartLoopedSound(heartbeatSfx, heartbeatTargetVolume, "Heartbeat");
 
-        XRRigSlowMovement.Instance?.StartDepressionSlowdown();
+        if (XRRigSlowMovement.Instance != null)
+        {
+            XRRigSlowMovement.Instance.StartDepressionSlowdown();
+            Debug.Log("DepressionManager: StartDepressionSlowdown CALLED");
+        }
+        else
+        {
+            Debug.LogWarning("DepressionManager: XRRigSlowMovement.Instance is NULL");
+        }
     }
 
     public void EndDepression()
     {
-        AudioFader.Instance?.FadeOut(breathingSfx, 1.5f);
-        AudioFader.Instance?.FadeOut(heartbeatSfx, 1.5f);
+        Debug.Log("DepressionManager: EndDepression CALLED");
+
+        StopLoopedSound(breathingSfx, "Breathing");
+        StopLoopedSound(heartbeatSfx, "Heartbeat");
 
         SetObjectsActive(enableOnStart, false);
         SetObjectsActive(disableOnStart, true);
 
-        XRRigSlowMovement.Instance?.ResetSpeed();
+        if (XRRigSlowMovement.Instance != null)
+        {
+            XRRigSlowMovement.Instance.ResetSpeed();
+            Debug.Log("DepressionManager: ResetSpeed CALLED");
+        }
+        else
+        {
+            Debug.LogWarning("DepressionManager: XRRigSlowMovement.Instance is NULL");
+        }
+
         UnlockAllInteractions();
     }
 }

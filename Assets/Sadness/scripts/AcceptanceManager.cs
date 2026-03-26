@@ -75,6 +75,10 @@ public class AcceptanceManager : MonoBehaviour
         if (outsideYellowLight != null)
             outsideYellowLight.SetActive(false);
 
+        Debug.Log("useCardsAnimate = " + useCardsAnimate);
+        Debug.Log("cardsAnimate = " + cardsAnimate);
+        Debug.Log("bookAnimator = " + bookAnimator);
+
         if (cardsAnimate != null)
         {
             cardsAnimate.onFinished -= OnBookSequenceFinished;
@@ -83,10 +87,13 @@ public class AcceptanceManager : MonoBehaviour
 
         if (useCardsAnimate && cardsAnimate != null)
         {
+            Debug.Log("Calling StartMemories()");
             cardsAnimate.StartMemories();
         }
         else
         {
+            Debug.Log("Fallback: opening only bookAnimator");
+
             if (bookAnimator != null)
             {
                 bookAnimator.SetTrigger(openTriggerName);
