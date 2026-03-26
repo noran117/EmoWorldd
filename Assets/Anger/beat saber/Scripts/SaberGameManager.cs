@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -15,17 +14,19 @@ public class SaberGameManager : MonoBehaviour
 
     [Header("UI")]
     public GameObject gameUIRoot;
-    public TMP_Text scoreText;
     public GameObject winPanel;
     public GameObject wrongX;
     public GameObject redOverlay;
     [Range(0f, 1f)] public float startRedAlpha = 0.6f;
 
-    [Header("Audio")]
-    public AudioSource sfx;
-    public AudioClip hitCorrect;
-    public AudioClip hitWrong;
-    public AudioClip winClip;
+    [Header("Win")]
+    public ParticleSystem winParticles;
+    public float winPanelDuration = 5f;
+
+    [Header("Audio Sources")]
+    public AudioSource hitCorrectSource;
+    public AudioSource hitWrongSource;
+    public AudioSource winSource;
 
     [Header("Music")]
     public AudioSource gameMusic;
@@ -34,30 +35,28 @@ public class SaberGameManager : MonoBehaviour
     [Header("Spawner")]
     public Spawner spawner;
 
+    bool endingTriggered;
+
     void Awake()
     {
         Instance = this;
-        Debug.Log("SaberGameManager Awake on: " + gameObject.name);
 
         if (spawner == null)
             spawner = FindFirstObjectByType<Spawner>();
 
-        Debug.Log("Spawner ref = " + (spawner ? spawner.name : "NULL"));
-        Debug.Log("gameUIRoot ref = " + (gameUIRoot ? gameUIRoot.name : "NULL"));
-        Debug.Log("redOverlay ref = " + (redOverlay ? redOverlay.name : "NULL"));
-        Debug.Log("gameMusic ref = " + (gameMusic ? gameMusic.name : "NULL"));
-        Debug.Log("backgroundMusic ref = " + (backgroundMusic ? backgroundMusic.name : "NULL"));
-
         score = 0;
         gameRunning = false;
         gameLocked = false;
+        endingTriggered = false;
 
         if (gameUIRoot) gameUIRoot.SetActive(false);
         if (winPanel) winPanel.SetActive(false);
         if (wrongX) wrongX.SetActive(false);
         if (redOverlay) redOverlay.SetActive(false);
 
-        RefreshUI();
+        if (winParticles != null)
+            winParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
         UpdateRedOverlay();
     }
 
@@ -66,7 +65,6 @@ public class SaberGameManager : MonoBehaviour
         if (gameLocked && running) return;
 
         gameRunning = running;
-        Debug.Log("SetRunning called | gameRunning = " + gameRunning);
 
         if (spawner != null)
         {
@@ -96,13 +94,12 @@ public class SaberGameManager : MonoBehaviour
             if (backgroundMusic && !backgroundMusic.isPlaying)
                 backgroundMusic.Play();
         }
-
-        RefreshUI();
     }
-
 
     public void AddScore(int amount)
     {
+        if (endingTriggered) return;
+
         score += amount;
 
         if (score < 0)
@@ -110,17 +107,10 @@ public class SaberGameManager : MonoBehaviour
 
         Debug.Log("Score = " + score);
 
-        RefreshUI();
         UpdateRedOverlay();
 
         if (score >= winScore)
             Win();
-    }
-
-    void RefreshUI()
-    {
-        if (scoreText)
-            scoreText.text = "Score: " + score;
     }
 
     void UpdateRedOverlay()
@@ -140,12 +130,14 @@ public class SaberGameManager : MonoBehaviour
 
     public void PlayCorrect()
     {
-        if (sfx && hitCorrect) sfx.PlayOneShot(hitCorrect);
+        if (hitCorrectSource != null)
+            hitCorrectSource.Play();
     }
 
     public void PlayWrong()
     {
-        if (sfx && hitWrong) sfx.PlayOneShot(hitWrong);
+        if (hitWrongSource != null)
+            hitWrongSource.Play();
 
         if (wrongX)
             StartCoroutine(ShowWrongX());
@@ -160,14 +152,16 @@ public class SaberGameManager : MonoBehaviour
 
     void Win()
     {
+        if (endingTriggered) return;
+        endingTriggered = true;
+
         Debug.Log("WIN CALLED");
 
         gameLocked = true;
+        gameRunning = false;
 
         if (spawner != null)
             spawner.StopSpawning();
-
-        gameRunning = false;
 
         if (gameMusic && gameMusic.isPlaying)
             gameMusic.Stop();
@@ -175,20 +169,29 @@ public class SaberGameManager : MonoBehaviour
         if (backgroundMusic && !backgroundMusic.isPlaying)
             backgroundMusic.Play();
 
-        if (gameUIRoot)
-            gameUIRoot.SetActive(true);
+        if (redOverlay)
+            redOverlay.SetActive(false);
 
-        if (sfx && winClip)
-            sfx.PlayOneShot(winClip);
+        if (wrongX)
+            wrongX.SetActive(false);
+
+        if (winParticles != null)
+            winParticles.Play();
+
+        if (winSource != null)
+            winSource.Play();
+
+        StartCoroutine(ShowWinPanelThenHide());
+    }
+
+    IEnumerator ShowWinPanelThenHide()
+    {
+        if (winPanel != null)
+            winPanel.SetActive(true);
+
+        yield return new WaitForSeconds(winPanelDuration);
 
         if (winPanel != null)
-        {
-            Debug.Log("Activating winPanel: " + winPanel.name);
-            winPanel.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("winPanel is NULL");
-        }
+            winPanel.SetActive(false);
     }
 }
