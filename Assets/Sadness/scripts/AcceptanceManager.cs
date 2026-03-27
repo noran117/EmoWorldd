@@ -17,7 +17,7 @@ public class AcceptanceManager : MonoBehaviour
     [Header("Book")]
     public Cardsanimate cardsAnimate;
     public Animator bookAnimator;
-    public string openTriggerName = "OpenBook";
+    public string openTriggerName = "Open";
     public bool useCardsAnimate = true;
 
     bool started;
@@ -51,7 +51,10 @@ public class AcceptanceManager : MonoBehaviour
         SetObjectsActive(enableOnStart, true);
 
         if (cardsAnimate != null)
+        {
             cardsAnimate.PrepareForAcceptance();
+            cardsAnimate.StartAcceptanceParticles();
+        }
 
         StartCoroutine(OutsideHintRoutine());
     }
@@ -72,10 +75,6 @@ public class AcceptanceManager : MonoBehaviour
 
     public void OnBookTouched()
     {
-        Debug.Log("BOOK TOUCHED CALLED");
-        Debug.Log("acceptanceActive = " + acceptanceActive);
-        Debug.Log("started = " + started);
-
         if (!acceptanceActive) return;
         if (started) return;
 
@@ -83,13 +82,6 @@ public class AcceptanceManager : MonoBehaviour
 
         if (outsideYellowLight != null)
             outsideYellowLight.SetActive(false);
-
-        if (cardsAnimate != null && cardsAnimate.bookClosedEffect != null)
-        {
-            cardsAnimate.bookClosedEffect.gameObject.SetActive(true);
-            cardsAnimate.bookClosedEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            cardsAnimate.bookClosedEffect.Play();
-        }
 
         if (cardsAnimate != null)
         {
@@ -111,6 +103,7 @@ public class AcceptanceManager : MonoBehaviour
             }
         }
     }
+
     void OnBookSequenceFinished()
     {
         bookFinished = true;

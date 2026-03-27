@@ -76,6 +76,7 @@ public class Cardsanimate : MonoBehaviour
             bookSparks.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
     }
+
     public void CleanupAfterAcceptance()
     {
         started = false;
@@ -93,6 +94,35 @@ public class Cardsanimate : MonoBehaviour
         {
             bookSparks.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             bookSparks.gameObject.SetActive(false);
+        }
+    }
+
+    public void StartAcceptanceParticles()
+    {
+        if (bookSparks != null)
+        {
+            bookSparks.gameObject.SetActive(true);
+            bookSparks.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            bookSparks.Play();
+        }
+    }
+
+    public void OnBookAnimationStartEvent()
+    {
+        if (bookClosedEffect != null)
+        {
+            bookClosedEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            bookClosedEffect.gameObject.SetActive(false);
+        }
+    }
+
+    public void OnBookAnimationEndEvent()
+    {
+        if (bookClosedEffect != null)
+        {
+            bookClosedEffect.gameObject.SetActive(true);
+            bookClosedEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            bookClosedEffect.Play();
         }
     }
 
@@ -117,19 +147,6 @@ public class Cardsanimate : MonoBehaviour
     {
         yield return new WaitForSeconds(closedGlowTime);
         yield return new WaitForSeconds(delayBeforeOpen);
-
-        if (bookClosedEffect != null)
-        {
-            bookClosedEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            bookClosedEffect.gameObject.SetActive(false);
-        }
-
-        if (bookSparks != null)
-        {
-            bookSparks.gameObject.SetActive(true);
-            bookSparks.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            bookSparks.Play();
-        }
 
         if (bookAnimator != null)
             bookAnimator.SetTrigger("Open");

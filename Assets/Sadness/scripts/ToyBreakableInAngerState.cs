@@ -4,9 +4,8 @@ using System.Collections;
 public class ToyBreakableInAngerState : MonoBehaviour
 {
     [Header("Breakable Settings (Toy 1)")]
-    public GameObject[] breakStages;      
+    public GameObject[] breakStages;
     public ParticleSystem hitParticles;
-    public AudioSource hitSound;
 
     [Header("Lighting")]
     public Light roomLight;
@@ -15,12 +14,16 @@ public class ToyBreakableInAngerState : MonoBehaviour
 
     [Header("After Toy1 Broken -> Spawn Toy2")]
     public float disappearDelay = 1.0f;
-    public GameObject toy2Prefab;       
+    public GameObject toy2Prefab;
     public Transform toy2SpawnPoint;
+
+    [Header("Hit Control")]
+    public float hitCooldown = 0.25f;
 
     private int hitCount = 0;
     private bool canBreak = false;
     private bool finished = false;
+    private float lastHitTime = -999f;
 
     private GameObject spawnedToy2;
 
@@ -29,12 +32,15 @@ public class ToyBreakableInAngerState : MonoBehaviour
         UpdateVisual();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         if (!canBreak) return;
-        if (!collision.gameObject.CompareTag("Hammer")) return;
+        if (finished) return;
+        if (Time.time - lastHitTime < hitCooldown) return;
+        if (!other.CompareTag("Hammer")) return;
 
-        RegisterHit(collision);
+        lastHitTime = Time.time;
+        RegisterHit(other);
     }
 
     public void EnableBreaking()
@@ -42,16 +48,14 @@ public class ToyBreakableInAngerState : MonoBehaviour
         canBreak = true;
     }
 
-    void RegisterHit(Collision collision)
+    void RegisterHit(Collider other)
     {
-        if (finished) return;
         if (breakStages == null || breakStages.Length == 0) return;
-
         if (hitCount >= breakStages.Length - 1) return;
 
         hitCount++;
         UpdateVisual();
-        PlayEffects(collision);
+        PlayEffects(other);
         IncreaseAngerLight();
 
         if (hitCount == breakStages.Length - 1)
@@ -72,25 +76,24 @@ public class ToyBreakableInAngerState : MonoBehaviour
         }
     }
 
-    void PlayEffects(Collision collision)
+    void PlayEffects(Collider other)
     {
         if (hitParticles != null)
         {
             Vector3 pos = transform.position;
-            if (collision != null && collision.contactCount > 0)
-                pos = collision.contacts[0].point;
+
+            if (other != null)
+                pos = other.ClosestPoint(transform.position);
 
             hitParticles.transform.position = pos;
             hitParticles.Play();
         }
-
-        if (hitSound != null)
-            hitSound.Play();
     }
 
     void IncreaseAngerLight()
     {
         if (roomLight == null) return;
+
         roomLight.color = angerColor;
         roomLight.intensity += lightIncreasePerHit;
     }
@@ -108,7 +111,7 @@ public class ToyBreakableInAngerState : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Toy1: toy2Prefab أو toy2SpawnPoint is not in the inspector!");
+            Debug.LogWarning("Toy1: toy2Prefab أو toy2SpawnPoint Null!");
         }
     }
 
