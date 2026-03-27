@@ -25,35 +25,83 @@ public class ToyBreakableInAngerState : MonoBehaviour
     private bool finished = false;
     private float lastHitTime = -999f;
 
+    private int triggerEnterCount = 0;
+
     private GameObject spawnedToy2;
 
     void Start()
     {
+        Debug.Log("ToyBreakableInAngerState START on: " + gameObject.name);
         UpdateVisual();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!canBreak) return;
-        if (finished) return;
-        if (Time.time - lastHitTime < hitCooldown) return;
-        if (!other.CompareTag("Hammer")) return;
+        Debug.Log("=== ON TRIGGER ENTER WORKED ===");
+        Debug.Log("Entered by: " + other.gameObject.name);
+        Debug.Log("Tag: " + other.tag);
+        Debug.Log("Parent: " + (other.transform.parent != null ? other.transform.parent.name : "NO PARENT"));
+        Debug.Log("Root: " + other.transform.root.name);
 
+        if (!canBreak)
+        {
+            Debug.Log("STOP: canBreak = false");
+            return;
+        }
+
+        if (finished)
+        {
+            Debug.Log("STOP: finished = true");
+            return;
+        }
+
+        if (Time.time - lastHitTime < hitCooldown)
+        {
+            Debug.Log("STOP: cooldown");
+            return;
+        }
+
+        bool hammerHit =
+            other.CompareTag("Hammer") ||
+            (other.transform.parent != null && other.transform.parent.CompareTag("Hammer")) ||
+            (other.transform.root != null && other.transform.root.CompareTag("Hammer"));
+
+        if (!hammerHit)
+        {
+            Debug.Log("STOP: not Hammer or Hammer parent/root");
+            return;
+        }
+
+        Debug.Log("VALID HIT");
         lastHitTime = Time.time;
         RegisterHit(other);
     }
-
     public void EnableBreaking()
     {
         canBreak = true;
+        Debug.Log("EnableBreaking CALLED on: " + gameObject.name);
     }
 
     void RegisterHit(Collider other)
     {
-        if (breakStages == null || breakStages.Length == 0) return;
-        if (hitCount >= breakStages.Length - 1) return;
+        Debug.Log("=== REGISTER HIT WORKED ===");
+        Debug.Log("Current hitCount before = " + hitCount);
+
+        if (breakStages == null || breakStages.Length == 0)
+        {
+            Debug.LogWarning("STOP: breakStages empty");
+            return;
+        }
+
+        if (hitCount >= breakStages.Length - 1)
+        {
+            Debug.Log("STOP: already at last stage");
+            return;
+        }
 
         hitCount++;
+        Debug.Log("HIT REGISTERED -> hitCount = " + hitCount);
+
         UpdateVisual();
         PlayEffects(other);
         IncreaseAngerLight();
@@ -61,18 +109,34 @@ public class ToyBreakableInAngerState : MonoBehaviour
         if (hitCount == breakStages.Length - 1)
         {
             finished = true;
+            Debug.Log("FINAL STAGE reached");
             StartCoroutine(HideAndSpawnToy2());
         }
     }
 
     void UpdateVisual()
     {
-        if (breakStages == null) return;
+        if (breakStages == null)
+        {
+            Debug.LogWarning("UpdateVisual: breakStages is null");
+            return;
+        }
+
+        Debug.Log("UpdateVisual CALLED. Active stage index = " + hitCount);
 
         for (int i = 0; i < breakStages.Length; i++)
         {
             if (breakStages[i] != null)
-                breakStages[i].SetActive(i == hitCount);
+            {
+                bool shouldBeActive = (i == hitCount);
+                breakStages[i].SetActive(shouldBeActive);
+
+                Debug.Log("Stage " + i + " = " + breakStages[i].name + " -> Active: " + shouldBeActive);
+            }
+            else
+            {
+                Debug.LogWarning("Stage " + i + " is NULL");
+            }
         }
     }
 
@@ -87,27 +151,44 @@ public class ToyBreakableInAngerState : MonoBehaviour
 
             hitParticles.transform.position = pos;
             hitParticles.Play();
+
+            Debug.Log("Hit particles PLAY at position: " + pos);
+        }
+        else
+        {
+            Debug.Log("hitParticles is NULL");
         }
     }
 
     void IncreaseAngerLight()
     {
-        if (roomLight == null) return;
+        if (roomLight == null)
+        {
+            Debug.Log("roomLight is NULL");
+            return;
+        }
 
         roomLight.color = angerColor;
         roomLight.intensity += lightIncreasePerHit;
+
+        Debug.Log("Light changed. New intensity = " + roomLight.intensity);
     }
 
     IEnumerator HideAndSpawnToy2()
     {
+        Debug.Log("HideAndSpawnToy2 STARTED");
+
         yield return new WaitForSeconds(disappearDelay);
 
+        Debug.Log("Hiding object: " + gameObject.name);
         gameObject.SetActive(false);
 
         if (toy2Prefab != null && toy2SpawnPoint != null)
         {
             spawnedToy2 = Instantiate(toy2Prefab, toy2SpawnPoint.position, toy2SpawnPoint.rotation);
             spawnedToy2.SetActive(true);
+
+            Debug.Log("Toy2 spawned successfully: " + spawnedToy2.name);
         }
         else
         {
