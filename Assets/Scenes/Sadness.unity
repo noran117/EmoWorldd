@@ -22377,6 +22377,11 @@ PrefabInstance:
       propertyPath: runSpeed
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7266654974166395074, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: basketvoice
+      value: 
+      objectReference: {fileID: 8300000, guid: 840e383e4dbfb9f479084a5691433818, type: 3}
     - target: {fileID: 7269815397948918955, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_LocalPosition.y
