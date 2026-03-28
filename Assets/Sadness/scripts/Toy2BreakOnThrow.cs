@@ -42,8 +42,6 @@ public class Toy2BreakOnThrow : MonoBehaviour
             );
 
             SnapZone[] snapZones = spawnedBroken.GetComponentsInChildren<SnapZone>(true);
-            Debug.Log("SnapZones found = " + snapZones.Length);
-
             for (int i = 0; i < snapZones.Length; i++)
             {
                 if (snapZones[i] != null)
@@ -57,7 +55,31 @@ public class Toy2BreakOnThrow : MonoBehaviour
             Debug.LogWarning("Broken Model Prefab not assigned!");
         }
 
-        gameObject.SetActive(false);
+        Collider[] cols = GetComponentsInChildren<Collider>();
+        for (int i = 0; i < cols.Length; i++)
+        {
+            cols[i].enabled = false;
+        }
+
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true;
+        }
+
+        MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>();
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].enabled = false;
+        }
+
+        Grabbable grab = GetComponent<Grabbable>();
+        if (grab != null)
+        {
+            grab.enabled = false;
+        }
 
         StartCoroutine(GoNext());
     }
@@ -69,14 +91,12 @@ public class Toy2BreakOnThrow : MonoBehaviour
         if (spawnedBroken == null) yield break;
 
         SnapZone[] snapZones = spawnedBroken.GetComponentsInChildren<SnapZone>(true);
-        Debug.Log("Enabling SnapZones Count = " + snapZones.Length);
 
         for (int i = 0; i < snapZones.Length; i++)
         {
             if (snapZones[i] != null)
             {
                 snapZones[i].enabled = true;
-                Debug.Log("Enabled SnapZone on: " + snapZones[i].gameObject.name);
             }
         }
     }
@@ -84,6 +104,9 @@ public class Toy2BreakOnThrow : MonoBehaviour
     IEnumerator GoNext()
     {
         yield return new WaitForSeconds(nextStateDelay);
+
+        gameObject.SetActive(false);
+
         GameStateManager.Instance.ChangeState(GameState.Bargaining);
     }
 }

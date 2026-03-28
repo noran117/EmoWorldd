@@ -34,8 +34,7 @@ public class GameStateManager : MonoBehaviour
     private void Start()
     {
         //StartCoroutine(StartAfterDelay());
-        //ChangeState(GameState.Play);
-        brotherMovement.BeginSequence();
+        ChangeState(GameState.Anger);
 
     }
 

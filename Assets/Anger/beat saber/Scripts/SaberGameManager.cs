@@ -37,16 +37,9 @@ public class SaberGameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        Debug.Log("SaberGameManager Awake on: " + gameObject.name);
 
         if (spawner == null)
             spawner = FindFirstObjectByType<Spawner>();
-
-        Debug.Log("Spawner ref = " + (spawner ? spawner.name : "NULL"));
-        Debug.Log("gameUIRoot ref = " + (gameUIRoot ? gameUIRoot.name : "NULL"));
-        Debug.Log("redOverlay ref = " + (redOverlay ? redOverlay.name : "NULL"));
-        Debug.Log("gameMusic ref = " + (gameMusic ? gameMusic.name : "NULL"));
-        Debug.Log("backgroundMusic ref = " + (backgroundMusic ? backgroundMusic.name : "NULL"));
 
         score = 0;
         gameRunning = false;
@@ -66,7 +59,6 @@ public class SaberGameManager : MonoBehaviour
         if (gameLocked && running) return;
 
         gameRunning = running;
-        Debug.Log("SetRunning called | gameRunning = " + gameRunning);
 
         if (spawner != null)
         {

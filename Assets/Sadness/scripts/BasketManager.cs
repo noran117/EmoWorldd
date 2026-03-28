@@ -115,10 +115,6 @@ public class BasketManager : MonoBehaviour
                     entry.verticalId = Shader.PropertyToID(verticalProp);
 
                 basketEntries.Add(entry);
-
-                Debug.Log(
-                    $"Basket material: {mat.name} | Shader: {(mat.shader != null ? mat.shader.name : "NoShader")} | DissolveProp: {dissolveProp} | VerticalProp: {verticalProp}"
-                );
             }
         }
 
@@ -142,11 +138,9 @@ public class BasketManager : MonoBehaviour
 
     public void ShowBasket()
     {
-        Debug.Log("ShowBasket CALLED");
 
         if (basketRoot == null)
         {
-            Debug.LogWarning("basketRoot is NULL");
             return;
         }
 
@@ -160,13 +154,10 @@ public class BasketManager : MonoBehaviour
 
         if (stones != null)
         {
-            Debug.Log("stones array length = " + stones.Length);
-
             for (int i = 0; i < stones.Length; i++)
             {
                 if (stones[i] != null)
                 {
-                    Debug.Log("Activating stone: " + stones[i].name);
                     stones[i].gameObject.SetActive(true);
                 }
                 else
@@ -187,26 +178,19 @@ public class BasketManager : MonoBehaviour
 
     private IEnumerator ShowBasketRoutine()
     {
-        Debug.Log("ShowBasketRoutine STARTED");
-
         yield return null;
-
-        Debug.Log("After one frame");
 
         if (stones == null)
         {
-            Debug.LogWarning("stones array is NULL inside routine");
             yield return StartCoroutine(AppearDissolve());
             yield break;
         }
 
-        Debug.Log("Stones Count = " + stones.Length);
 
         for (int i = 0; i < stones.Length; i++)
         {
             if (stones[i] != null)
             {
-                Debug.Log("Calling EnableGlow on: " + stones[i].name);
                 stones[i].EnableGlow();
             }
             else

@@ -8601,6 +8601,59 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 577379107}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &583697488 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4422522045093291540, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+    type: 3}
+  m_PrefabInstance: {fileID: 1075988413}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &583697489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583697488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f92cc5cd1e13054d944a87522dfc017, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ToyBreakableInAngerState
+  breakStages:
+  - {fileID: 1122989859}
+  - {fileID: 2045242060}
+  - {fileID: 739012232}
+  - {fileID: 45476080}
+  hitParticles: {fileID: 1534805414}
+  roomLight: {fileID: 1051065787}
+  angerColor: {r: 1, g: 0, b: 0, a: 1}
+  lightIncreasePerHit: 0.3
+  disappearDelay: 10
+  toy2Prefab: {fileID: 9179634261764958681, guid: f9b97e8b0f6c4c842a42d61ce7204448,
+    type: 3}
+  toy2SpawnPoint: {fileID: 344534446}
+  hitCooldown: 0.25
+--- !u!65 &583697490
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583697488}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.8370867, y: 1, z: 2.4984722}
+  m_Center: {x: 22.868622, y: 0, z: -5.1741505}
 --- !u!1001 &584595509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19034,8 +19087,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1623690877514705334, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
+      propertyPath: m_SpotAngle
+      value: 80.29811
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623690877514705334, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
       propertyPath: m_Lightmapping
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1623690877514705334, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 67.473724
       objectReference: {fileID: 0}
     - target: {fileID: 1623690877514705334, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
@@ -23172,6 +23235,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -1.85
       objectReference: {fileID: 0}
+    - target: {fileID: 8613842971421223564, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7.187195
+      objectReference: {fileID: 0}
+    - target: {fileID: 8613842971421223564, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.115
+      objectReference: {fileID: 0}
+    - target: {fileID: 8613842971421223564, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 12.13707
+      objectReference: {fileID: 0}
+    - target: {fileID: 8613842971421223564, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9535478
+      objectReference: {fileID: 0}
+    - target: {fileID: 8613842971421223564, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8613842971421223564, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.30124187
+      objectReference: {fileID: 0}
+    - target: {fileID: 8613842971421223564, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8613842971421223564, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 35.064
+      objectReference: {fileID: 0}
     - target: {fileID: 8630382405333536617, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -25239,10 +25342,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1049157648}
-    - targetCorrespondingSourceObject: {fileID: 8852214632437251002, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1169156946}
     - targetCorrespondingSourceObject: {fileID: 1619714159909468946, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       insertIndex: -1
@@ -25328,6 +25427,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 678105346}
+    - targetCorrespondingSourceObject: {fileID: 4422522045093291540, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 583697490}
+    - targetCorrespondingSourceObject: {fileID: 4422522045093291540, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 583697489}
     - targetCorrespondingSourceObject: {fileID: 8389720305585586048, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       insertIndex: -1
@@ -26465,12 +26572,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1075988413}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1122989860 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8852214632437251002, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
-    type: 3}
-  m_PrefabInstance: {fileID: 1075988413}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1126678546 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5724949965325849696, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
@@ -27460,86 +27561,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.3309578, y: 4.3912835, z: 1}
   m_Center: {x: -8.777772, y: 2.040071, z: -0.000002155664}
---- !u!1 &1169156945
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1169156946}
-  - component: {fileID: 1169156947}
-  - component: {fileID: 1169156948}
-  m_Layer: 0
-  m_Name: carHitBox
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1169156946
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1169156945}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1122989860}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1169156947
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1169156945}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 4.955532, y: 1.8177155, z: 7.469261}
-  m_Center: {x: 0.255127, y: -0.364985, z: 0.13395643}
---- !u!114 &1169156948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1169156945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f92cc5cd1e13054d944a87522dfc017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ToyBreakableInAngerState
-  breakStages:
-  - {fileID: 1122989859}
-  - {fileID: 2045242060}
-  - {fileID: 739012232}
-  - {fileID: 45476080}
-  hitParticles: {fileID: 1534805414}
-  roomLight: {fileID: 1051065787}
-  angerColor: {r: 1, g: 0, b: 0, a: 1}
-  lightIncreasePerHit: 0.3
-  disappearDelay: 10
-  toy2Prefab: {fileID: 9179634261764958681, guid: f9b97e8b0f6c4c842a42d61ce7204448,
-    type: 3}
-  toy2SpawnPoint: {fileID: 344534446}
-  hitCooldown: 0.25
 --- !u!1 &1169782653
 GameObject:
   m_ObjectHideFlags: 0
@@ -47687,10 +47708,10 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1075988413}
   - {fileID: 1275646005}
   - {fileID: 1598321677}
   - {fileID: 1717083504}
   - {fileID: 1787951699}
   - {fileID: 940813922}
   - {fileID: 1519163514}
+  - {fileID: 1075988413}

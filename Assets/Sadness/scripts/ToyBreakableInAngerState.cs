@@ -35,31 +35,13 @@ public class ToyBreakableInAngerState : MonoBehaviour
         UpdateVisual();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        Debug.Log("=== ON TRIGGER ENTER WORKED ===");
-        Debug.Log("Entered by: " + other.gameObject.name);
-        Debug.Log("Tag: " + other.tag);
-        Debug.Log("Parent: " + (other.transform.parent != null ? other.transform.parent.name : "NO PARENT"));
-        Debug.Log("Root: " + other.transform.root.name);
-
-        if (!canBreak)
-        {
-            Debug.Log("STOP: canBreak = false");
-            return;
-        }
-
-        if (finished)
-        {
-            Debug.Log("STOP: finished = true");
-            return;
-        }
+        if (!canBreak) return;
+        if (finished) return;
 
         if (Time.time - lastHitTime < hitCooldown)
-        {
-            Debug.Log("STOP: cooldown");
             return;
-        }
 
         bool hammerHit =
             other.CompareTag("Hammer") ||
@@ -67,13 +49,27 @@ public class ToyBreakableInAngerState : MonoBehaviour
             (other.transform.root != null && other.transform.root.CompareTag("Hammer"));
 
         if (!hammerHit)
-        {
-            Debug.Log("STOP: not Hammer or Hammer parent/root");
             return;
-        }
 
-        Debug.Log("VALID HIT");
+        // نجيب Rigidbody تبع المطرقة
+        Rigidbody rb = other.attachedRigidbody;
+
+        if (rb == null && other.transform.root != null)
+            rb = other.transform.root.GetComponent<Rigidbody>();
+
+        if (rb == null)
+            return;
+
+        float speed = rb.linearVelocity.magnitude;
+
+        // لازم تكون ضربة حقيقية
+        if (speed < 0.5f)
+            return;
+
         lastHitTime = Time.time;
+
+        Debug.Log("VALID HIT (Trigger)");
+
         RegisterHit(other);
     }
     public void EnableBreaking()

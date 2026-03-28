@@ -12,7 +12,6 @@ public class GameStartGate : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        Debug.Log("GameStartGate Awake");
     }
 
     void Update()
@@ -26,7 +25,6 @@ public class GameStartGate : MonoBehaviour
 
         if (both != lastBoth)
         {
-            Debug.Log("Gate Update | left = " + leftHeld + " | right = " + rightHeld + " | both = " + both);
             SaberGameManager.Instance.SetRunning(both);
             lastBoth = both;
         }
