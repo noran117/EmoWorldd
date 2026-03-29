@@ -22,6 +22,7 @@ public class SimpleGhost : MonoBehaviour
 
     private static readonly string animAttack = "attack";
     private static readonly string animDissolve = "dissolve";
+    private bool isAttacking = false;
 
     private float Dissolve_value = 1f;
     private bool DissolveFlg = false;
@@ -36,7 +37,7 @@ public class SimpleGhost : MonoBehaviour
     void Update()
     {
         float distance = Vector3.Distance(transform.position, player.position);
-        if (distance < triggerDistance)
+        if (distance < triggerDistance && !isAttacking)
         {
             StartCoroutine(ReactToPlayer());
         }
@@ -49,7 +50,10 @@ public class SimpleGhost : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         
         yield return new WaitForSeconds(0.5f);
-        Anim.SetBool(animAttack, true);
+        Anim.SetTrigger("attackk");
+        isAttacking = true;
+        
+
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -108,17 +112,6 @@ public class SimpleGhost : MonoBehaviour
 
 
 }
-        /*if (distance < triggerDistance)
-        {
-            Debug.Log("Trigerred distance");
-           StartCoroutine(ReactToPlayer());
-        }
-        else
-        {
-            Debug.Log("AWAY");
-            StopCoroutine(ReactToPlayer());
-        }*/
-    
  
 
 
