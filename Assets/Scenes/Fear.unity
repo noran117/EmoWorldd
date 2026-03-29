@@ -5690,6 +5690,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TeleportDestination
       objectReference: {fileID: 0}
+    - target: {fileID: 2333561368087545913, guid: 745474d57ad4f6641b08c258fdbfcc63,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -36673,7 +36678,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1005546299
 Animator:
   serializedVersion: 7
@@ -36682,7 +36687,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1005546298}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 03da896f3ef3b1547825c87e45970422, type: 2}
   m_CullingMode: 0
