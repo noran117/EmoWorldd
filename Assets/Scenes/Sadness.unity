@@ -7532,6 +7532,33 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 488967233}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &507424758 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3636685394839729262, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+    type: 3}
+  m_PrefabInstance: {fileID: 1075988413}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &507424762
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507424758}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 8.899557, y: 0.019198691, z: 5.9330378}
+  m_Center: {x: 0.9122677, y: 0.05377701, z: -2.561482}
 --- !u!1001 &512789599
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8632,6 +8659,12 @@ MonoBehaviour:
   toy2Prefab: {fileID: 9179634261764958681, guid: f9b97e8b0f6c4c842a42d61ce7204448,
     type: 3}
   toy2SpawnPoint: {fileID: 344534446}
+  carRootToHide: {fileID: 45476080}
+  hammerObject: {fileID: 942163473}
+  arrowObject: {fileID: 2095303370}
+  hammerTransform: {fileID: 1242187177}
+  hammerGrabbable: {fileID: 1242187168}
+  arrowOffset: {x: 0, y: 0.25, z: 0}
   hitCooldown: 0.25
 --- !u!65 &583697490
 BoxCollider:
@@ -8652,8 +8685,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.8370867, y: 1, z: 2.4984722}
-  m_Center: {x: 22.868622, y: 0, z: -5.1741505}
+  m_Size: {x: 1.8370867, y: 0.69631934, z: 2.4984717}
+  m_Center: {x: 22.868622, y: -0.09344041, z: -5.174063}
 --- !u!1001 &584595509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20307,6 +20340,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3636685394839729262, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3636685394839729262, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 125
       objectReference: {fileID: 0}
@@ -22444,7 +22482,7 @@ PrefabInstance:
         type: 3}
       propertyPath: basketvoice
       value: 
-      objectReference: {fileID: 8300000, guid: 840e383e4dbfb9f479084a5691433818, type: 3}
+      objectReference: {fileID: 8300000, guid: b993f554f093e0c4182020e4b3e48c5d, type: 3}
     - target: {fileID: 7269815397948918955, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -25427,6 +25465,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 678105346}
+    - targetCorrespondingSourceObject: {fileID: 3636685394839729262, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 507424762}
     - targetCorrespondingSourceObject: {fileID: 4422522045093291540, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       insertIndex: -1
