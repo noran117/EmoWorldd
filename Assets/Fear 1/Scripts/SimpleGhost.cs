@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using Unity.VisualScripting;
+using System;
+
 
 public class SimpleGhost : MonoBehaviour
 {
@@ -18,9 +20,8 @@ public class SimpleGhost : MonoBehaviour
     [SerializeField] private AudioSource vanishGhostSound;
     [SerializeField] private AudioSource revealAreaSound;
 
-    private static readonly int IdleState = Animator.StringToHash("Base Layer.idle");
-    private static readonly int AttackState = Animator.StringToHash("Base Layer.attack_shift");
-    private static readonly int DissolveState = Animator.StringToHash("Base Layer.dissolve");
+    private static readonly string animAttack = "attack";
+    private static readonly string animDissolve = "dissolve";
 
     private float Dissolve_value = 1f;
     private bool DissolveFlg = false;
@@ -31,12 +32,11 @@ public class SimpleGhost : MonoBehaviour
     void Start()
     {
         Anim = GetComponent<Animator>();
-        Anim.CrossFade(IdleState, 0.1f);
     }
     void Update()
     {
         float distance = Vector3.Distance(transform.position, player.position);
-        if (distance > triggerDistance)
+        if (distance < triggerDistance)
         {
             StartCoroutine(ReactToPlayer());
         }
@@ -49,14 +49,14 @@ public class SimpleGhost : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         
         yield return new WaitForSeconds(0.5f);
-        Anim.CrossFade(AttackState, 0.1f, 0, 0);
+        Anim.SetBool(animAttack, true);
     }
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log("Triggered");
         if (other.CompareTag("PlayerHand") && !DissolveFlg)
         {
-            Anim.CrossFade(DissolveState, 0.1f);
+            Anim.SetBool(animDissolve, true);
             DissolveFlg = true;
             if (vanishGhostSound != null)
                 vanishGhostSound.Play();
@@ -108,3 +108,17 @@ public class SimpleGhost : MonoBehaviour
 
 
 }
+        /*if (distance < triggerDistance)
+        {
+            Debug.Log("Trigerred distance");
+           StartCoroutine(ReactToPlayer());
+        }
+        else
+        {
+            Debug.Log("AWAY");
+            StopCoroutine(ReactToPlayer());
+        }*/
+    
+ 
+
+
