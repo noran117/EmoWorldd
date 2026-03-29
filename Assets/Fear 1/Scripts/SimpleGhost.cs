@@ -39,21 +39,19 @@ public class SimpleGhost : MonoBehaviour
         float distance = Vector3.Distance(transform.position, player.position);
         if (distance < triggerDistance && !isAttacking)
         {
-            StartCoroutine(ReactToPlayer());
+            StartCoroutine(LookAtPlayer());
+            Anim.SetTrigger("attackk");
+            isAttacking = true;
         }
     }
-    IEnumerator ReactToPlayer()
+    IEnumerator LookAtPlayer()
     {
         Vector3 direction = player.position - transform.position;
         direction.y = 0;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
-        
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);     
         yield return new WaitForSeconds(0.5f);
-        Anim.SetTrigger("attackk");
-        isAttacking = true;
         
-
     }
     private void OnTriggerEnter(Collider other)
     {
