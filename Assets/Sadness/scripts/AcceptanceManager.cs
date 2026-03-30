@@ -14,6 +14,9 @@ public class AcceptanceManager : MonoBehaviour
     public AudioSource outsideCallSfx;
     public float outsideHintDelay = 0.5f;
 
+    [Header("Acceptance Start Particles")]
+    public ParticleSystem acceptanceStartParticles;
+
     [Header("Book")]
     public Cardsanimate cardsAnimate;
     public Animator bookAnimator;
@@ -39,6 +42,25 @@ public class AcceptanceManager : MonoBehaviour
             if (arr[i] != null) arr[i].SetActive(active);
     }
 
+    void StopAcceptanceStartParticles()
+    {
+        if (acceptanceStartParticles != null)
+        {
+            acceptanceStartParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            acceptanceStartParticles.gameObject.SetActive(false);
+        }
+    }
+
+    void PlayAcceptanceStartParticles()
+    {
+        if (acceptanceStartParticles != null)
+        {
+            acceptanceStartParticles.gameObject.SetActive(true);
+            acceptanceStartParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            acceptanceStartParticles.Play();
+        }
+    }
+
     public void StartAcceptance()
     {
         started = false;
@@ -50,10 +72,11 @@ public class AcceptanceManager : MonoBehaviour
         SetObjectsActive(disableOnStart, false);
         SetObjectsActive(enableOnStart, true);
 
+        PlayAcceptanceStartParticles();
+
         if (cardsAnimate != null)
         {
             cardsAnimate.PrepareForAcceptance();
-            cardsAnimate.StartAcceptanceParticles();
         }
 
         StartCoroutine(OutsideHintRoutine());
@@ -83,8 +106,11 @@ public class AcceptanceManager : MonoBehaviour
         if (outsideYellowLight != null)
             outsideYellowLight.SetActive(false);
 
+        StopAcceptanceStartParticles();
+
         if (cardsAnimate != null)
         {
+            cardsAnimate.StartAcceptanceParticles();
             cardsAnimate.onFinished -= OnBookSequenceFinished;
             cardsAnimate.onFinished += OnBookSequenceFinished;
         }
@@ -128,6 +154,8 @@ public class AcceptanceManager : MonoBehaviour
     {
         acceptanceActive = false;
         started = false;
+
+        StopAcceptanceStartParticles();
 
         if (cardsAnimate != null)
             cardsAnimate.CleanupAfterAcceptance();

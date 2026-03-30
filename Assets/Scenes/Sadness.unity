@@ -20213,6 +20213,11 @@ PrefabInstance:
       propertyPath: glowParticles
       value: 
       objectReference: {fileID: 1789046383}
+    - target: {fileID: 3403217512789227933, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.123
+      objectReference: {fileID: 0}
     - target: {fileID: 3414369664230633945, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -20408,6 +20413,11 @@ PrefabInstance:
       propertyPath: useCardsAnimate
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3774614849598415800, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: acceptanceStartParticles
+      value: 
+      objectReference: {fileID: 1495288193}
     - target: {fileID: 3786819933472596279, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -21703,6 +21713,16 @@ PrefabInstance:
       propertyPath: spawn4
       value: 
       objectReference: {fileID: 381730742}
+    - target: {fileID: 5819693829319463995, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: bookSparks
+      value: 
+      objectReference: {fileID: 1495288193}
+    - target: {fileID: 5819693829319463995, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: bookClosedEffect
+      value: 
+      objectReference: {fileID: 1754882393}
     - target: {fileID: 5819693829319463995, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: memorySpawnPoint
@@ -32956,6 +32976,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1495288190}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &1495288193 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5962941864224085333, guid: 32ebb19fc836db940b4853d2b8b48ad9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1495288190}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1495477551 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 125185448903369676, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
@@ -36828,6 +36854,12 @@ PrefabInstance:
 --- !u!4 &1754882391 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2342508963735616305, guid: 73f5b4c1f2f6dd0408c4288abb13da24,
+    type: 3}
+  m_PrefabInstance: {fileID: 1754882390}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1754882393 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2393210104473227442, guid: 73f5b4c1f2f6dd0408c4288abb13da24,
     type: 3}
   m_PrefabInstance: {fileID: 1754882390}
   m_PrefabAsset: {fileID: 0}
