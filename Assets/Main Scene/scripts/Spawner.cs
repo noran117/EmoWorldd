@@ -4,6 +4,21 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+/// <summary>
+/// Drop-in replacement for Spawner.cs
+/// Detects beats from the AudioSource in SaberGameManager and spawns notes in sync.
+///
+/// HOW TO USE:
+///   1. Remove (or disable) your old Spawner component.
+///   2. Add this BeatSpawner component to the same GameObject.
+///   3. In SaberGameManager, assign this as the Spawner reference (it still calls
+///      StartSpawning / StopSpawning — same API).
+///   4. Assign your note prefabs, spawn points, and the gameMusic AudioSource
+///      in the Inspector.
+/// </summary>
+
+    // ── Reuse the same data classes so the Inspector looks identical ──────────
+
     [System.Serializable]
     public class NotePrefabData
     {
@@ -18,15 +33,26 @@ public class Spawner : MonoBehaviour
         public bool enabled = true;
     }
 
+    // ── Inspector fields ──────────────────────────────────────────────────────
+
     [Header("Notes")]
     public List<NotePrefabData> notes = new List<NotePrefabData>();
 
     [Header("Spawn Points")]
     public List<SpawnPointData> points = new List<SpawnPointData>();
 
-    [Header("Spawn Timing")]
-    public float minSpawnDelay = 0.4f;
-    public float maxSpawnDelay = 0.8f;
+    [Header("Beat Detection")]
+    [Tooltip("AudioSource that plays the game music (same one in SaberGameManager).")]
+    public AudioSource gameMusic;
+
+    [Tooltip("Beats Per Minute of the track. 117.45 for the cyberwave track.")]
+    public float bpm = 117.45f;
+
+    [Tooltip("How many beats to skip between spawns. 1 = every beat, 2 = every other beat.")]
+    [Range(1, 4)] public int spawnEveryNBeats = 1;
+
+    [Tooltip("Add a tiny random offset (seconds) so not every cube arrives at exactly the same instant.")]
+    public float jitter = 0.05f;
 
     [Header("Limits")]
     public int maxActiveNotes = 8;
@@ -34,14 +60,31 @@ public class Spawner : MonoBehaviour
     [Header("Debug")]
     public bool randomRotationY = false;
 
+    // ── Private state ─────────────────────────────────────────────────────────
+
     Coroutine spawnRoutine;
     List<GameObject> activeNotes = new List<GameObject>();
+
+    float beatInterval;        // seconds between beats
+    float nextBeatTime;        // DSP time of the next expected beat
+    int   beatCounter;         // counts beats so we can skip N
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Public API  (same as old Spawner so SaberGameManager needs no changes)
+    // ─────────────────────────────────────────────────────────────────────────
 
     public void StartSpawning()
     {
         if (spawnRoutine != null) return;
 
-        spawnRoutine = StartCoroutine(SpawnLoop());
+        // Recalculate in case bpm was changed at runtime
+        beatInterval = 60f / bpm;
+        beatCounter  = 0;
+
+        // Align the first beat to right now (music should already be playing)
+        nextBeatTime = (float)AudioSettings.dspTime;
+
+        spawnRoutine = StartCoroutine(BeatLoop());
     }
 
     public void StopSpawning()
@@ -53,52 +96,78 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnLoop()
+    public void ClearAllNotes()
+    {
+        CleanupNulls();
+        foreach (var n in activeNotes)
+            if (n != null) Destroy(n);
+        activeNotes.Clear();
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Core beat loop
+    // ─────────────────────────────────────────────────────────────────────────
+
+    IEnumerator BeatLoop()
     {
         while (true)
         {
+            // Wait until DSP clock reaches the next beat
+            double waitUntil = nextBeatTime;
+            while (AudioSettings.dspTime < waitUntil)
+                yield return null;   // check every frame — very tight sync
+
+            // Advance to the beat after this one
+            nextBeatTime += beatInterval;
+            beatCounter++;
+
+            // Only spawn on every Nth beat
+            if (beatCounter % spawnEveryNBeats != 0)
+                continue;
+
             CleanupNulls();
 
             if (activeNotes.Count < maxActiveNotes)
             {
+                // Optional tiny jitter so cubes don't look robotic
+                if (jitter > 0f)
+                    yield return new WaitForSeconds(Random.Range(0f, jitter));
+
                 Spawn();
             }
-
-            float delay = Random.Range(minSpawnDelay, maxSpawnDelay);
-            yield return new WaitForSeconds(delay);
         }
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // Spawn helpers  (identical logic to original Spawner.cs)
+    // ─────────────────────────────────────────────────────────────────────────
+
     void Spawn()
     {
-        GameObject prefab = GetRandomNotePrefab();
-        Transform spawnPoint = GetRandomSpawnPoint();
+        GameObject prefab      = GetRandomNotePrefab();
+        Transform  spawnPoint  = GetRandomSpawnPoint();
 
         if (prefab == null)
         {
-            Debug.LogWarning("No note prefab available!");
+            Debug.LogWarning("BeatSpawner: No note prefab available!");
             return;
         }
 
         if (spawnPoint == null)
         {
-            Debug.LogWarning("No enabled spawn point available!");
+            Debug.LogWarning("BeatSpawner: No enabled spawn point!");
             return;
         }
 
         Quaternion rot = spawnPoint.rotation;
-
         if (randomRotationY)
-        {
             rot *= Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
-        }
 
         GameObject note = Instantiate(prefab, spawnPoint.position, rot);
         note.transform.Rotate(0f, 90f, 0f);
-
         activeNotes.Add(note);
 
-        Debug.Log("Spawned note: " + note.name + " at " + spawnPoint.name);
+        Debug.Log($"[BeatSpawner] Beat #{beatCounter} → spawned {note.name}");
     }
 
     GameObject GetRandomNotePrefab()
@@ -107,10 +176,7 @@ public class Spawner : MonoBehaviour
 
         int totalWeight = 0;
         foreach (var n in notes)
-        {
-            if (n != null && n.prefab != null)
-                totalWeight += Mathf.Max(1, n.weight);
-        }
+            if (n?.prefab != null) totalWeight += Mathf.Max(1, n.weight);
 
         if (totalWeight == 0) return null;
 
@@ -119,11 +185,9 @@ public class Spawner : MonoBehaviour
 
         foreach (var n in notes)
         {
-            if (n == null || n.prefab == null) continue;
-
+            if (n?.prefab == null) continue;
             current += Mathf.Max(1, n.weight);
-            if (rand < current)
-                return n.prefab;
+            if (rand < current) return n.prefab;
         }
 
         return null;
@@ -131,17 +195,11 @@ public class Spawner : MonoBehaviour
 
     Transform GetRandomSpawnPoint()
     {
-        List<Transform> enabledPoints = new List<Transform>();
-
+        var enabled = new List<Transform>();
         foreach (var p in points)
-        {
-            if (p != null && p.point != null && p.enabled)
-                enabledPoints.Add(p.point);
-        }
+            if (p?.point != null && p.enabled) enabled.Add(p.point);
 
-        if (enabledPoints.Count == 0) return null;
-
-        return enabledPoints[Random.Range(0, enabledPoints.Count)];
+        return enabled.Count == 0 ? null : enabled[Random.Range(0, enabled.Count)];
     }
 
     void CleanupNulls()
@@ -149,16 +207,4 @@ public class Spawner : MonoBehaviour
         activeNotes.RemoveAll(n => n == null);
     }
 
-    public void ClearAllNotes()
-    {
-        CleanupNulls();
-
-        foreach (var n in activeNotes)
-        {
-            if (n != null)
-                Destroy(n);
-        }
-
-        activeNotes.Clear();
-    }
 }

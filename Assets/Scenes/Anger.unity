@@ -2511,13 +2511,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 290936055}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.794, y: 1.583, z: 0}
+  m_LocalRotation: {x: 0, y: -0.37355444, z: 0, w: 0.9276083}
+  m_LocalPosition: {x: 4.87, y: 1.583, z: -1.39}
   m_LocalScale: {x: 2.5627, y: 2.5627, z: 2.5627}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8901100554424989595}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -43.87, z: 0}
 --- !u!199 &290936057
 ParticleSystemRenderer:
   serializedVersion: 7
@@ -2606,7 +2606,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 290936055}
   serializedVersion: 8
-  lengthInSec: 3
+  lengthInSec: 5
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -18554,7 +18554,7 @@ Transform:
   m_GameObject: {fileID: 1171920541}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -17.20292, y: 0.7258691, z: -1.0408936}
+  m_LocalPosition: {x: -10.8600025, y: 1.3, z: 0.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19828,7 +19828,7 @@ Transform:
   m_GameObject: {fileID: 1252052940}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.027170883, w: 0.9996308}
-  m_LocalPosition: {x: -17.20292, y: 1.3558702, z: 2.5291138}
+  m_LocalPosition: {x: -10.86, y: 1.3, z: 1.68}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29603,7 +29603,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -29645,7 +29645,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.6
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -29774,9 +29774,11 @@ MonoBehaviour:
     enabled: 1
   - point: {fileID: 1171920542}
     enabled: 1
-  minSpawnDelay: 0.4
-  maxSpawnDelay: 0.8
-  maxActiveNotes: 100
+  gameMusic: {fileID: 1540073111444267447}
+  bpm: 117.45
+  spawnEveryNBeats: 2
+  jitter: 0.05
+  maxActiveNotes: 4
   randomRotationY: 0
 --- !u!4 &2152989873325794552
 Transform:
@@ -29910,14 +29912,14 @@ MonoBehaviour:
   gameRunning: 0
   gameLocked: 0
   score: 0
-  winScore: 20
+  winScore: 1000
   gameUIRoot: {fileID: 5995638563611685197}
   winPanel: {fileID: 6415465078560926339}
   wrongX: {fileID: 2019425039666710275}
   redOverlay: {fileID: 1671923456310242880}
   startRedAlpha: 0.6
   winParticles: {fileID: 290936058}
-  winPanelDuration: 5
+  winPanelDuration: 3
   hitCorrectSource: {fileID: 1073114562}
   hitWrongSource: {fileID: 1416086555}
   winSource: {fileID: 244659775}
