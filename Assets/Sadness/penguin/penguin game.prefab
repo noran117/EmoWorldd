@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 2077109746379750495}
   - component: {fileID: 6149955145601322091}
   - component: {fileID: 8751016313711739917}
+  - component: {fileID: 8674903041553502273}
   m_Layer: 0
   m_Name: Socket Interactor
   m_TagString: Untagged
@@ -122,6 +123,29 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   ClosestGrabbable: {fileID: 0}
+--- !u!114 &8674903041553502273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 197312829767910538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4b3aeee51a5bd48bf569efd03b09ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BNG.GrabbablesInTrigger
+  ClosestGrabbable: {fileID: 0}
+  UpdateGrabbableFrequency: 0
+  ClosestRemoteGrabbable: {fileID: 0}
+  FireGrabbableEvents: 1
+  CheckRemoteGrabbables: 0
+  RaycastRemoteGrabbables: 0
+  RaycastRemoteFrequency: 0
+  RemoteGrabbablesMustBeVisible: 0
+  RemoteCollisionLayers:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &2175943235222265923
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,6 +188,7 @@ GameObject:
   - component: {fileID: 7690862879936526288}
   - component: {fileID: 2484480458672342745}
   - component: {fileID: 7449640145823018805}
+  - component: {fileID: 2009782442158631877}
   m_Layer: 0
   m_Name: Socket Interactor
   m_TagString: Untagged
@@ -243,6 +268,29 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   ClosestGrabbable: {fileID: 0}
+--- !u!114 &2009782442158631877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2842453955409166847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4b3aeee51a5bd48bf569efd03b09ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BNG.GrabbablesInTrigger
+  ClosestGrabbable: {fileID: 0}
+  UpdateGrabbableFrequency: 0
+  ClosestRemoteGrabbable: {fileID: 0}
+  FireGrabbableEvents: 1
+  CheckRemoteGrabbables: 0
+  RaycastRemoteGrabbables: 0
+  RaycastRemoteFrequency: 0
+  RemoteGrabbablesMustBeVisible: 0
+  RemoteCollisionLayers:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &3271433521448806823
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,6 +366,7 @@ GameObject:
   - component: {fileID: 4034558270336225909}
   - component: {fileID: 7144261092627370971}
   - component: {fileID: 8835888481956136478}
+  - component: {fileID: 2737615185793268325}
   m_Layer: 0
   m_Name: Socket Interactor
   m_TagString: Untagged
@@ -397,6 +446,29 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   ClosestGrabbable: {fileID: 0}
+--- !u!114 &2737615185793268325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5583330699141009451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4b3aeee51a5bd48bf569efd03b09ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BNG.GrabbablesInTrigger
+  ClosestGrabbable: {fileID: 0}
+  UpdateGrabbableFrequency: 0
+  ClosestRemoteGrabbable: {fileID: 0}
+  FireGrabbableEvents: 1
+  CheckRemoteGrabbables: 0
+  RaycastRemoteGrabbables: 0
+  RaycastRemoteFrequency: 0
+  RemoteGrabbablesMustBeVisible: 0
+  RemoteCollisionLayers:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &6792831373062640717
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,9 +525,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8409069256463195881}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.36822912, z: -0, w: 0.92973506}
-  m_LocalPosition: {x: 23.5, y: 4.418, z: 1.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.3618774, y: -0.06809859, z: -0.91369784, w: -0.17194086}
+  m_LocalPosition: {x: 19.504, y: 7.176, z: 0.52661}
+  m_LocalScale: {x: 0.43431, y: 0.43431, z: 0.43431}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2746864834431464860}
@@ -472,7 +544,7 @@ Transform:
   - {fileID: 1864876625513032518}
   - {fileID: 8800134561387912067}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 43.213, z: 0}
+  m_LocalEulerAnglesHint: {x: -14.412, y: -41.193, z: -195.874}
 --- !u!1 &8432369282061729341
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,6 +610,7 @@ GameObject:
   - component: {fileID: 8681512221827650901}
   - component: {fileID: 9079860098782968017}
   - component: {fileID: 4110862134376159325}
+  - component: {fileID: 5532484243920094810}
   m_Layer: 0
   m_Name: Socket Interactor
   m_TagString: Untagged
@@ -617,6 +690,29 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   ClosestGrabbable: {fileID: 0}
+--- !u!114 &5532484243920094810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8534033598050613996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4b3aeee51a5bd48bf569efd03b09ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BNG.GrabbablesInTrigger
+  ClosestGrabbable: {fileID: 0}
+  UpdateGrabbableFrequency: 0
+  ClosestRemoteGrabbable: {fileID: 0}
+  FireGrabbableEvents: 1
+  CheckRemoteGrabbables: 0
+  RaycastRemoteGrabbables: 0
+  RaycastRemoteFrequency: 0
+  RemoteGrabbablesMustBeVisible: 0
+  RemoteCollisionLayers:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &8757968003191911078
 GameObject:
   m_ObjectHideFlags: 0
@@ -660,6 +756,7 @@ GameObject:
   - component: {fileID: 3911964576733804845}
   - component: {fileID: 3226719722121359938}
   - component: {fileID: 3233301350215664277}
+  - component: {fileID: 451273273302651673}
   m_Layer: 0
   m_Name: Socket Interactor
   m_TagString: Untagged
@@ -739,6 +836,29 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   ClosestGrabbable: {fileID: 0}
+--- !u!114 &451273273302651673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9070652253704960167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4b3aeee51a5bd48bf569efd03b09ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BNG.GrabbablesInTrigger
+  ClosestGrabbable: {fileID: 0}
+  UpdateGrabbableFrequency: 0
+  ClosestRemoteGrabbable: {fileID: 0}
+  FireGrabbableEvents: 1
+  CheckRemoteGrabbables: 0
+  RaycastRemoteGrabbables: 0
+  RaycastRemoteFrequency: 0
+  RemoteGrabbablesMustBeVisible: 0
+  RemoteCollisionLayers:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1001 &1242926382112295119
 PrefabInstance:
   m_ObjectHideFlags: 0
