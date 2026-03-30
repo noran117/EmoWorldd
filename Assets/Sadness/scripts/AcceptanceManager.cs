@@ -14,13 +14,17 @@ public class AcceptanceManager : MonoBehaviour
     public AudioSource outsideCallSfx;
     public float outsideHintDelay = 0.5f;
 
+    [Header("Acceptance Start Particles")]
+    public ParticleSystem acceptanceStartParticles;
+
     [Header("Book")]
     public Cardsanimate cardsAnimate;
     public Animator bookAnimator;
-    public string openTriggerName = "OpenBook";
+    public string openTriggerName = "Open";
     public bool useCardsAnimate = true;
 
     bool started;
+    bool acceptanceActive = false;
 
     bool presentationFinished = false;
     bool bookFinished = false;
@@ -38,15 +42,42 @@ public class AcceptanceManager : MonoBehaviour
             if (arr[i] != null) arr[i].SetActive(active);
     }
 
+    void StopAcceptanceStartParticles()
+    {
+        if (acceptanceStartParticles != null)
+        {
+            acceptanceStartParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            acceptanceStartParticles.gameObject.SetActive(false);
+        }
+    }
+
+    void PlayAcceptanceStartParticles()
+    {
+        if (acceptanceStartParticles != null)
+        {
+            acceptanceStartParticles.gameObject.SetActive(true);
+            acceptanceStartParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            acceptanceStartParticles.Play();
+        }
+    }
+
     public void StartAcceptance()
     {
         started = false;
+        acceptanceActive = true;
 
         presentationFinished = false;
         bookFinished = false;
 
         SetObjectsActive(disableOnStart, false);
         SetObjectsActive(enableOnStart, true);
+
+        PlayAcceptanceStartParticles();
+
+        if (cardsAnimate != null)
+        {
+            cardsAnimate.PrepareForAcceptance();
+        }
 
         StartCoroutine(OutsideHintRoutine());
     }
@@ -67,33 +98,29 @@ public class AcceptanceManager : MonoBehaviour
 
     public void OnBookTouched()
     {
-        Debug.Log("BOOK TOUCHED CALLED");
-
+        if (!acceptanceActive) return;
         if (started) return;
+
         started = true;
 
         if (outsideYellowLight != null)
             outsideYellowLight.SetActive(false);
 
-        Debug.Log("useCardsAnimate = " + useCardsAnimate);
-        Debug.Log("cardsAnimate = " + cardsAnimate);
-        Debug.Log("bookAnimator = " + bookAnimator);
+        StopAcceptanceStartParticles();
 
         if (cardsAnimate != null)
         {
+            cardsAnimate.StartAcceptanceParticles();
             cardsAnimate.onFinished -= OnBookSequenceFinished;
             cardsAnimate.onFinished += OnBookSequenceFinished;
         }
 
         if (useCardsAnimate && cardsAnimate != null)
         {
-            Debug.Log("Calling StartMemories()");
             cardsAnimate.StartMemories();
         }
         else
         {
-            Debug.Log("Fallback: opening only bookAnimator");
-
             if (bookAnimator != null)
             {
                 bookAnimator.SetTrigger(openTriggerName);
@@ -125,6 +152,14 @@ public class AcceptanceManager : MonoBehaviour
 
     void EndAcceptance()
     {
+        acceptanceActive = false;
+        started = false;
+
+        StopAcceptanceStartParticles();
+
+        if (cardsAnimate != null)
+            cardsAnimate.CleanupAfterAcceptance();
+
         SetObjectsActive(enableOnStart, false);
         SetObjectsActive(disableOnStart, true);
 

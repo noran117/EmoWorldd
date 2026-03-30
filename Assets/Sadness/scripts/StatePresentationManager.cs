@@ -14,7 +14,7 @@ public class StatePresentationManager : MonoBehaviour
     [Header("Slide")]
     public GameObject slidePrefab;
 
-    [Header("Slide Spawn (Child of camera)")]
+    [Header("Slide Spawn")]
     public Transform slideSpawnPoint;
 
     [Header("States")]
@@ -92,8 +92,6 @@ public class StatePresentationManager : MonoBehaviour
 
     public void PlayState(StatePresentation state)
     {
-        //Debug.Log("PlayState ENTERED");
-
         if (voiceCo != null) StopCoroutine(voiceCo);
         if (slideCo != null) StopCoroutine(slideCo);
         if (finishCo != null) StopCoroutine(finishCo);
@@ -176,7 +174,6 @@ public class StatePresentationManager : MonoBehaviour
 
     IEnumerator SlideRoutine(StatePresentation state, int myRun)
     {
-        //Debug.Log("SlideRoutine START");
         yield return new WaitForSeconds(state.slideDelay);
 
         if (myRun != runId) yield break;
@@ -185,7 +182,6 @@ public class StatePresentationManager : MonoBehaviour
 
         if (slideSpawnPoint == null || slidePrefab == null || state.slideTexture == null)
         {
-            //Debug.LogError("SlideRoutine: slideSpawnPoint/slidePrefab/slideTexture is missing!");
             slideFinished = true;
             TryFinishBoth(state, myRun);
             yield break;
@@ -198,16 +194,6 @@ public class StatePresentationManager : MonoBehaviour
         currentSlide.transform.localRotation = Quaternion.identity;
         currentSlide.transform.localScale = Vector3.one * 1f;
 
-        //Debug.Log("SLIDE SPAWNED");
-        //Debug.Log("Spawn point world = " + slideSpawnPoint.position);
-        //Debug.Log("Slide root world = " + currentSlide.transform.position);
-
-        //Transform paper = currentSlide.transform.Find("paperQuad");
-        //if (paper != null)
-        //{
-        //    Debug.Log("paperQuad local = " + paper.localPosition);
-        //    Debug.Log("paperQuad world = " + paper.position);
-        //}
         currentSlideCtrl = currentSlide.GetComponentInChildren<SlideController>(true);
         if (currentSlideCtrl == null)
         {

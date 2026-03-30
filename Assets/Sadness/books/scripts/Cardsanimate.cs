@@ -23,10 +23,16 @@ public class Cardsanimate : MonoBehaviour
     public float delay3 = 0.8f;
     public float delay4 = 0.8f;
 
+    [Header("Spawn Points")]
+    public Transform spawn1;
+    public Transform spawn2;
+    public Transform spawn3;
+    public Transform spawn4;
+
     public ParticleSystem bookSparks;
 
     [Header("Finish")]
-    public float finishDelayAfterLastMemory = 2.0f; 
+    public float finishDelayAfterLastMemory = 2.0f;
 
     public event Action onFinished;
 
@@ -35,20 +41,93 @@ public class Cardsanimate : MonoBehaviour
 
     void Start()
     {
+        if (memoriesLight != null)
+            memoriesLight.SetActive(false);
+
         if (bookClosedEffect != null)
-            bookClosedEffect.Play();
+        {
+            bookClosedEffect.gameObject.SetActive(false);
+            bookClosedEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
 
         if (bookSparks != null)
+        {
+            bookSparks.gameObject.SetActive(false);
             bookSparks.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+    }
+
+    public void PrepareForAcceptance()
+    {
+        started = false;
 
         if (memoriesLight != null)
             memoriesLight.SetActive(false);
+
+        if (bookClosedEffect != null)
+        {
+            bookClosedEffect.gameObject.SetActive(false);
+            bookClosedEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+
+        if (bookSparks != null)
+        {
+            bookSparks.gameObject.SetActive(false);
+            bookSparks.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+    }
+
+    public void CleanupAfterAcceptance()
+    {
+        started = false;
+
+        if (memoriesLight != null)
+            memoriesLight.SetActive(false);
+
+        if (bookClosedEffect != null)
+        {
+            bookClosedEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            bookClosedEffect.gameObject.SetActive(false);
+        }
+
+        if (bookSparks != null)
+        {
+            bookSparks.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            bookSparks.gameObject.SetActive(false);
+        }
+    }
+
+    public void StartAcceptanceParticles()
+    {
+        if (bookSparks != null)
+        {
+            bookSparks.gameObject.SetActive(true);
+            bookSparks.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            bookSparks.Play();
+        }
+    }
+
+    public void OnBookAnimationStartEvent()
+    {
+        if (bookClosedEffect != null)
+        {
+            bookClosedEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            bookClosedEffect.gameObject.SetActive(false);
+        }
+    }
+
+    public void OnBookAnimationEndEvent()
+    {
+        if (bookClosedEffect != null)
+        {
+            bookClosedEffect.gameObject.SetActive(true);
+            bookClosedEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            bookClosedEffect.Play();
+        }
     }
 
     public void StartMemories()
     {
-        Debug.Log("StartMemories called | started = " + started);
-
         if (started) return;
         started = true;
 
@@ -56,43 +135,59 @@ public class Cardsanimate : MonoBehaviour
         memCo = StartCoroutine(OpenBookThenMemories());
     }
 
+    void MoveToSpawn(Animator mem, Transform spawn)
+    {
+        if (mem == null || spawn == null) return;
+
+        mem.transform.position = spawn.position;
+        mem.transform.rotation = spawn.rotation;
+    }
+
     IEnumerator OpenBookThenMemories()
     {
-        Debug.Log("OpenBookThenMemories started");
-
         yield return new WaitForSeconds(closedGlowTime);
         yield return new WaitForSeconds(delayBeforeOpen);
 
-        if (bookClosedEffect != null)
-        {
-            bookClosedEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            if (bookSparks != null) bookSparks.Play();
-        }
-
         if (bookAnimator != null)
-        {
-            Debug.Log("Trigger Open");
             bookAnimator.SetTrigger("Open");
-        }
 
         yield return new WaitForSeconds(0.5f);
 
         if (memoriesLight != null)
-        {
-            Debug.Log("Memories light ON");
             memoriesLight.SetActive(true);
-        }
 
         yield return new WaitForSeconds(1f);
 
-        if (mem1 != null) { yield return new WaitForSeconds(delay1); Debug.Log("Trigger Play1"); mem1.SetTrigger("Play1"); }
-        if (mem2 != null) { yield return new WaitForSeconds(delay2); Debug.Log("Trigger Play2"); mem2.SetTrigger("Play2"); }
-        if (mem3 != null) { yield return new WaitForSeconds(delay3); Debug.Log("Trigger Play3"); mem3.SetTrigger("Play3"); }
-        if (mem4 != null) { yield return new WaitForSeconds(delay4); Debug.Log("Trigger Play4"); mem4.SetTrigger("Play4"); }
+        MoveToSpawn(mem1, spawn1);
+        if (mem1 != null)
+        {
+            yield return new WaitForSeconds(delay1);
+            mem1.SetTrigger("Play1");
+        }
+
+        MoveToSpawn(mem2, spawn2);
+        if (mem2 != null)
+        {
+            yield return new WaitForSeconds(delay2);
+            mem2.SetTrigger("Play2");
+        }
+
+        MoveToSpawn(mem3, spawn3);
+        if (mem3 != null)
+        {
+            yield return new WaitForSeconds(delay3);
+            mem3.SetTrigger("Play3");
+        }
+
+        MoveToSpawn(mem4, spawn4);
+        if (mem4 != null)
+        {
+            yield return new WaitForSeconds(delay4);
+            mem4.SetTrigger("Play4");
+        }
 
         yield return new WaitForSeconds(finishDelayAfterLastMemory);
 
-        Debug.Log("Cardsanimate finished");
         onFinished?.Invoke();
     }
 }

@@ -48,7 +48,6 @@ public class XRRigSlowMovement : MonoBehaviour
     {
         if (xrRigRoot == null)
         {
-            Debug.LogError("XRRigSlowMovement: xrRigRoot is NULL");
             return;
         }
 
@@ -70,7 +69,6 @@ public class XRRigSlowMovement : MonoBehaviour
                     targetComponent = c;
                     speedMember = f;
 
-                    Debug.Log("XRRigSlowMovement: Found FIELD '" + name + "' in component " + type.Name);
                     return;
                 }
 
@@ -80,20 +78,17 @@ public class XRRigSlowMovement : MonoBehaviour
                     targetComponent = c;
                     speedMember = p;
 
-                    Debug.Log("XRRigSlowMovement: Found PROPERTY '" + name + "' in component " + type.Name);
                     return;
                 }
             }
         }
 
-        Debug.LogWarning("XRRigSlowMovement: No speed member found under xrRigRoot = " + xrRigRoot.name);
     }
 
     void CacheNormalSpeed()
     {
         if (targetComponent == null || speedMember == null)
         {
-            Debug.LogWarning("XRRigSlowMovement: Cannot cache normal speed because targetComponent or speedMember is NULL");
             return;
         }
 
@@ -103,7 +98,6 @@ public class XRRigSlowMovement : MonoBehaviour
         {
             cachedNormal = v;
             cached = true;
-            Debug.Log("XRRigSlowMovement: Cached normal speed = " + cachedNormal);
         }
     }
 
@@ -125,7 +119,6 @@ public class XRRigSlowMovement : MonoBehaviour
     {
         if (targetComponent == null || speedMember == null)
         {
-            Debug.LogWarning("XRRigSlowMovement: Cannot SetSpeed because targetComponent or speedMember is NULL");
             return;
         }
 
@@ -137,45 +130,35 @@ public class XRRigSlowMovement : MonoBehaviour
 
     public void StartDepressionSlowdown()
     {
-        Debug.Log("XRRigSlowMovement: StartDepressionSlowdown CALLED");
-
         if (targetComponent == null || speedMember == null)
         {
-            Debug.LogWarning("XRRigSlowMovement: No speed member found, trying again...");
             FindSpeedMember();
             CacheNormalSpeed();
         }
 
         if (targetComponent == null || speedMember == null)
         {
-            Debug.LogError("XRRigSlowMovement: Still no speed member found. Slowdown failed.");
             return;
         }
 
-        Debug.Log("XRRigSlowMovement: Speed before slow = " + GetSpeed());
         SetSpeed(slowSpeed);
-        Debug.Log("XRRigSlowMovement: Speed after slow = " + GetSpeed());
     }
 
     public void ResetSpeed()
     {
-        Debug.Log("XRRigSlowMovement: ResetSpeed CALLED");
 
         if (targetComponent == null || speedMember == null)
         {
-            Debug.LogWarning("XRRigSlowMovement: No speed member found, reset failed.");
             return;
         }
 
         if (cached)
         {
             SetSpeed(cachedNormal);
-            Debug.Log("XRRigSlowMovement: Reset to cached normal speed = " + cachedNormal);
         }
         else
         {
             SetSpeed(normalSpeed);
-            Debug.Log("XRRigSlowMovement: Reset to fallback normalSpeed = " + normalSpeed);
         }
     }
 }

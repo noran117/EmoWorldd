@@ -41,7 +41,6 @@ public class Spawner : MonoBehaviour
     {
         if (spawnRoutine != null) return;
 
-        Debug.Log("StartSpawning()");
         spawnRoutine = StartCoroutine(SpawnLoop());
     }
 
@@ -52,8 +51,6 @@ public class Spawner : MonoBehaviour
             StopCoroutine(spawnRoutine);
             spawnRoutine = null;
         }
-
-        Debug.Log("StopSpawning()");
     }
 
     IEnumerator SpawnLoop()

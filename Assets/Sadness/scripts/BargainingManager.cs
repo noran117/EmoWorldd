@@ -9,10 +9,10 @@ public class BargainingManager : MonoBehaviour
     private bool presentationFinished = false;
 
     [Header("Hint Arrow (Over Hammer)")]
-    public GameObject arrowObject;            
-    public Transform hammerTransform;         
-    public Grabbable hammerGrabbable;        
-    public Vector3 arrowOffset = new Vector3(0f, 0.25f, 0f); 
+    public GameObject arrowObject;
+    public Transform hammerTransform;
+    public Grabbable hammerGrabbable;
+    public Vector3 arrowOffset = new Vector3(0f, 0.25f, 0f);
 
     bool arrowActive = false;
 
@@ -37,7 +37,9 @@ public class BargainingManager : MonoBehaviour
     public void StartBargaining()
     {
         ResetFlags();
-        ShowArrow();
+
+        // ما عاد نعرض السهم أو المطرقة هنا
+        HideArrow();
     }
 
     private void Update()
@@ -57,9 +59,7 @@ public class BargainingManager : MonoBehaviour
         if (arrowObject == null || hammerTransform == null) return;
 
         arrowObject.transform.position = hammerTransform.position + arrowOffset;
-
         arrowObject.transform.rotation = Quaternion.identity;
-
         arrowObject.SetActive(true);
         arrowActive = true;
     }

@@ -97,7 +97,6 @@ public class SlideController : MonoBehaviour
     {
         yield return new WaitForSeconds(s);
 
-        // لو object انمسح، لا تكمل
         if (this == null || isQuittingOrDestroying) yield break;
 
         Finish();
