@@ -14,7 +14,7 @@ public class ToyBreakableInAngerState : MonoBehaviour
     public float lightIncreasePerHit = 0.3f;
 
     [Header("After Toy1 Broken -> Spawn Toy2")]
-    public float disappearDelay = 1.0f;
+    public float disappearDelay = 0.3f;
     public GameObject toy2Prefab;
     public Transform toy2SpawnPoint;
 
@@ -26,10 +26,10 @@ public class ToyBreakableInAngerState : MonoBehaviour
     public GameObject arrowObject;
     public Transform hammerTransform;
     public Grabbable hammerGrabbable;
-    public Vector3 arrowOffset = new Vector3(0f, 0.25f, 0f);
 
     [Header("Hit Control")]
     public float hitCooldown = 0.25f;
+    public float minHammerSpeed = 0.5f;
 
     private int hitCount = 0;
     private bool canBreak = false;
@@ -37,17 +37,18 @@ public class ToyBreakableInAngerState : MonoBehaviour
     private float lastHitTime = -999f;
 
     private GameObject spawnedToy2;
-    private bool arrowActive = false;
 
     void Start()
     {
         UpdateVisual();
 
         if (hammerObject != null)
-            hammerObject.SetActive(false);
+            hammerObject.SetActive(true);
 
         if (arrowObject != null)
             arrowObject.SetActive(false);
+
+        EnableBreaking();
     }
 
     void Update()
@@ -82,18 +83,19 @@ public class ToyBreakableInAngerState : MonoBehaviour
         if (rb == null)
             return;
 
-        lastHitTime = Time.time;
+        float speed = rb.linearVelocity.magnitude;
+        // float speed = rb.velocity.magnitude;
 
+        if (speed < minHammerSpeed)
+            return;
+
+        lastHitTime = Time.time;
         RegisterHit(other);
     }
 
     public void EnableBreaking()
     {
         canBreak = true;
-
-        if (hammerObject != null)
-            hammerObject.SetActive(true);
-
         ShowArrow();
     }
 
@@ -101,18 +103,19 @@ public class ToyBreakableInAngerState : MonoBehaviour
     {
         if (arrowObject == null || hammerTransform == null) return;
 
-        arrowObject.transform.position = hammerTransform.position + arrowOffset;
-        arrowObject.transform.rotation = Quaternion.identity;
+        arrowScript arrowFollow = arrowObject.GetComponent<arrowScript>();
+        if (arrowFollow != null)
+        {
+            arrowFollow.target = hammerTransform;
+        }
+
         arrowObject.SetActive(true);
-        arrowActive = true;
     }
 
     void HideArrow()
     {
         if (arrowObject == null) return;
-
         arrowObject.SetActive(false);
-        arrowActive = false;
     }
 
     void RegisterHit(Collider other)

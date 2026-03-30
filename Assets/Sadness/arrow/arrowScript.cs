@@ -2,19 +2,20 @@ using UnityEngine;
 
 public class arrowScript : MonoBehaviour
 {
+    public Transform target;
+    public Vector3 offset = new Vector3(0f, 0.25f, 0f);
+
     public float floatSpeed = 0.38f;
     public float floatHeight = 0.02f;
 
-    private Vector3 startPos;
-
-    void Start()
-    {
-        startPos = transform.position;
-    }
-
     void Update()
     {
-        float newY = startPos.y + Mathf.Sin(Time.time * floatSpeed) * floatHeight;
-        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+        if (target == null) return;
+
+        Vector3 basePos = target.position + offset;
+        float yOffset = Mathf.Sin(Time.time * floatSpeed) * floatHeight;
+
+        transform.position = basePos + new Vector3(0f, yOffset, 0f);
+        transform.rotation = Quaternion.identity;
     }
 }
