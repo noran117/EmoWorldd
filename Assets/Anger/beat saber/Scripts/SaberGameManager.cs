@@ -82,6 +82,8 @@ public class SaberGameManager : MonoBehaviour
 
             if (gameMusic && !gameMusic.isPlaying)
                 gameMusic.Play();
+
+            StartCoroutine(WatchMusicEnd());
         }
         else
         {
@@ -193,5 +195,33 @@ public class SaberGameManager : MonoBehaviour
 
         if (winPanel != null)
             winPanel.SetActive(false);
+    }
+
+    // Watches the music clip and cleanly stops the game when the song ends
+    IEnumerator WatchMusicEnd()
+    {
+        // Wait until the music finishes playing
+        yield return new WaitUntil(() =>
+            gameMusic == null ||
+            !gameMusic.isPlaying ||
+            endingTriggered);
+
+        // Only act if the game is still running (not already won)
+        if (!endingTriggered && gameRunning)
+        {
+            Debug.Log("Music ended — stopping game.");
+
+            gameRunning = false;
+            gameLocked  = false;   // allow player to restart by grabbing sabers again
+
+            if (spawner != null)
+                spawner.StopSpawning();
+
+            if (gameUIRoot) gameUIRoot.SetActive(false);
+            if (redOverlay) redOverlay.SetActive(false);
+
+            if (backgroundMusic && !backgroundMusic.isPlaying)
+                backgroundMusic.Play();
+        }
     }
 }

@@ -19,14 +19,19 @@ public class HandleController : MonoBehaviour
     public float moveAmount = 2f;        // المقدار اللي بترفع/بتنزل فيه القطع
     public float moveDuration = 0.5f;    // مدة الحركة بالثواني
 
+    [Header("Movement Sounds")]
+    public AudioSource moveSound;
+
+    [Header("Puzzle Completion")]
+    public Collider bridgeBarrier;     // drag your invisible wall here
+    public AudioSource solvedSound;
+    public float solvedThreshold = 0.1f; // tolerance for position check
+
     private bool isMoving = false;
+
     [Header("Target Settings")]
     public float targetY = 0f;          // المستوى المطلوب
 
-    void Start()
-    {
-
-    }
     // يستدعيها كيوب التحكم ويرسل رقم المجموعة
     public void RaiseGroup(int groupIndex)
     {
@@ -85,6 +90,30 @@ public class HandleController : MonoBehaviour
         for (int i = 0; i < pieces.Count; i++)
             pieces[i].position = targetPositions[i];
 
+        moveSound?.Play();
+
+        CheckPuzzleSolved();
+
         isMoving = false;
+    }
+
+    private void CheckPuzzleSolved()
+    {
+        foreach (BridgeGroup group in bridgeGroups)
+        {
+            foreach (Transform piece in group.pieces)
+            {
+                // if any piece is NOT at the target Y, puzzle is unsolved
+                if (Mathf.Abs(piece.position.y - targetY) > solvedThreshold)
+                    return;
+            }
+        }
+
+        // All pieces are at targetY — puzzle solved!
+        if (bridgeBarrier != null)
+            bridgeBarrier.enabled = false;
+
+        solvedSound?.Play();
+
     }
 }

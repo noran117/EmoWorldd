@@ -3,6 +3,11 @@ using UnityEngine;
 public class BalloonImpact : MonoBehaviour
 {
     public GameObject splashPrefab;
+    private AudioSource balloonHit;
+    private void Start()
+    {
+        balloonHit = GetComponent<AudioSource>();
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -18,7 +23,12 @@ public class BalloonImpact : MonoBehaviour
             contact.point + contact.normal * 0.02f,
             rot
         );
-
+        if (balloonHit is not null)
+        {
+            balloonHit.Play();
+            Debug.Log("soundPlayed");
+            //
+        }
         Renderer r = splash.GetComponent<Renderer>();
         Balloon balloon = GetComponent<Balloon>();
 
