@@ -44,6 +44,9 @@ public class charactermovement : MonoBehaviour
 
     bool useRootMotion = false;
 
+
+    public followPlayer companion;//
+
     void Start()
     {
         animator.applyRootMotion = false;
@@ -186,6 +189,11 @@ public class charactermovement : MonoBehaviour
 
         animator.SetTrigger("doCheer");
 
+
+        // 🔥 خلي الرفيق يعمل Happy
+        if (companion != null)
+            companion.ReactHappy();//
+
         yield return null;
         yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName("Cheering"));
 
@@ -232,12 +240,21 @@ public class charactermovement : MonoBehaviour
     {
         animator.SetBool("startDance", true);
 
+
+
+        if (companion != null)
+            companion.ReactToDance();//
         yield return null;
 
         useRootMotion = true;
         animator.applyRootMotion = true;
         if (voiceSource && danceVoice)
             voiceSource.PlayOneShot(danceVoice);
+
+
+
+
+        
         StartCoroutine(StopDanceAfterFinish()); 
 
         yield return new WaitForSeconds(20f);
@@ -263,6 +280,10 @@ public class charactermovement : MonoBehaviour
         animator.applyRootMotion = true;
 
         animator.SetBool("startDance", false);
+
+        if (companion != null)
+            companion.StopDance();//
+
         butterflies.SetActive(false);
 
         BasketManager.Instance.ShowBasket();
@@ -281,11 +302,17 @@ public class charactermovement : MonoBehaviour
         yield return new WaitForSeconds(1.2f);
         animator.SetTrigger("doPoint");
 
+        if (companion != null)
+        {
+            Vector3 leftDir = transform.position - transform.right * 5f; // 👈 شمال
+
+            companion.PointLeftSequence(leftDir);
+        }
         yield return new WaitUntil(() =>
     animator.GetCurrentAnimatorStateInfo(0).IsName("Counting") &&
     animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f
 );
-
+        
         useRootMotion = false;
         animator.applyRootMotion = false;
 
