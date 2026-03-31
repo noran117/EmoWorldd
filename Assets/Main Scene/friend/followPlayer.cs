@@ -10,7 +10,7 @@ public class followPlayer : MonoBehaviour
     private NavMeshAgent agent;
     private Animator anim;
 
-
+    private AudioSource talkAudio;
 
 
     public GameObject waveMessage;
@@ -27,6 +27,8 @@ public class followPlayer : MonoBehaviour
         anim = GetComponent<Animator>();
 
         StartCoroutine(IntroWave());
+
+        talkAudio = GetComponent<AudioSource>();
 
     }
 
@@ -147,6 +149,9 @@ public class followPlayer : MonoBehaviour
         talkMessage.SetActive(true);
 
         anim.SetBool("Talking", true);
+        if (talkAudio != null)
+            talkAudio.Play();
+
 
         yield return new WaitForSeconds(5f);
 
