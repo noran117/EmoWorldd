@@ -24,6 +24,8 @@ public class ShockTrigger : MonoBehaviour
     bool triggered;
     Material originalSkybox;
 
+
+    public followPlayer companion;//
     void Awake()
     {
         originalSkybox = RenderSettings.skybox;
@@ -55,6 +57,14 @@ public class ShockTrigger : MonoBehaviour
     IEnumerator ShockSequence()
     {
         StopAllStoneGlow();
+
+        // 🔥 خلي الرفيق يتفاعل
+        if (companion != null)
+            companion.ReactToShock();
+
+
+
+
 
         electricSound?.Play();
 
