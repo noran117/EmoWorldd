@@ -2,16 +2,18 @@ using UnityEngine;
 
 public class StartMove : MonoBehaviour
 {
- public Animator [] animators;
+    public Animator[] animators;
+    public AudioSource sound;
+    public GameObject collider;
     private BNG.MoveToWaypoint moveScript;
-    private bool wasMoving = false; 
+    private bool wasMoving = false;
     private void Awake()
     {
         moveScript = GetComponent<BNG.MoveToWaypoint>();
     }
     void Update()
     {
-        if (moveScript == null|| animators == null) return;
+        if (moveScript == null || animators == null) return;
 
         bool isCurrentlyMoving = moveScript.IsActive && !moveScript.ReachedDestination;
 
@@ -23,8 +25,19 @@ public class StartMove : MonoBehaviour
             {
                 animator.SetBool("isMoving", isCurrentlyMoving);
             }
+            if (isCurrentlyMoving && sound != null)
+            {
+                if (!sound.isPlaying)
+                    sound.Play();
+            }
+            else
+            {
+                if (sound == null) return;
+                if (sound.isPlaying)
+                    sound.Stop();
+            }
 
-            Debug.Log(isCurrentlyMoving ? "moving" : "not moving");
+            //Debug.Log(isCurrentlyMoving ? "moving" : "not moving");
         }
     }
 
@@ -33,9 +46,9 @@ public class StartMove : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("player entered");
             moveScript.IsActive = true;
-           // GetComponent<BNG.MoveToWaypoint>().IsActive = true;
+            if (collider != null)
+                collider.SetActive(true);
         }
     }
 
