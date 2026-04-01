@@ -33,8 +33,10 @@ public class StartMove : MonoBehaviour
             else
             {
                 if (sound == null) return;
-                if (sound.isPlaying)
+                if (sound.isPlaying){
                     sound.Stop();
+                    collider.SetActive(false);
+                }
             }
 
             //Debug.Log(isCurrentlyMoving ? "moving" : "not moving");
@@ -46,10 +48,14 @@ public class StartMove : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            moveScript.IsActive = true;
             if (collider != null)
+            {
                 collider.SetActive(true);
+            }
+            moveScript.IsActive = true;
+
         }
     }
+   
 
 }
