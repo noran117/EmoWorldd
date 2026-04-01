@@ -4,7 +4,7 @@ public class StartMove : MonoBehaviour
 {
     public Animator[] animators;
     public AudioSource sound;
-    public GameObject collider;
+    public GameObject hiddenCollider;
     private BNG.MoveToWaypoint moveScript;
     private bool wasMoving = false;
     private void Awake()
@@ -35,11 +35,18 @@ public class StartMove : MonoBehaviour
                 if (sound == null) return;
                 if (sound.isPlaying){
                     sound.Stop();
-                    collider.SetActive(false);
                 }
             }
 
             //Debug.Log(isCurrentlyMoving ? "moving" : "not moving");
+        }
+        if(moveScript.ReachedDestination)
+        {
+            if (hiddenCollider == null) return;
+            if (hiddenCollider.activeSelf)
+            {
+                hiddenCollider.SetActive(false);
+            }
         }
     }
 
@@ -48,9 +55,9 @@ public class StartMove : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (collider != null)
+            if (hiddenCollider != null)
             {
-                collider.SetActive(true);
+                hiddenCollider.SetActive(true);
             }
             moveScript.IsActive = true;
 
