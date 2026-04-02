@@ -421,7 +421,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 37
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -8118,7 +8118,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 37
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -18739,6 +18739,11 @@ PrefabInstance:
       propertyPath: m_Center.x
       value: -0.016951147
       objectReference: {fileID: 0}
+    - target: {fileID: 1119061300611121214, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
+      objectReference: {fileID: 0}
     - target: {fileID: 1135186261733079602, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -19104,6 +19109,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1822145348599118742, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
+      objectReference: {fileID: 0}
     - target: {fileID: 1822700399038577504, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -19113,6 +19123,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 1872836787556502025, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 1875881228055258126, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
@@ -19699,6 +19714,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 125
       objectReference: {fileID: 0}
+    - target: {fileID: 2782037104974940841, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
+      objectReference: {fileID: 0}
     - target: {fileID: 2783685037917524655, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -20274,6 +20294,11 @@ PrefabInstance:
       propertyPath: acceptanceStartParticles
       value: 
       objectReference: {fileID: 1495288193}
+    - target: {fileID: 3781727144717335390, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
+      objectReference: {fileID: 0}
     - target: {fileID: 3786819933472596279, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -20721,6 +20746,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4264974044874954409, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
+      propertyPath: MaxDistance
+      value: 37
+      objectReference: {fileID: 0}
+    - target: {fileID: 4264974044874954409, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
       propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
       value: 0
       objectReference: {fileID: 0}
@@ -20929,6 +20959,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4651059332063277806, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
+      objectReference: {fileID: 0}
     - target: {fileID: 4686574294484418934, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -20943,6 +20978,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 4708490253914590240, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 4710199330239345619, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
@@ -21104,6 +21144,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4961972786133648198, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
+      objectReference: {fileID: 0}
     - target: {fileID: 4984960634364527327, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: looping
@@ -21138,6 +21183,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 5074267268886760953, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 5094894119294393944, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
@@ -21253,6 +21303,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 5367545341767828804, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 5373070500399650095, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
@@ -21416,6 +21471,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5488455195096480398, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
+      propertyPath: play.playParticles.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5488455195096480398, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: shock.stopParticles.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5488455195096480398, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
       propertyPath: 'depression.loopSfx.Array.data[1]'
       value: 
       objectReference: {fileID: 1843575937}
@@ -21424,6 +21489,16 @@ PrefabInstance:
       propertyPath: 'depression.loopSfx.Array.data[2]'
       value: 
       objectReference: {fileID: 34499325}
+    - target: {fileID: 5488455195096480398, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: 'play.playParticles.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1075988414}
+    - target: {fileID: 5488455195096480398, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: 'shock.stopParticles.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1075988414}
     - target: {fileID: 5501034262338188619, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -21458,6 +21533,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 5541851038590176721, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 5549986400030613621, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
@@ -21849,6 +21929,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 125
       objectReference: {fileID: 0}
+    - target: {fileID: 6373544657276705772, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
+      objectReference: {fileID: 0}
     - target: {fileID: 6376184640818161956, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -22003,6 +22088,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 6606808580393095589, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 6608609602780196093, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
@@ -22403,6 +22493,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 7359829411388109274, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 7360780845980982060, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
@@ -23014,6 +23109,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 8522322864720741777, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
+      objectReference: {fileID: 0}
     - target: {fileID: 8536615280278078671, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -23314,6 +23414,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -89.99999
       objectReference: {fileID: 0}
+    - target: {fileID: 8757479397803728070, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
+      objectReference: {fileID: 0}
     - target: {fileID: 8759058076353166407, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -23468,6 +23573,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091941593841644339, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 9097452891158189126, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
         type: 3}
@@ -25464,6 +25574,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1856368140}
   m_SourcePrefab: {fileID: 100100000, guid: 3bf77279e6a256b4db2ab5d0e50d8196, type: 3}
+--- !u!198 &1075988414 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7900125696254448140, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
+    type: 3}
+  m_PrefabInstance: {fileID: 1075988413}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1075988416 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4686574294484418934, guid: 3bf77279e6a256b4db2ab5d0e50d8196,
@@ -28077,7 +28193,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 37
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -28801,7 +28917,7 @@ PrefabInstance:
     - target: {fileID: 2683195716791022646, guid: 4ac7df741a9c0a2418ec19477729ee3d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.05
+      value: 1.03
       objectReference: {fileID: 0}
     - target: {fileID: 2683195716791022646, guid: 4ac7df741a9c0a2418ec19477729ee3d,
         type: 3}
@@ -43123,7 +43239,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 37
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -43253,7 +43369,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 37
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
