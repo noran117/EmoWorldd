@@ -18,23 +18,26 @@ public class Toy2BreakOnThrow : MonoBehaviour
 
     private bool broken = false;
 
-    private void Reset()
+    void Awake()
     {
         if (brokenSpawnAnchor == null)
         {
-            Transform t = transform.Find("BrokenSpawnAnchor");
-            if (t != null)
-                brokenSpawnAnchor = t;
-        }
-    }
+            GameObject point = GameObject.Find("BrokenSpawnAnchor");
 
-    private void Awake()
-    {
-        if (brokenSpawnAnchor == null)
+            if (point != null)
+            {
+                brokenSpawnAnchor = point.transform;
+                Debug.Log("Spawn point FOUND");
+            }
+            else
+            {
+                Debug.LogWarning("BrokenSpawnAnchor NOT FOUND in scene!");
+            }
+        }
+
+        if (brokenModelPrefab == null)
         {
-            Transform t = transform.Find("BrokenSpawnAnchor");
-            if (t != null)
-                brokenSpawnAnchor = t;
+            Debug.LogWarning("Broken Model Prefab is NOT assigned!");
         }
     }
 
@@ -43,6 +46,8 @@ public class Toy2BreakOnThrow : MonoBehaviour
         if (broken) return;
         if (!collision.gameObject.CompareTag("Floor")) return;
 
+        Debug.Log("Penguin hit floor → break");
+
         BreakNow();
     }
 
@@ -50,86 +55,92 @@ public class Toy2BreakOnThrow : MonoBehaviour
     {
         broken = true;
 
-        GameObject spawnedBroken = null;
-
-        if (brokenModelPrefab != null && brokenSpawnAnchor != null)
+        if (brokenModelPrefab == null)
         {
-            spawnedBroken = Instantiate(
-                brokenModelPrefab,
-                brokenSpawnAnchor.position,
-                brokenSpawnAnchor.rotation
-            );
-
-            spawnedBroken.SetActive(true);
-
-            if (breakClip != null)
-            {
-                AudioSource.PlayClipAtPoint(breakClip, spawnedBroken.transform.position);
-            }
-
-            Rigidbody[] allRigidbodies = spawnedBroken.GetComponentsInChildren<Rigidbody>(true);
-            for (int i = 0; i < allRigidbodies.Length; i++)
-            {
-                if (allRigidbodies[i] != null)
-                {
-                    allRigidbodies[i].linearVelocity = Vector3.zero;
-                    allRigidbodies[i].angularVelocity = Vector3.zero;
-                    allRigidbodies[i].isKinematic = true;
-                    allRigidbodies[i].useGravity = false;
-                }
-            }
-
-            SnapZone[] snapZones = spawnedBroken.GetComponentsInChildren<SnapZone>(true);
-            for (int i = 0; i < snapZones.Length; i++)
-            {
-                if (snapZones[i] != null)
-                    snapZones[i].enabled = false;
-            }
-
-            StartCoroutine(EnableSnapZonesLater(spawnedBroken));
+            Debug.LogWarning("No brokenModelPrefab!");
+            return;
         }
-        else
+
+        if (brokenSpawnAnchor == null)
         {
-            Debug.LogWarning("Broken Model Prefab or BrokenSpawnAnchor is missing!");
+            Debug.LogWarning("No BrokenSpawnAnchor!");
+            return;
         }
+
+        GameObject spawnedBroken = Instantiate(
+            brokenModelPrefab,
+            brokenSpawnAnchor.position,
+            brokenSpawnAnchor.rotation
+        );
+
+        spawnedBroken.SetActive(true);
+
+        Debug.Log("Spawned at: " + spawnedBroken.transform.position);
+
+        if (breakClip != null)
+        {
+            AudioSource.PlayClipAtPoint(breakClip, spawnedBroken.transform.position);
+        }
+
+        Rigidbody[] allRigidbodies = spawnedBroken.GetComponentsInChildren<Rigidbody>(true);
+        foreach (var rb in allRigidbodies)
+        {
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                rb.isKinematic = true;
+                rb.useGravity = false;
+            }
+        }
+
+        SnapZone[] snapZones = spawnedBroken.GetComponentsInChildren<SnapZone>(true);
+        foreach (var zone in snapZones)
+        {
+            if (zone != null)
+                zone.enabled = false;
+        }
+
+        StartCoroutine(EnableSnapZonesLater(spawnedBroken));
 
         DisableOriginalPenguin();
+
         StartCoroutine(GoNext());
     }
 
     void DisableOriginalPenguin()
     {
         Collider[] cols = GetComponentsInChildren<Collider>(true);
-        for (int i = 0; i < cols.Length; i++)
+        foreach (var c in cols)
         {
-            if (cols[i] != null)
-                cols[i].enabled = false;
+            if (c != null)
+                c.enabled = false;
         }
 
-        Rigidbody[] originalRigidbodies = GetComponentsInChildren<Rigidbody>(true);
-        for (int i = 0; i < originalRigidbodies.Length; i++)
+        Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>(true);
+        foreach (var rb in rbs)
         {
-            if (originalRigidbodies[i] != null)
+            if (rb != null)
             {
-                originalRigidbodies[i].linearVelocity = Vector3.zero;
-                originalRigidbodies[i].angularVelocity = Vector3.zero;
-                originalRigidbodies[i].isKinematic = true;
-                originalRigidbodies[i].useGravity = false;
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                rb.isKinematic = true;
+                rb.useGravity = false;
             }
         }
 
-        Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
-        for (int i = 0; i < renderers.Length; i++)
+        Renderer[] rends = GetComponentsInChildren<Renderer>(true);
+        foreach (var r in rends)
         {
-            if (renderers[i] != null)
-                renderers[i].enabled = false;
+            if (r != null)
+                r.enabled = false;
         }
 
         Grabbable[] grabs = GetComponentsInChildren<Grabbable>(true);
-        for (int i = 0; i < grabs.Length; i++)
+        foreach (var g in grabs)
         {
-            if (grabs[i] != null)
-                grabs[i].enabled = false;
+            if (g != null)
+                g.enabled = false;
         }
     }
 
@@ -140,10 +151,10 @@ public class Toy2BreakOnThrow : MonoBehaviour
         if (spawnedBroken == null) yield break;
 
         SnapZone[] snapZones = spawnedBroken.GetComponentsInChildren<SnapZone>(true);
-        for (int i = 0; i < snapZones.Length; i++)
+        foreach (var zone in snapZones)
         {
-            if (snapZones[i] != null)
-                snapZones[i].enabled = true;
+            if (zone != null)
+                zone.enabled = true;
         }
     }
 
