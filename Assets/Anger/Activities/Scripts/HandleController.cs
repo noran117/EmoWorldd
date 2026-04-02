@@ -16,7 +16,7 @@ public class HandleController : MonoBehaviour
     public List<BridgeGroup> bridgeGroups = new List<BridgeGroup>();
 
     [Header("Movement Settings")]
-    public float moveAmount = 2f;        // المقدار اللي بترفع/بتنزل فيه القطع
+    public float moveAmount = 1f;        // المقدار اللي بترفع/بتنزل فيه القطع
     public float moveDuration = 0.5f;    // مدة الحركة بالثواني
 
     [Header("Movement Sounds")]
