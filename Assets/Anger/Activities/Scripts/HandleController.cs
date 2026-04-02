@@ -31,6 +31,7 @@ public class HandleController : MonoBehaviour
 
     [Header("Target Settings")]
     public float targetY = 0f;          // المستوى المطلوب
+    public float maxY = 0f;
 
     // يستدعيها كيوب التحكم ويرسل رقم المجموعة
     public void RaiseGroup(int groupIndex)
@@ -49,7 +50,7 @@ public class HandleController : MonoBehaviour
         StartCoroutine(MovePieces(bridgeGroups[groupIndex].pieces, -moveAmount));
     }
 
-    private IEnumerator MovePieces(List<Transform> pieces, float direction)
+    private IEnumerator MovePieces(List<Transform> pieces, float amount)
     {
         isMoving = true;
 
@@ -57,14 +58,24 @@ public class HandleController : MonoBehaviour
         List<Vector3> targetPositions = new List<Vector3>();
 
         foreach (Transform piece in pieces)
-{
-    startPositions.Add(piece.localPosition);
+        {
+            startPositions.Add(piece.localPosition);
 
-    targetPositions.Add(new Vector3(
-        piece.localPosition.x,
-        Mathf.Round(piece.localPosition.y) + direction,
-        piece.localPosition.z));
-}
+            float newY = Mathf.Round(piece.localPosition.y) + amount;
+
+            // منع النزول تحت الحد الأدنى
+            if (amount < 0)
+                newY = Mathf.Max(newY, maxY);
+
+            // منع الرفع فوق الحد الأقصى
+            if (amount > 0)
+                newY = Mathf.Min(newY, targetY);
+
+            targetPositions.Add(new Vector3(
+                piece.localPosition.x,
+                newY,
+                piece.localPosition.z));
+        }
 
         float elapsed = 0f;
 
@@ -75,14 +86,14 @@ public class HandleController : MonoBehaviour
 
             for (int i = 0; i < pieces.Count; i++)
             {
-pieces[i].localPosition = Vector3.Lerp(startPositions[i], targetPositions[i], t);
+                pieces[i].localPosition = Vector3.Lerp(startPositions[i], targetPositions[i], t);
 
             }
             yield return null;
         }
 
         for (int i = 0; i < pieces.Count; i++)
-pieces[i].localPosition = targetPositions[i];
+            pieces[i].localPosition = targetPositions[i];
 
         moveSound?.Play();
 
@@ -92,19 +103,19 @@ pieces[i].localPosition = targetPositions[i];
     }
 
     private void CheckPuzzleSolved()
-{
-    foreach (BridgeGroup group in bridgeGroups)
     {
-        foreach (Transform piece in group.pieces)
+        foreach (BridgeGroup group in bridgeGroups)
         {
-            if (Mathf.Abs(piece.localPosition.y - targetY) > solvedThreshold)
-                return;
+            foreach (Transform piece in group.pieces)
+            {
+                if (Mathf.Abs(piece.localPosition.y - targetY) > solvedThreshold)
+                    return;
+            }
         }
+
+        if (bridgeBarrier != null)
+            bridgeBarrier.enabled = false;
+
+        solvedSound?.Play();
     }
-
-    if (bridgeBarrier != null)
-        bridgeBarrier.enabled = false;
-
-    solvedSound?.Play();
-}
 }
