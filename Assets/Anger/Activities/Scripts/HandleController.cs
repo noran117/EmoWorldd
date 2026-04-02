@@ -16,7 +16,7 @@ public class HandleController : MonoBehaviour
     public List<BridgeGroup> bridgeGroups = new List<BridgeGroup>();
 
     [Header("Movement Settings")]
-    public float moveAmount = 2f;        // المقدار اللي بترفع/بتنزل فيه القطع
+    public float moveAmount = 1f;        // المقدار اللي بترفع/بتنزل فيه القطع
     public float moveDuration = 0.5f;    // مدة الحركة بالثواني
 
     [Header("Movement Sounds")]
@@ -31,6 +31,7 @@ public class HandleController : MonoBehaviour
 
     [Header("Target Settings")]
     public float targetY = 0f;          // المستوى المطلوب
+    public float maxY = 0f;
 
     // يستدعيها كيوب التحكم ويرسل رقم المجموعة
     public void RaiseGroup(int groupIndex)
@@ -38,7 +39,7 @@ public class HandleController : MonoBehaviour
         if (isMoving) return;
         if (groupIndex < 0 || groupIndex >= bridgeGroups.Count) return;
 
-        StartCoroutine(MovePieces(bridgeGroups[groupIndex].pieces, Vector3.up * moveAmount));
+        StartCoroutine(MovePieces(bridgeGroups[groupIndex].pieces, moveAmount));
     }
 
     public void LowerGroup(int groupIndex)
@@ -46,10 +47,10 @@ public class HandleController : MonoBehaviour
         if (isMoving) return;
         if (groupIndex < 0 || groupIndex >= bridgeGroups.Count) return;
 
-        StartCoroutine(MovePieces(bridgeGroups[groupIndex].pieces, Vector3.down * moveAmount));
+        StartCoroutine(MovePieces(bridgeGroups[groupIndex].pieces, -moveAmount));
     }
 
-    private IEnumerator MovePieces(List<Transform> pieces, Vector3 direction)
+    private IEnumerator MovePieces(List<Transform> pieces, float amount)
     {
         isMoving = true;
 
@@ -58,18 +59,22 @@ public class HandleController : MonoBehaviour
 
         foreach (Transform piece in pieces)
         {
-            startPositions.Add(piece.position);
+            startPositions.Add(piece.localPosition);
 
-            float newY = piece.position.y + direction.y;
+            float newY = Mathf.Round(piece.localPosition.y) + amount;
 
-            // منع النزول تحت المستوى المطلوب
-            if (direction.y < 0)
-                newY = Mathf.Max(newY, targetY);
+            // منع النزول تحت الحد الأدنى
+            if (amount < 0)
+                newY = Mathf.Max(newY, maxY);
+
+            // منع الرفع فوق الحد الأقصى
+            if (amount > 0)
+                newY = Mathf.Min(newY, targetY);
 
             targetPositions.Add(new Vector3(
-                piece.position.x,
+                piece.localPosition.x,
                 newY,
-                piece.position.z));
+                piece.localPosition.z));
         }
 
         float elapsed = 0f;
@@ -81,14 +86,14 @@ public class HandleController : MonoBehaviour
 
             for (int i = 0; i < pieces.Count; i++)
             {
-                pieces[i].position =
-                    Vector3.Lerp(startPositions[i], targetPositions[i], t);
+                pieces[i].localPosition = Vector3.Lerp(startPositions[i], targetPositions[i], t);
+
             }
             yield return null;
         }
 
         for (int i = 0; i < pieces.Count; i++)
-            pieces[i].position = targetPositions[i];
+            pieces[i].localPosition = targetPositions[i];
 
         moveSound?.Play();
 
@@ -103,17 +108,14 @@ public class HandleController : MonoBehaviour
         {
             foreach (Transform piece in group.pieces)
             {
-                // if any piece is NOT at the target Y, puzzle is unsolved
-                if (Mathf.Abs(piece.position.y - targetY) > solvedThreshold)
+                if (Mathf.Abs(piece.localPosition.y - targetY) > solvedThreshold)
                     return;
             }
         }
 
-        // All pieces are at targetY — puzzle solved!
         if (bridgeBarrier != null)
             bridgeBarrier.enabled = false;
 
         solvedSound?.Play();
-
     }
 }
