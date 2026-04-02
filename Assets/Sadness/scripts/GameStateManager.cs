@@ -21,7 +21,7 @@ public class GameStateManager : MonoBehaviour
     public charactermovement brotherMovement;
     public ShockTrigger shockTrigger;
 
-    public followPlayer companion;//
+    public followPlayer companion;
 
     private void Awake()
     {
@@ -35,7 +35,7 @@ public class GameStateManager : MonoBehaviour
     {
         //StartCoroutine(StartAfterDelay());
         //   ChangeState(GameState.Anger);
-        ChangeState(GameState.Play);
+        ChangeState(GameState.Anger);
 
 
     }
@@ -59,11 +59,6 @@ public class GameStateManager : MonoBehaviour
         {
             case GameState.Play:
 
-
-
-                /*
-                if (companion != null)
-                    companion.PlayStoryHappy();;//*/
                 if (StatePresentationManager.Instance == null)
                 {
                     return;
@@ -71,9 +66,6 @@ public class GameStateManager : MonoBehaviour
              
                 StatePresentationManager.Instance.bothFinishedCallback = () =>
                 {
-                    /*
-                    if (companion != null)
-                        companion.StopStoryReaction();//*/
                     if (brotherMovement != null)
                         StatePresentationManager.Instance.DuckMusic(0.5f);
 

@@ -24,14 +24,14 @@ public class followPlayer : MonoBehaviour
 
 
 
-    public bool isSadScene = false;//
+    public bool isSadScene = false;
 
-    private bool isDancing = false;//
+    private bool isDancing = false;
 
-    public GameObject happyMessage;//
-    public GameObject danceMessage;//
-    public GameObject startdanceMessage;//
-    bool isShocked = false;//
+    public GameObject happyMessage;
+    public GameObject danceMessage;
+    public GameObject startdanceMessage;
+    bool isShocked = false;
 
     bool isHappy = false;
 
@@ -55,7 +55,6 @@ public class followPlayer : MonoBehaviour
     void Update()
     {
 
-
         if (isShocked)
         {
             Vector3 dir = player.position - transform.position;
@@ -67,17 +66,6 @@ public class followPlayer : MonoBehaviour
                 Time.deltaTime * 5f
             );
         }
-
-
-
-
-
-
-
-
-
-
-
 
         if (isHappy)
         {
@@ -105,22 +93,7 @@ public class followPlayer : MonoBehaviour
                 targetRot,
                 Time.deltaTime * 5f
             );
-        } //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
 
         if (introPlaying) return;
 
@@ -189,22 +162,12 @@ public class followPlayer : MonoBehaviour
         anim.SetTrigger("Surprise");
     }
 
-
-
-
-
-
-
-
-
-
-
     public void ReactHappy()
     {
         agent.isStopped = true;
 
-        anim.SetTrigger("Cheer"); // أو اسم الأنيميشن تبعك
-        isHappy = true; // 🔥 فعلنا التتبع
+        anim.SetTrigger("Cheer"); 
+        isHappy = true; 
 
         if (happyMessage != null)
             happyMessage.SetActive(true);
@@ -218,27 +181,10 @@ public class followPlayer : MonoBehaviour
 
         if (happyMessage != null)
             happyMessage.SetActive(false);
-        isHappy = false; // 🔥 فعلنا التتبع
+        isHappy = false; 
 
         agent.isStopped = false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -331,13 +277,6 @@ public class followPlayer : MonoBehaviour
     //    agent.isStopped = true;
     //    anim.SetTrigger("Shock");
     //}
-
-
-
-
-
-
-
     public void ReactToShock()
     {
         if (!isSadScene) return;
@@ -354,9 +293,6 @@ public class followPlayer : MonoBehaviour
         StartCoroutine(StopShockAfterTime()); // 🔥 المهم
     }
 
-
-
-
     IEnumerator StopShockAfterTime()
     {
         yield return new WaitForSeconds(2.5f); // ⏱️ مدة الصدمة (عدليها)
@@ -365,9 +301,6 @@ public class followPlayer : MonoBehaviour
 
         agent.isStopped = false; // 🔥 يرجع يتبع اللاعب
     }
-
-
-
     public void PointLeftSequence(Vector3 leftTarget)
     {
         StartCoroutine(PointSequence(leftTarget));
@@ -406,7 +339,6 @@ public class followPlayer : MonoBehaviour
         agent.isStopped = false;
     }
 
-
     IEnumerator StopPointing()
     {
         yield return new WaitForSeconds(5f);
@@ -417,75 +349,12 @@ public class followPlayer : MonoBehaviour
         agent.isStopped = false;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     // ⏱️ يرجع يتحرك
     IEnumerator ResumeAfterAction(float time)
     {
         yield return new WaitForSeconds(time);
         agent.isStopped = false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     IEnumerator IntroWave()
     {
         agent.isStopped = true;
@@ -542,10 +411,5 @@ public class followPlayer : MonoBehaviour
 
 
         agent.isStopped = false;
-
-
-
     }
-
-
 }

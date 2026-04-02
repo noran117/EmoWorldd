@@ -231,7 +231,7 @@ MonoBehaviour:
   brokenModelPrefab: {fileID: 8409069256463195881, guid: df73e0e16eb9dab4f92a2f09a09e6e86,
     type: 3}
   nextStateDelay: 0.5
-  brokenSpawnOffset: {x: -0.05, y: 0.3, z: -0.09}
+  brokenSpawnOffset: {x: -0.05, y: 0.3, z: -0.04}
   rayStartHeight: 3
   rayDistance: 20
   breakClip: {fileID: 8300000, guid: a35d0795a43af2543beef4ae0bf1a6f8, type: 3}
