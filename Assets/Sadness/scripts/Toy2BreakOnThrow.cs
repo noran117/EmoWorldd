@@ -7,8 +7,8 @@ public class Toy2BreakOnThrow : MonoBehaviour
     [Header("Broken Model Prefab")]
     public GameObject brokenModelPrefab;
 
-    [Header("Broken Spawn Point")]
-    public Transform brokenSpawnPoint;
+    [Header("Broken Spawn Anchor")]
+    public Transform brokenSpawnAnchor;
 
     [Header("Break Settings")]
     public float nextStateDelay = 0.9f;
@@ -17,6 +17,26 @@ public class Toy2BreakOnThrow : MonoBehaviour
     public AudioClip breakClip;
 
     private bool broken = false;
+
+    private void Reset()
+    {
+        if (brokenSpawnAnchor == null)
+        {
+            Transform t = transform.Find("BrokenSpawnAnchor");
+            if (t != null)
+                brokenSpawnAnchor = t;
+        }
+    }
+
+    private void Awake()
+    {
+        if (brokenSpawnAnchor == null)
+        {
+            Transform t = transform.Find("BrokenSpawnAnchor");
+            if (t != null)
+                brokenSpawnAnchor = t;
+        }
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -32,12 +52,12 @@ public class Toy2BreakOnThrow : MonoBehaviour
 
         GameObject spawnedBroken = null;
 
-        if (brokenModelPrefab != null && brokenSpawnPoint != null)
+        if (brokenModelPrefab != null && brokenSpawnAnchor != null)
         {
             spawnedBroken = Instantiate(
                 brokenModelPrefab,
-                brokenSpawnPoint.position,
-                brokenSpawnPoint.rotation
+                brokenSpawnAnchor.position,
+                brokenSpawnAnchor.rotation
             );
 
             spawnedBroken.SetActive(true);
@@ -63,20 +83,17 @@ public class Toy2BreakOnThrow : MonoBehaviour
             for (int i = 0; i < snapZones.Length; i++)
             {
                 if (snapZones[i] != null)
-                {
                     snapZones[i].enabled = false;
-                }
             }
 
             StartCoroutine(EnableSnapZonesLater(spawnedBroken));
         }
         else
         {
-            Debug.LogWarning("Broken Model Prefab or Broken Spawn Point is missing!");
+            Debug.LogWarning("Broken Model Prefab or BrokenSpawnAnchor is missing!");
         }
 
         DisableOriginalPenguin();
-
         StartCoroutine(GoNext());
     }
 

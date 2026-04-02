@@ -21,7 +21,7 @@ public class GameStateManager : MonoBehaviour
     public charactermovement brotherMovement;
     public ShockTrigger shockTrigger;
 
-    public followPlayer companion;//
+    public followPlayer companion;
 
     private void Awake()
     {
