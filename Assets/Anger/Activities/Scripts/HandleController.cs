@@ -38,7 +38,7 @@ public class HandleController : MonoBehaviour
         if (isMoving) return;
         if (groupIndex < 0 || groupIndex >= bridgeGroups.Count) return;
 
-        StartCoroutine(MovePieces(bridgeGroups[groupIndex].pieces, Vector3.up * moveAmount));
+        StartCoroutine(MovePieces(bridgeGroups[groupIndex].pieces, moveAmount));
     }
 
     public void LowerGroup(int groupIndex)
@@ -46,10 +46,10 @@ public class HandleController : MonoBehaviour
         if (isMoving) return;
         if (groupIndex < 0 || groupIndex >= bridgeGroups.Count) return;
 
-        StartCoroutine(MovePieces(bridgeGroups[groupIndex].pieces, Vector3.down * moveAmount));
+        StartCoroutine(MovePieces(bridgeGroups[groupIndex].pieces, -moveAmount));
     }
 
-    private IEnumerator MovePieces(List<Transform> pieces, Vector3 direction)
+    private IEnumerator MovePieces(List<Transform> pieces, float direction)
     {
         isMoving = true;
 
@@ -57,20 +57,14 @@ public class HandleController : MonoBehaviour
         List<Vector3> targetPositions = new List<Vector3>();
 
         foreach (Transform piece in pieces)
-        {
-            startPositions.Add(piece.position);
+{
+    startPositions.Add(piece.localPosition);
 
-            float newY = piece.position.y + direction.y;
-
-            // منع النزول تحت المستوى المطلوب
-            if (direction.y < 0)
-                newY = Mathf.Max(newY, targetY);
-
-            targetPositions.Add(new Vector3(
-                piece.position.x,
-                newY,
-                piece.position.z));
-        }
+    targetPositions.Add(new Vector3(
+        piece.localPosition.x,
+        Mathf.Round(piece.localPosition.y) + direction,
+        piece.localPosition.z));
+}
 
         float elapsed = 0f;
 
@@ -81,14 +75,14 @@ public class HandleController : MonoBehaviour
 
             for (int i = 0; i < pieces.Count; i++)
             {
-                pieces[i].position =
-                    Vector3.Lerp(startPositions[i], targetPositions[i], t);
+pieces[i].localPosition = Vector3.Lerp(startPositions[i], targetPositions[i], t);
+
             }
             yield return null;
         }
 
         for (int i = 0; i < pieces.Count; i++)
-            pieces[i].position = targetPositions[i];
+pieces[i].localPosition = targetPositions[i];
 
         moveSound?.Play();
 
@@ -98,22 +92,19 @@ public class HandleController : MonoBehaviour
     }
 
     private void CheckPuzzleSolved()
+{
+    foreach (BridgeGroup group in bridgeGroups)
     {
-        foreach (BridgeGroup group in bridgeGroups)
+        foreach (Transform piece in group.pieces)
         {
-            foreach (Transform piece in group.pieces)
-            {
-                // if any piece is NOT at the target Y, puzzle is unsolved
-                if (Mathf.Abs(piece.position.y - targetY) > solvedThreshold)
-                    return;
-            }
+            if (Mathf.Abs(piece.localPosition.y - targetY) > solvedThreshold)
+                return;
         }
-
-        // All pieces are at targetY — puzzle solved!
-        if (bridgeBarrier != null)
-            bridgeBarrier.enabled = false;
-
-        solvedSound?.Play();
-
     }
+
+    if (bridgeBarrier != null)
+        bridgeBarrier.enabled = false;
+
+    solvedSound?.Play();
+}
 }
