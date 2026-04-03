@@ -36,6 +36,12 @@ public class followPlayer : MonoBehaviour
     bool isHappy = false;
 
 
+
+    public GameObject denielMessage1;
+    public GameObject denielMessage2;
+    public GameObject denielMessage3;
+
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -277,6 +283,269 @@ public class followPlayer : MonoBehaviour
     //    agent.isStopped = true;
     //    anim.SetTrigger("Shock");
     //}
+
+
+
+
+
+
+
+
+
+
+
+    public void PlayGoGesture()
+    {
+        StartCoroutine(GoGestureRoutine());
+    }
+
+    IEnumerator GoGestureRoutine()
+    {
+        agent.isStopped = true;
+
+        // 🔵 لف على اللاعب أولاً
+        Vector3 dir = player.position - transform.position;
+        dir.y = 0;
+        transform.rotation = Quaternion.LookRotation(dir);
+
+        yield return new WaitForSeconds(0.2f); // نعطيه لحظة يثبت اتجاهه
+
+        // ✨ شغل الحركة
+        anim.SetTrigger("Gesture");
+
+        // 💬 الرسالة تبدأ مع الحركة
+        if (goMessage != null)
+            goMessage.SetActive(true);
+
+        yield return new WaitForSeconds(3f); // مدة الحركة
+
+        // ❌ اخفاء الرسالة
+        if (goMessage != null)
+            goMessage.SetActive(false);
+
+        agent.isStopped = false;
+    }
+
+
+
+
+
+    /*
+    public void PlayDenialTalk(string message)
+    {
+        if (player == null) return;
+
+        // وقف الحركة
+        agent.isStopped = true;
+
+        // لف على اللاعب
+        Vector3 dir = player.position - transform.position;
+        dir.y = 0;
+        transform.rotation = Quaternion.LookRotation(dir);
+
+        // شغل التوكينج
+        anim.SetBool("Talkingg", true);
+
+        // عرض المسج
+        if (talkMessage != null)
+        {
+            talkMessage.SetActive(true);
+            talkMessage.GetComponentInChildren<TextMesh>().text = message;
+        }
+
+        // صوت (اختياري)
+        if (talkAudio != null)
+            talkAudio.Play();
+
+        // وقف بعد وقت
+        StartCoroutine(StopDenialTalk());
+    }
+
+    IEnumerator StopDenialTalk()
+    {
+        yield return new WaitForSeconds(3f);
+
+        anim.SetBool("Talkingg", false);
+
+        if (talkMessage != null)
+            talkMessage.SetActive(false);
+
+        agent.isStopped = false;
+    }
+
+
+    */
+
+
+
+
+
+
+
+
+    public void PlayDenialSequence()
+    {
+        StartCoroutine(DenialSequenceRoutine());
+    }
+
+    //IEnumerator DenialSequenceRoutine()
+    //{
+    //    GameObject[] messages = new GameObject[]
+    //    {
+    //     denielMessage1,
+    //    denielMessage2,
+    //    denielMessage3
+    //    };
+
+    //    for (int i = 0; i < messages.Length; i++)
+    //    {
+    //        // 🛑 وقف الحركة
+    //        agent.isStopped = true;
+
+    //        // 🔄 لف على اللاعب
+    //        if (player != null)
+    //        {
+    //            Vector3 dir = player.position - transform.position;
+    //            dir.y = 0;
+    //            transform.rotation = Quaternion.LookRotation(dir);
+    //        }
+
+    //        // 🎤 تشغيل التوكينج
+    //        anim.SetBool("Talkingg", true);
+
+    //        // 💬 إظهار المسج
+    //        if (messages[i] != null)
+    //            messages[i].SetActive(true);
+
+    //        yield return new WaitForSeconds(3f);
+
+    //        // ❌ إخفاء المسج
+    //        if (messages[i] != null)
+    //            messages[i].SetActive(false);
+
+    //        // 📴 وقف التوكينج
+    //        anim.SetBool("Talking", false);
+
+    //        yield return new WaitForSeconds(2f); // هيك صار مجموعهم 5 ثواني
+    //    }
+
+    //    // 🔓 يرجع طبيعي
+    //    agent.isStopped = false;
+    //}
+
+
+
+
+
+    //IEnumerator DenialSequenceRoutine()
+    //{
+    //    GameObject[] messages = new GameObject[]
+    //    {
+    //    denielMessage1,
+    //    denielMessage2,
+    //    denielMessage3
+    //    };
+
+    //    int index = 0;
+
+    //    while (true) // 🔥 يضل يكرر طول المرحلة
+    //    {
+    //        yield return new WaitForSeconds(5f);
+
+    //        // 🔄 لف على اللاعب (بدون ما يوقف)
+    //        if (player != null)
+    //        {
+    //            Vector3 dir = player.position - transform.position;
+    //            dir.y = 0;
+
+    //            transform.rotation = Quaternion.LookRotation(dir);
+    //        }
+
+    //        // 💬 عرض المسج الحالي
+    //        if (messages[index] != null)
+    //            messages[index].SetActive(true);
+
+    //        yield return new WaitForSeconds(2f);
+
+    //        // ❌ اخفاء المسج
+    //        if (messages[index] != null)
+    //            messages[index].SetActive(false);
+
+    //        // 🔁 ننتقل للمسج اللي بعده
+    //        index++;
+
+    //        if (index >= messages.Length)
+    //            index = 0; // يرجع يعيد من الأول
+    //    }
+    //}
+
+    IEnumerator DenialSequenceRoutine()
+    {
+        GameObject[] messages = new GameObject[]
+        {
+        denielMessage1,
+        denielMessage2,
+        denielMessage3
+        };
+
+        for (int i = 0; i < messages.Length; i++)
+        {
+            // ⏱️ استنى 5 ثواني قبل كل رسالة
+            yield return new WaitForSeconds(5f);
+
+            // 👀 لف على اللاعب
+            if (player != null)
+            {
+                Vector3 dir = player.position - transform.position;
+                dir.y = 0;
+                transform.rotation = Quaternion.LookRotation(dir);
+            }
+
+            // 💬 إظهار الرسالة
+            if (messages[i] != null)
+                messages[i].SetActive(true);
+
+            // ⏱️ تبقى ظاهرة 5 ثواني
+            yield return new WaitForSeconds(5f);
+
+            // ❌ إخفاء الرسالة
+            if (messages[i] != null)
+                messages[i].SetActive(false);
+
+            // ⏱️ 10 ثواني بدون رسالة
+            yield return new WaitForSeconds(10f);
+        }
+
+        // ✅ انتهى — ما رح يكرر
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void ReactToShock()
     {
         if (!isSadScene) return;

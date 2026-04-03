@@ -35,7 +35,8 @@ public class GameStateManager : MonoBehaviour
     {
         //StartCoroutine(StartAfterDelay());
         //   ChangeState(GameState.Anger);
-        ChangeState(GameState.Anger);
+        // ChangeState(GameState.Anger);
+        ChangeState(GameState.Play);
 
 
     }

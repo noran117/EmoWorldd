@@ -302,17 +302,23 @@ public class charactermovement : MonoBehaviour
         yield return new WaitForSeconds(1.2f);
         animator.SetTrigger("doPoint");
 
-        if (companion != null)
-        {
-            Vector3 leftDir = transform.position - transform.right * 5f; // 👈 شمال
+        //if (companion != null)
+        //{
+        //    Vector3 leftDir = transform.position - transform.right * 5f; // 👈 شمال
 
-            companion.PointLeftSequence(leftDir);
-        }
+        //    companion.PointLeftSequence(leftDir);
+        //}
         yield return new WaitUntil(() =>
     animator.GetCurrentAnimatorStateInfo(0).IsName("Counting") &&
     animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.95f
 );
-        
+
+
+        if (companion != null)
+        {
+            companion.PlayGoGesture();
+        }
+
         useRootMotion = false;
         animator.applyRootMotion = false;
 
