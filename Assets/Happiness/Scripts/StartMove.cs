@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StartMove : MonoBehaviour
@@ -33,14 +35,15 @@ public class StartMove : MonoBehaviour
             else
             {
                 if (sound == null) return;
-                if (sound.isPlaying){
+                if (sound.isPlaying)
+                {
                     sound.Stop();
                 }
             }
 
             //Debug.Log(isCurrentlyMoving ? "moving" : "not moving");
         }
-        if(moveScript.ReachedDestination)
+        if (moveScript.ReachedDestination)
         {
             if (hiddenCollider == null) return;
             if (hiddenCollider.activeSelf)
@@ -55,14 +58,18 @@ public class StartMove : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (hiddenCollider != null)
-            {
-                hiddenCollider.SetActive(true);
-            }
-            moveScript.IsActive = true;
 
+            StartCoroutine(StartMovement());
         }
     }
-   
+    IEnumerator StartMovement()
+    {
+        if (hiddenCollider != null)
+        {
+            hiddenCollider.SetActive(true);
+        }
+        yield return new WaitForSeconds(1f);
+        moveScript.IsActive = true;
+    }
 
 }

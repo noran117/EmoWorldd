@@ -68,7 +68,7 @@ public class BallSpawner : MonoBehaviour
                     parentContainer 
                 );
 
-                BallColor randomColor = newBall.GetComponent<BallColor>();
+                HappinessBall randomColor = newBall.GetComponent<HappinessBall>();
                 if (randomColor != null)
                     randomColor.SetRandomColor();
             }

@@ -27,6 +27,8 @@ public class ChestController : MonoBehaviour
 
         if (animator != null)
             animator.SetTrigger("Open");
+        
+        ShowWinCup();
     }
 
     public void ShowWinCup()

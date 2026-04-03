@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class BallColor : MonoBehaviour
+public class HappinessBall : MonoBehaviour
 {
+    public float lifetime = 10f;
     public Color[] colors;
     private Renderer rend;
 
@@ -10,6 +11,11 @@ public class BallColor : MonoBehaviour
         rend = GetComponent<Renderer>();
     }
 
+    void Start()
+    {
+        Destroy(gameObject, lifetime);
+    }
+    
     public void SetRandomColor()
     {
         if (colors.Length > 0)
@@ -18,4 +24,6 @@ public class BallColor : MonoBehaviour
             rend.material.color = randomCol;
         }
     }
+
+
 }

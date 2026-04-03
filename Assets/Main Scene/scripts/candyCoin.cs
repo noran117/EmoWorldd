@@ -16,7 +16,7 @@ public class CandyCoin : MonoBehaviour
         {
             CoinManager.Instance.CollectCoin();
             audioSource.PlayOneShot(collectSound);
-            Destroy(gameObject, collectSound.length);
+            Destroy(gameObject, .3f);
         }
     }
 }

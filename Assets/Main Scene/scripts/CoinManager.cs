@@ -4,7 +4,7 @@ public class CoinManager : MonoBehaviour
 {
     public static CoinManager Instance;
 
-    public int totalCoins = 5;
+    public int totalCoins = 8;
     private int collectedCoins = 0;
 
     public ChestController chest;
