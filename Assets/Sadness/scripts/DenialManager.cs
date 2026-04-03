@@ -1,8 +1,24 @@
 ﻿using UnityEngine;
 using BNG;
+using System.Collections;
 
 public class DenialManager : MonoBehaviour
 {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static DenialManager Instance;
 
     [Header("Audio")]
@@ -14,6 +30,9 @@ public class DenialManager : MonoBehaviour
     Grabbable[] allGrabbables;
     bool[] wasEnabled;
     bool locked = false;
+
+    public followPlayer companion;//
+
 
     void Awake()
     {
@@ -44,7 +63,47 @@ public class DenialManager : MonoBehaviour
     {
         LockAllInteractions();
         houseCall?.Play();
+
+
+
+
+        if (companion != null)
+        {
+            companion.PlayDenialSequence(); // 
+        }
+
+
     }
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     void LockAllInteractions()
     {

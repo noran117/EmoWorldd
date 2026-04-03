@@ -30,11 +30,29 @@ public class followPlayer : MonoBehaviour
 
     public GameObject happyMessage;
     public GameObject danceMessage;
+    public GameObject waitMessage;
+    public GameObject acceptancemessage;
+
     public GameObject startdanceMessage;
     bool isShocked = false;
 
     bool isHappy = false;
 
+
+
+    public GameObject denielMessage1;
+    public GameObject denielMessage2;
+    public GameObject denielMessage3;
+
+
+
+
+
+
+    bool canFollow = true;
+
+
+    bool isTalkingState = false;//
 
     void Start()
     {
@@ -54,6 +72,21 @@ public class followPlayer : MonoBehaviour
 
     void Update()
     {
+
+        if (!isTalkingState)
+        {
+            anim.SetFloat("Speed", agent.velocity.magnitude);
+        }
+
+
+
+
+
+
+
+
+
+
 
         if (isShocked)
         {
@@ -95,9 +128,11 @@ public class followPlayer : MonoBehaviour
             );
         }
 
-        if (introPlaying) return;
+        // if (introPlaying) return;
 
-       if (player == null) return;
+        if (introPlaying || !canFollow) return;
+
+        if (player == null) return;
 
         if (reacting)
         {
@@ -190,47 +225,99 @@ public class followPlayer : MonoBehaviour
 
 
 
-    /*
-    public void PlayStoryHappy()
+    public void StopFollowing()
     {
-        StartCoroutine(StoryHappyRoutine());
+        canFollow = false;
+
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
+
+        anim.SetFloat("Speed", 0);
     }
 
-    IEnumerator StoryHappyRoutine()
+
+
+    public void ResumeFollowing()
     {
-        agent.isStopped = true;
-
-        Vector3 dir = player.position - transform.position;
-        dir.y = 0;
-
-        transform.rotation = Quaternion.LookRotation(dir);
-
-        // 🎬 تشغيل Happy
-        anim.SetBool("isStoryPlaying", true);
-
-        yield return new WaitForSeconds(8f); // مدة القصة (عدليها حسب طول الصوت)
-
-        // 🔚 رجوع للوضع الطبيعي
-        anim.SetBool("isStoryPlaying", false);
+        canFollow = true;
 
         agent.isStopped = false;
     }
-    */
-    // 🎉 الرقص
+
+
+
+
+
+    public void PlayAcceptanceMoment()
+    {
+        StartCoroutine(AcceptanceMomentRoutine());
+    }
+
+
+
+    IEnumerator AcceptanceMomentRoutine()
+    {
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
+
+        if (player != null)
+        {
+            Vector3 dir = player.position - transform.position;
+            dir.y = 0;
+            transform.rotation = Quaternion.LookRotation(dir);
+        }
+
+        anim.SetTrigger("Grateful");
+
+        yield return new WaitForSeconds(5f);
+
+        if (player != null)
+        {
+            Vector3 dir = player.position - transform.position;
+            dir.y = 0;
+            transform.rotation = Quaternion.LookRotation(dir);
+        }
+
+        if (acceptancemessage != null)
+            acceptancemessage.SetActive(true);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void ReactToDance()
     {
         //if (!isSadScene) return;
 
         //agent.isStopped = true;
 
-        //anim.SetTrigger("StartDance"); // 🔥 Trigger بدل Bool
+        //anim.SetTrigger("StartDance");
 
 
         if (!isSadScene) return;
 
         agent.isStopped = true;
 
-        isDancing = true; // 🔥 فعلنا الرقص
+        isDancing = true; 
 
         anim.SetTrigger("StartDance");
 
@@ -247,8 +334,7 @@ public class followPlayer : MonoBehaviour
 
             startdanceMessage.SetActive(true);
 
-        yield return new WaitForSeconds(15f); // حسب طول الرقصة
-
+        yield return new WaitForSeconds(15f); 
         if (danceMessage != null)
 
             danceMessage.SetActive(true);
@@ -259,24 +345,143 @@ public class followPlayer : MonoBehaviour
     }
     public void StopDance()
     {
-        //anim.SetTrigger("StopDance"); // 🔥 Trigger للإيقاف
+        //anim.SetTrigger("StopDance"); 
 
         //agent.isStopped = false;
         anim.SetTrigger("StopDance");
 
-        isDancing = false; // 🔥 وقفنا التتبع
+        isDancing = false; 
 
         agent.isStopped = false;
     }
 
-    // ⚡ الحادث
-    //public void ReactToShock()
-    //{
-    //    if (!isSadScene) return;
+   
 
-    //    agent.isStopped = true;
-    //    anim.SetTrigger("Shock");
-    //}
+
+
+
+    public void PlayGoGesture()
+    {
+        StartCoroutine(GoGestureRoutine());
+    }
+
+    IEnumerator GoGestureRoutine()
+    {
+        agent.isStopped = true;
+
+        Vector3 dir = player.position - transform.position;
+        dir.y = 0;
+        transform.rotation = Quaternion.LookRotation(dir);
+
+        yield return new WaitForSeconds(0.2f); 
+
+        anim.SetTrigger("Gesture");
+
+        if (goMessage != null)
+            goMessage.SetActive(true);
+
+        yield return new WaitForSeconds(3f); 
+
+        if (goMessage != null)
+            goMessage.SetActive(false);
+
+        agent.isStopped = false;
+    }
+
+
+
+
+
+   
+
+
+
+
+
+
+
+    public void PlayDenialSequence()
+    {
+        StartCoroutine(DenialSequenceRoutine());
+    }
+
+    IEnumerator DenialSequenceRoutine()
+    {
+        GameObject[] messages = new GameObject[]
+        {
+        denielMessage1,
+        denielMessage2
+        };
+
+        for (int i = 0; i < messages.Length; i++)
+        {
+            yield return new WaitForSeconds(5f);
+
+            agent.isStopped = true;
+
+            if (player != null)
+            {
+                Vector3 dir = player.position - transform.position;
+                dir.y = 0;
+                transform.rotation = Quaternion.LookRotation(dir);
+            }
+
+            anim.SetFloat("Speed", 0); 
+            anim.SetTrigger("StartTalking");
+
+            if (messages[i] != null)
+                messages[i].SetActive(true);
+
+            yield return new WaitForSeconds(5f);
+
+            if (messages[i] != null)
+                messages[i].SetActive(false);
+
+            agent.isStopped = false;
+
+            if (i < messages.Length - 1)
+            {
+                yield return new WaitForSeconds(5f);
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void ReactToShock()
     {
         if (!isSadScene) return;
@@ -290,16 +495,16 @@ public class followPlayer : MonoBehaviour
 
         anim.SetTrigger("Shock");
 
-        StartCoroutine(StopShockAfterTime()); // 🔥 المهم
+        StartCoroutine(StopShockAfterTime()); 
     }
 
     IEnumerator StopShockAfterTime()
     {
-        yield return new WaitForSeconds(2.5f); // ⏱️ مدة الصدمة (عدليها)
+        yield return new WaitForSeconds(2.5f); 
 
         isShocked = false;
 
-        agent.isStopped = false; // 🔥 يرجع يتبع اللاعب
+        agent.isStopped = false;
     }
     public void PointLeftSequence(Vector3 leftTarget)
     {
@@ -310,25 +515,21 @@ public class followPlayer : MonoBehaviour
     {
         agent.isStopped = true;
 
-        // 🟢 1. لف على اللاعب
         Vector3 dirToPlayer = player.position - transform.position;
         dirToPlayer.y = 0;
 
         transform.rotation = Quaternion.LookRotation(dirToPlayer);
 
-        // 💬 الرسالة تظهر وهو بحكي معه
         if (goMessage != null)
             goMessage.SetActive(true);
 
-        yield return new WaitForSeconds(2f); // مدة الكلام
+        yield return new WaitForSeconds(2f); 
 
-        // 🔵 2. لف للشمال
         Vector3 dirLeft = leftTarget - transform.position;
         dirLeft.y = 0;
 
         transform.rotation = Quaternion.LookRotation(dirLeft);
 
-        // 👉 3. حركة التأشير
         anim.SetTrigger("Point");
 
         yield return new WaitForSeconds(2.5f);
@@ -349,7 +550,6 @@ public class followPlayer : MonoBehaviour
         agent.isStopped = false;
     }
 
-    // ⏱️ يرجع يتحرك
     IEnumerator ResumeAfterAction(float time)
     {
         yield return new WaitForSeconds(time);
@@ -374,10 +574,84 @@ public class followPlayer : MonoBehaviour
 
         waveMessage.SetActive(false);
 
+        // introPlaying = false;
+        // agent.isStopped = false;
+
+
+        if (isSadScene)
+        {
+            StartCoroutine(IntroHappyAfterWave());
+        }
+        else
+        {
+            introPlaying = false;
+            agent.isStopped = false;
+
+
+
+
+
+
+        }
+    }
+
+
+
+
+   
+
+
+
+
+    IEnumerator IntroHappyAfterWave()
+    {
         introPlaying = false;
+
         agent.isStopped = false;
 
+        yield return new WaitForSeconds(3f);
+
+        agent.isStopped = true;
+
+        Vector3 dir = player.position - transform.position;
+        dir.y = 0;
+        transform.rotation = Quaternion.LookRotation(dir);
+
+        isHappy = true;
+
+        anim.SetTrigger("start");
+
+        if (waitMessage != null)
+            waitMessage.SetActive(true);
+
+        yield return new WaitForSeconds(5f);
+
+        if (waitMessage != null)
+            waitMessage.SetActive(false);
+
+        isHappy = false;
+
+        agent.isStopped = false;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
