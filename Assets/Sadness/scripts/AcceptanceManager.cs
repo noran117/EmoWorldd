@@ -29,6 +29,11 @@ public class AcceptanceManager : MonoBehaviour
     bool presentationFinished = false;
     bool bookFinished = false;
 
+
+    public followPlayer companion;
+   // public GameObject message;
+   // public Transform player;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -63,6 +68,10 @@ public class AcceptanceManager : MonoBehaviour
 
     public void StartAcceptance()
     {
+
+
+
+
         started = false;
         acceptanceActive = true;
 
@@ -98,6 +107,12 @@ public class AcceptanceManager : MonoBehaviour
 
     public void OnBookTouched()
     {
+
+
+        if (companion != null)
+        {
+            companion.PlayAcceptanceMoment();
+        }//
         if (!acceptanceActive) return;
         if (started) return;
 
