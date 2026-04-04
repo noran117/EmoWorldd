@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
-
 public enum GameState
 {
     Play,
     Shock,
+    TransitionalPhase1,
     Denial,
     Anger,
     Bargaining,
@@ -35,15 +35,15 @@ public class GameStateManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(StartAfterDelay());
-        //ChangeState(GameState.Play);
+        //StartCoroutine(StartAfterDelay());
+        ChangeState(GameState.Play);
 
 
     }
 
     IEnumerator StartAfterDelay()
     {
-        //yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(10f);
 
         ChangeState(GameState.Play);
         yield return new WaitForSeconds(1f);
@@ -89,6 +89,15 @@ public class GameStateManager : MonoBehaviour
                     Debug.LogError("shockTrigger NULL");
                 break;
 
+            case GameState.TransitionalPhase1:
+                if (companion != null)
+                    companion.ReactToTransitionalPhase1();
+               
+
+                StatePresentationManager.Instance.PlayState(StatePresentationManager.Instance.transitionalPhase1);
+                //ChangeState(GameState.Denial);
+                break;
+
             case GameState.Denial:
 
                 DenialManager.Instance.StartDenial();
@@ -96,7 +105,6 @@ public class GameStateManager : MonoBehaviour
                 StatePresentationManager.Instance.bothFinishedCallback = () =>
                 {
                     Debug.Log("DENIAL finished -> going to ANGER");
-                    DenialManager.Instance.EndDenial();
                     ChangeState(GameState.Anger);
                 };
 
@@ -192,7 +200,7 @@ public class GameStateManager : MonoBehaviour
     }
     IEnumerator LoadSceneAfterDelay()
     {
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(20f);
         SceneManager.LoadScene("Main_Scene");
     }
 

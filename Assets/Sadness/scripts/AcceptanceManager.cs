@@ -108,15 +108,15 @@ public class AcceptanceManager : MonoBehaviour
     public void OnBookTouched()
     {
 
-
-        if (companion != null)
-        {
-            companion.PlayAcceptanceMoment();
-        }//
         if (!acceptanceActive) return;
         if (started) return;
 
         started = true;
+
+         if (companion != null)
+        {
+            companion.PlayAcceptanceMoment();
+        }
 
         if (outsideYellowLight != null)
             outsideYellowLight.SetActive(false);

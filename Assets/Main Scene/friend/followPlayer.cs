@@ -390,12 +390,12 @@ public class followPlayer : MonoBehaviour
 
 
 
-    public void PlayDenialSequence()
+    public void ReactToTransitionalPhase1()
     {
-        StartCoroutine(DenialSequenceRoutine());
+        StartCoroutine(TransitionalPhase1Routine());
     }
 
-    IEnumerator DenialSequenceRoutine()
+    IEnumerator TransitionalPhase1Routine()
     {
         GameObject[] messages = new GameObject[]
         {
@@ -405,8 +405,6 @@ public class followPlayer : MonoBehaviour
 
         for (int i = 0; i < messages.Length; i++)
         {
-            yield return new WaitForSeconds(5f);
-
             agent.isStopped = true;
 
             if (player != null)
@@ -434,6 +432,8 @@ public class followPlayer : MonoBehaviour
                 yield return new WaitForSeconds(5f);
             }
         }
+         yield return new WaitForSeconds(5f);
+        //GameStateManager.Instance.ChangeState(GameState.Denial);
     }
 
     public void ReactToShock()

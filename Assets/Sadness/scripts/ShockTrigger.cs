@@ -21,6 +21,9 @@ public class ShockTrigger : MonoBehaviour
     public GameObject exposedCable;
     public GameObject planeObject;
 
+    [Header("Stones to stop glow on shock")]
+    public Stone[] stonesToStopGlow;
+
     bool triggered;
     Material originalSkybox;
 
@@ -92,17 +95,22 @@ public class ShockTrigger : MonoBehaviour
         StatePresentationManager.Instance.bothFinishedCallback = () =>
         {
             ApplySkybox(originalSkybox);
-            GameStateManager.Instance.ChangeState(GameState.Denial);
+            GameStateManager.Instance.ChangeState(GameState.TransitionalPhase1);
         };
 
         StatePresentationManager.Instance.PlayState(StatePresentationManager.Instance.shock);
+
+         foreach (Stone stone in stonesToStopGlow)
+        {
+            if (stone != null)
+                stone.gameObject.SetActive(false);
+        }
     }
 
     void StopAllStoneGlow()
     {
-        Stone[] stones = FindObjectsOfType<Stone>();
 
-        foreach (Stone stone in stones)
+        foreach (Stone stone in stonesToStopGlow)
         {
             if (stone != null)
                 stone.DisableGlow();

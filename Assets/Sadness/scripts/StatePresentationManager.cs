@@ -20,6 +20,7 @@ public class StatePresentationManager : MonoBehaviour
     [Header("States")]
     public StatePresentation play;
     public StatePresentation shock;
+    public StatePresentation transitionalPhase1;
     public StatePresentation denial;
     public StatePresentation anger;
     public StatePresentation bargaining;
@@ -67,6 +68,7 @@ public class StatePresentationManager : MonoBehaviour
         allMusics.Clear();
         AddMusic(play);
         AddMusic(shock);
+        AddMusic(transitionalPhase1);
         AddMusic(denial);
         AddMusic(anger);
         AddMusic(bargaining);
@@ -128,6 +130,7 @@ public class StatePresentationManager : MonoBehaviour
             slideCo = StartCoroutine(SlideRoutine(state, myRun));
         else
             TryFinishBoth(state, myRun);
+
     }
 
     void SwitchMusic(StatePresentation state)
@@ -169,7 +172,12 @@ public class StatePresentationManager : MonoBehaviour
         AudioMixerDucker.Instance?.Unduck(state.duckOut);
 
         voiceFinished = true;
+
         TryFinishBoth(state, myRun);
+        if (voiceFinished && GameStateManager.Instance.currentState == GameState.TransitionalPhase1)
+        {
+            GameStateManager.Instance.ChangeState(GameState.Denial);
+        }
     }
 
     IEnumerator SlideRoutine(StatePresentation state, int myRun)
