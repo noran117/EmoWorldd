@@ -4,21 +4,6 @@ using System.Collections;
 
 public class DenialManager : MonoBehaviour
 {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public static DenialManager Instance;
 
     [Header("Audio")]
@@ -64,44 +49,11 @@ public class DenialManager : MonoBehaviour
         LockAllInteractions();
         houseCall?.Play();
 
-
-
-
-        if (companion != null)
+       if (companion != null)
         {
-            companion.PlayDenialSequence(); // 
+            companion.PlayDenialSequence(); 
         }
-
-
     }
-
-
-
-
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

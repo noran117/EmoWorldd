@@ -4335,7 +4335,6 @@ Transform:
   - {fileID: 5535059152836851208}
   - {fileID: 3016561506383100490}
   - {fileID: 4797055873234555502}
-  - {fileID: 1669029707953976067}
   - {fileID: 4897816941335014012}
   - {fileID: 8432577395003326134}
   - {fileID: 4835629472331895167}
@@ -26580,6 +26579,7 @@ Transform:
   - {fileID: 3076890636291161110}
   - {fileID: 7675826087138395372}
   - {fileID: 3042129623374444610}
+  - {fileID: 1669029707953976067}
   - {fileID: 152576733549475875}
   - {fileID: 4941230221048391383}
   - {fileID: 2189705106046716052}
@@ -62107,7 +62107,7 @@ Transform:
   m_LocalScale: {x: 0.38711336, y: 0.10527306, z: 0.44441643}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 152576733549475875}
+  m_Father: {fileID: 4756666053779257583}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &7900125696254448140
 ParticleSystem:
@@ -100068,6 +100068,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DenialManager
   houseCall: {fileID: 5541851038590176721}
   ignore: []
+  companion: {fileID: 0}
 --- !u!1 &6308132038955238425
 GameObject:
   m_ObjectHideFlags: 0
@@ -139408,6 +139409,7 @@ MonoBehaviour:
   bookAnimator: {fileID: 2826807445900533929}
   openTriggerName: OpenBook
   useCardsAnimate: 1
+  companion: {fileID: 0}
 --- !u!1 &8797260356192083675
 GameObject:
   m_ObjectHideFlags: 0
@@ -215934,11 +215936,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1977763753495431389, guid: f25005ea048f44d4cae3c95651c6e992,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 794649061978285974}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f25005ea048f44d4cae3c95651c6e992, type: 3}
 --- !u!4 &2883726458798787702 stripped
 Transform:
@@ -215946,33 +215944,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7165050166411135796}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8655129643108991977 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1977763753495431389, guid: f25005ea048f44d4cae3c95651c6e992,
-    type: 3}
-  m_PrefabInstance: {fileID: 7165050166411135796}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &794649061978285974
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8655129643108991977}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.850502, y: 0.07909942, z: 0.028843967}
-  m_Center: {x: 0.00006225222, y: -0.039938685, z: -0.00067155855}
 --- !u!1001 &7181896569431958678
 PrefabInstance:
   m_ObjectHideFlags: 0

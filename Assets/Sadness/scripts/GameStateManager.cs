@@ -21,6 +21,8 @@ public class GameStateManager : MonoBehaviour
     public charactermovement brotherMovement;
     public ShockTrigger shockTrigger;
 
+    public ParticleSystem entryParticle;
+
     public followPlayer companion;
 
     private void Awake()
@@ -33,18 +35,19 @@ public class GameStateManager : MonoBehaviour
 
     private void Start()
     {
-        //StartCoroutine(StartAfterDelay());
-        //   ChangeState(GameState.Anger);
-         ChangeState(GameState.Anger);
+        StartCoroutine(StartAfterDelay());
+        //ChangeState(GameState.Play);
 
 
     }
 
     IEnumerator StartAfterDelay()
     {
-        yield return new WaitForSeconds(10f);
+        //yield return new WaitForSeconds(10f);
 
         ChangeState(GameState.Play);
+        yield return new WaitForSeconds(1f);
+        if (entryParticle != null) entryParticle.Play();
     }
 
     public void ChangeState(GameState newState)
@@ -63,7 +66,7 @@ public class GameStateManager : MonoBehaviour
                 {
                     return;
                 }
-             
+
                 StatePresentationManager.Instance.bothFinishedCallback = () =>
                 {
                     if (brotherMovement != null)
@@ -82,7 +85,7 @@ public class GameStateManager : MonoBehaviour
 
             case GameState.Shock:
                 if (shockTrigger != null) shockTrigger.StartShock();
-                else 
+                else
                     Debug.LogError("shockTrigger NULL");
                 break;
 
@@ -133,7 +136,7 @@ public class GameStateManager : MonoBehaviour
                         StatePresentationManager.Instance.bargaining
                     );
 
-   
+
                     PuzzleManager pm = Object.FindFirstObjectByType<PuzzleManager>(FindObjectsInactive.Include);
 
                     if (pm != null)

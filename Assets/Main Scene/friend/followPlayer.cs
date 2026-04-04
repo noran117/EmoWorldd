@@ -390,16 +390,6 @@ public class followPlayer : MonoBehaviour
 
 
 
-
-
-   
-
-
-
-
-
-
-
     public void PlayDenialSequence()
     {
         StartCoroutine(DenialSequenceRoutine());
@@ -445,42 +435,6 @@ public class followPlayer : MonoBehaviour
             }
         }
     }
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void ReactToShock()
     {

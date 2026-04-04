@@ -58,13 +58,8 @@ public class ShockTrigger : MonoBehaviour
     {
         StopAllStoneGlow();
 
-        // 🔥 خلي الرفيق يتفاعل
         if (companion != null)
             companion.ReactToShock();
-
-
-
-
 
         electricSound?.Play();
 
@@ -105,7 +100,7 @@ public class ShockTrigger : MonoBehaviour
 
     void StopAllStoneGlow()
     {
-        Stone[] stones = FindObjectsOfType<Stone>(true);
+        Stone[] stones = FindObjectsOfType<Stone>();
 
         foreach (Stone stone in stones)
         {
