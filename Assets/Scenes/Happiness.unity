@@ -18762,6 +18762,11 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 398d4f6f7afb145419197ebb32ef6a78, type: 2}
+    - target: {fileID: 7902025443058532144, guid: 3b6345af4f94a0844a060f58dceeee63,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8035115563687997489, guid: 3b6345af4f94a0844a060f58dceeee63,
         type: 3}
       propertyPath: m_LocalScale.y
@@ -96144,7 +96149,7 @@ MonoBehaviour:
   ReachedDestination: 0
   StartDelay: 1
   PositionDifference: {x: 0, y: 0, z: 0}
-  MoveInUpdate: 0
+  MoveInUpdate: 1
   MoveInFixedUpdate: 1
 --- !u!114 &6807510322233755924
 MonoBehaviour:
