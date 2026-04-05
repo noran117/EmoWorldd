@@ -36,7 +36,7 @@ public class GameStateManager : MonoBehaviour
     private void Start()
     {
         //StartCoroutine(StartAfterDelay());
-        ChangeState(GameState.Play);
+        ChangeState(GameState.Depression);
 
 
     }
@@ -120,7 +120,6 @@ public class GameStateManager : MonoBehaviour
                 StatePresentationManager.Instance.PlayState(
                     StatePresentationManager.Instance.anger
                 );
-                EnableAngerObjects();
                 break;
 
 
@@ -202,16 +201,6 @@ public class GameStateManager : MonoBehaviour
     {
         yield return new WaitForSeconds(20f);
         SceneManager.LoadScene("Main_Scene");
-    }
-
-    void EnableAngerObjects()
-    {
-        ToyBreakableInAngerState[] toys = Object.FindObjectsByType<ToyBreakableInAngerState>(
-            FindObjectsInactive.Include,
-            FindObjectsSortMode.None
-        );
-        foreach (var toy in toys)
-            toy.EnableBreaking();
     }
 
 }

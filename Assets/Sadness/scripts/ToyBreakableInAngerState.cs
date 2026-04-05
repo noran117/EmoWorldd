@@ -15,8 +15,7 @@ public class ToyBreakableInAngerState : MonoBehaviour
 
     [Header("After Toy1 Broken -> Spawn Toy2")]
     public float disappearDelay = 0.3f;
-    public GameObject toy2Prefab;
-    public Transform toy2SpawnPoint;
+    public GameObject toy2Object;
 
     [Header("Hide This When Toy2 Appears")]
     public GameObject carRootToHide;
@@ -24,6 +23,7 @@ public class ToyBreakableInAngerState : MonoBehaviour
     [Header("Hammer In Anger")]
     public GameObject hammerObject;
     public GameObject arrowObject;
+    public GameObject toy2ArrowObject;
     public Transform hammerTransform;
     public Grabbable hammerGrabbable;
 
@@ -45,10 +45,16 @@ public class ToyBreakableInAngerState : MonoBehaviour
         if (hammerObject != null)
             hammerObject.SetActive(true);
 
-        if (arrowObject != null)
-            arrowObject.SetActive(false);
+        canBreak = true;
 
-        EnableBreaking();
+        if (arrowObject == null || hammerTransform == null) return;
+        arrowScript arrowFollow = arrowObject.GetComponent<arrowScript>();
+        if (arrowFollow != null)
+        {
+            arrowFollow.target = hammerTransform;
+        }
+
+        arrowObject.SetActive(true);
     }
 
     void Update()
@@ -84,32 +90,12 @@ public class ToyBreakableInAngerState : MonoBehaviour
             return;
 
         float speed = rb.linearVelocity.magnitude;
-        // float speed = rb.velocity.magnitude;
 
         if (speed < minHammerSpeed)
             return;
 
         lastHitTime = Time.time;
         RegisterHit(other);
-    }
-
-    public void EnableBreaking()
-    {
-        canBreak = true;
-        ShowArrow();
-    }
-
-    void ShowArrow()
-    {
-        if (arrowObject == null || hammerTransform == null) return;
-
-        arrowScript arrowFollow = arrowObject.GetComponent<arrowScript>();
-        if (arrowFollow != null)
-        {
-            arrowFollow.target = hammerTransform;
-        }
-
-        arrowObject.SetActive(true);
     }
 
     void HideArrow()
@@ -185,15 +171,8 @@ public class ToyBreakableInAngerState : MonoBehaviour
     {
         yield return new WaitForSeconds(disappearDelay);
 
-        if (toy2Prefab != null && toy2SpawnPoint != null)
-        {
-            spawnedToy2 = Instantiate(toy2Prefab, toy2SpawnPoint.position, toy2SpawnPoint.rotation);
-            spawnedToy2.SetActive(true);
-        }
-        else
-        {
-            Debug.LogWarning("Toy1: toy2Prefab أو toy2SpawnPoint Null!");
-        }
+        toy2Object?.SetActive(true);
+        toy2ArrowObject?.SetActive(true);
 
         HideArrow();
 
@@ -208,10 +187,5 @@ public class ToyBreakableInAngerState : MonoBehaviour
         {
             Debug.LogWarning("carRootToHide is NULL!");
         }
-    }
-
-    public GameObject GetSpawnedToy2()
-    {
-        return spawnedToy2;
     }
 }

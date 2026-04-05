@@ -5,10 +5,10 @@ using BNG;
 public class Toy2BreakOnThrow : MonoBehaviour
 {
     [Header("Broken Model Prefab")]
-    public GameObject brokenModelPrefab;
+    public GameObject brokenModelObject;
 
-    [Header("Broken Spawn Anchor")]
-    public Transform brokenSpawnAnchor;
+    [Header("Arrow Settings")]
+    public GameObject arrowObject;
 
     [Header("Break Settings")]
     public float nextStateDelay = 0.9f;
@@ -17,29 +17,6 @@ public class Toy2BreakOnThrow : MonoBehaviour
     public AudioClip breakClip;
 
     private bool broken = false;
-
-    void Awake()
-    {
-        if (brokenSpawnAnchor == null)
-        {
-            GameObject point = GameObject.Find("BrokenSpawnAnchor");
-
-            if (point != null)
-            {
-                brokenSpawnAnchor = point.transform;
-                Debug.Log("Spawn point FOUND");
-            }
-            else
-            {
-                Debug.LogWarning("BrokenSpawnAnchor NOT FOUND in scene!");
-            }
-        }
-
-        if (brokenModelPrefab == null)
-        {
-            Debug.LogWarning("Broken Model Prefab is NOT assigned!");
-        }
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -55,34 +32,19 @@ public class Toy2BreakOnThrow : MonoBehaviour
     {
         broken = true;
 
-        if (brokenModelPrefab == null)
-        {
-            Debug.LogWarning("No brokenModelPrefab!");
+        if (brokenModelObject == null)
             return;
-        }
+        if (arrowObject != null)
+            arrowObject.SetActive(false);
 
-        if (brokenSpawnAnchor == null)
-        {
-            Debug.LogWarning("No BrokenSpawnAnchor!");
-            return;
-        }
-
-        GameObject spawnedBroken = Instantiate(
-            brokenModelPrefab,
-            brokenSpawnAnchor.position,
-            brokenSpawnAnchor.rotation
-        );
-
-        spawnedBroken.SetActive(true);
-
-        Debug.Log("Spawned at: " + spawnedBroken.transform.position);
+        brokenModelObject.SetActive(true);
 
         if (breakClip != null)
         {
-            AudioSource.PlayClipAtPoint(breakClip, spawnedBroken.transform.position);
+            AudioSource.PlayClipAtPoint(breakClip, brokenModelObject.transform.position);
         }
 
-        Rigidbody[] allRigidbodies = spawnedBroken.GetComponentsInChildren<Rigidbody>(true);
+        Rigidbody[] allRigidbodies = brokenModelObject.GetComponentsInChildren<Rigidbody>(true);
         foreach (var rb in allRigidbodies)
         {
             if (rb != null)
@@ -94,14 +56,14 @@ public class Toy2BreakOnThrow : MonoBehaviour
             }
         }
 
-        SnapZone[] snapZones = spawnedBroken.GetComponentsInChildren<SnapZone>(true);
+        SnapZone[] snapZones = brokenModelObject.GetComponentsInChildren<SnapZone>(true);
         foreach (var zone in snapZones)
         {
             if (zone != null)
                 zone.enabled = false;
         }
 
-        StartCoroutine(EnableSnapZonesLater(spawnedBroken));
+        StartCoroutine(EnableSnapZonesLater(brokenModelObject));
 
         DisableOriginalPenguin();
 

@@ -178,6 +178,12 @@ public class StatePresentationManager : MonoBehaviour
         {
             GameStateManager.Instance.ChangeState(GameState.Denial);
         }
+
+        if (voiceFinished && GameStateManager.Instance.currentState == GameState.Bargaining)
+        {
+            yield return new WaitForSeconds(5f);
+            GameStateManager.Instance.ChangeState(GameState.Depression);
+        }
     }
 
     IEnumerator SlideRoutine(StatePresentation state, int myRun)

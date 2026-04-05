@@ -5,10 +5,6 @@ public class DepressionManager : MonoBehaviour
 {
     public static DepressionManager Instance;
 
-    [Header("Visual Objects")]
-    public GameObject[] enableOnStart;
-    public GameObject[] disableOnStart;
-
     [Header("SFX")]
     public AudioSource breathingSfx;
     public AudioSource heartbeatSfx;
@@ -16,31 +12,14 @@ public class DepressionManager : MonoBehaviour
     [Range(0f, 1f)] public float heartbeatTargetVolume = 0.3f;
 
     [Header("Lock Interaction")]
-    public Grabbable[] ignore;
-
-    Grabbable[] allGrabbables;
+    public Grabbable[] allGrabbables;
     bool locked = false;
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
-        else { Destroy(gameObject); return; }
-
-        allGrabbables = FindObjectsOfType<Grabbable>(true);
     }
 
-    bool IsIgnored(Grabbable g)
-    {
-        if (ignore == null) return false;
-
-        foreach (var item in ignore)
-        {
-            if (item == g)
-                return true;
-        }
-
-        return false;
-    }
 
     void LockAllInteractions()
     {
@@ -50,7 +29,6 @@ public class DepressionManager : MonoBehaviour
         foreach (var g in allGrabbables)
         {
             if (g == null) continue;
-            if (IsIgnored(g)) continue;
 
             g.enabled = false;
         }
@@ -65,17 +43,6 @@ public class DepressionManager : MonoBehaviour
         }
 
         locked = false;
-    }
-
-    void SetObjectsActive(GameObject[] arr, bool active)
-    {
-        if (arr == null) return;
-
-        foreach (var obj in arr)
-        {
-            if (obj != null)
-                obj.SetActive(active);
-        }
     }
 
     void StartLoopedSound(AudioSource src, float targetVolume, string label)
@@ -119,10 +86,9 @@ public class DepressionManager : MonoBehaviour
 
     public void StartDepression()
     {
-        SetObjectsActive(disableOnStart, false);
-        SetObjectsActive(enableOnStart, true);
 
-        LockAllInteractions();
+        if (allGrabbables != null)
+            LockAllInteractions();
 
         StartLoopedSound(breathingSfx, breathingTargetVolume, "Breathing");
         StartLoopedSound(heartbeatSfx, heartbeatTargetVolume, "Heartbeat");
@@ -142,9 +108,6 @@ public class DepressionManager : MonoBehaviour
         StopLoopedSound(breathingSfx, "Breathing");
         StopLoopedSound(heartbeatSfx, "Heartbeat");
 
-        SetObjectsActive(enableOnStart, false);
-        SetObjectsActive(disableOnStart, true);
-
         if (XRRigSlowMovement.Instance != null)
         {
             XRRigSlowMovement.Instance.ResetSpeed();
@@ -154,6 +117,7 @@ public class DepressionManager : MonoBehaviour
             Debug.LogWarning("DepressionManager: XRRigSlowMovement.Instance is NULL");
         }
 
-        UnlockAllInteractions();
+        if (allGrabbables != null)
+            UnlockAllInteractions();
     }
 }
