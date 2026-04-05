@@ -36,7 +36,7 @@ public class GameStateManager : MonoBehaviour
     private void Start()
     {
         //StartCoroutine(StartAfterDelay());
-        ChangeState(GameState.Depression);
+        ChangeState(GameState.Acceptance);
 
 
     }
@@ -47,7 +47,7 @@ public class GameStateManager : MonoBehaviour
 
         ChangeState(GameState.Play);
         yield return new WaitForSeconds(1f);
-        if (entryParticle != null) entryParticle.Play();
+        entryParticle?.Play();
     }
 
     public void ChangeState(GameState newState)
@@ -200,7 +200,7 @@ public class GameStateManager : MonoBehaviour
     IEnumerator LoadSceneAfterDelay()
     {
         yield return new WaitForSeconds(20f);
-        SceneManager.LoadScene("Main_Scene");
+       // SceneManager.LoadScene("Main_Scene");
     }
 
 }
