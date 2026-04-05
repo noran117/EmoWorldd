@@ -5,10 +5,6 @@ public class AcceptanceManager : MonoBehaviour
 {
     public static AcceptanceManager Instance;
 
-    [Header("Visual Objects")]
-    public GameObject[] enableOnStart;
-    public GameObject[] disableOnStart;
-
     [Header("Outside Hint")]
     public GameObject outsideYellowLight;
     public AudioSource outsideCallSfx;
@@ -40,13 +36,6 @@ public class AcceptanceManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    void SetObjectsActive(GameObject[] arr, bool active)
-    {
-        if (arr == null) return;
-        for (int i = 0; i < arr.Length; i++)
-            if (arr[i] != null) arr[i].SetActive(active);
-    }
-
     void StopAcceptanceStartParticles()
     {
         if (acceptanceStartParticles != null)
@@ -68,18 +57,12 @@ public class AcceptanceManager : MonoBehaviour
 
     public void StartAcceptance()
     {
-
-
-
-
         started = false;
         acceptanceActive = true;
 
         presentationFinished = false;
         bookFinished = false;
 
-        SetObjectsActive(disableOnStart, false);
-        SetObjectsActive(enableOnStart, true);
 
         PlayAcceptanceStartParticles();
 
@@ -174,9 +157,6 @@ public class AcceptanceManager : MonoBehaviour
 
         if (cardsAnimate != null)
             cardsAnimate.CleanupAfterAcceptance();
-
-        SetObjectsActive(enableOnStart, false);
-        SetObjectsActive(disableOnStart, true);
 
         GameStateManager.Instance.ChangeState(GameState.Ending);
     }
