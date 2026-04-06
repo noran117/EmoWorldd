@@ -41,7 +41,6 @@ public class StartMove : MonoBehaviour
                 }
             }
 
-            //Debug.Log(isCurrentlyMoving ? "moving" : "not moving");
         }
         if (moveScript.ReachedDestination)
         {
@@ -58,18 +57,12 @@ public class StartMove : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-
-            StartCoroutine(StartMovement());
+            if (hiddenCollider != null)
+            {
+                hiddenCollider.SetActive(true);
+            }
+            moveScript.IsActive = true;
         }
-    }
-    IEnumerator StartMovement()
-    {
-        if (hiddenCollider != null)
-        {
-            hiddenCollider.SetActive(true);
-        }
-        yield return new WaitForSeconds(1f);
-        moveScript.IsActive = true;
     }
 
 }
