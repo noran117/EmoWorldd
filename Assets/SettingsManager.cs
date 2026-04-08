@@ -10,11 +10,11 @@ public class SettingsManager : MonoBehaviour
 
     void Start()
     {
-        //  Õ„Ì· ≈⁄œ«œ«  «·≈÷«¡…
+        
         float savedExposure = PlayerPrefs.GetFloat("SkyboxExposure", defaultExposure);
         RenderSettings.skybox.SetFloat("_Exposure", savedExposure);
 
-        //  Õ„Ì· ≈⁄œ«œ«  «·’Ê 
+       
         float savedVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
         if (bgMusicSource != null) bgMusicSource.volume = savedVolume;
     }
