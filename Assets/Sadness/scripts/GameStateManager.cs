@@ -35,8 +35,8 @@ public class GameStateManager : MonoBehaviour
 
     private void Start()
     {
-        //StartCoroutine(StartAfterDelay());
-        ChangeState(GameState.Acceptance);
+        StartCoroutine(StartAfterDelay());
+        //ChangeState(GameState.Play);
 
 
     }

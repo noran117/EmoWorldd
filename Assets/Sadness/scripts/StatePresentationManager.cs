@@ -206,7 +206,7 @@ public class StatePresentationManager : MonoBehaviour
 
         currentSlide.transform.localPosition = Vector3.zero;
         currentSlide.transform.localRotation = Quaternion.identity;
-        currentSlide.transform.localScale = Vector3.one * 1f;
+        currentSlide.transform.localScale = Vector3.one * 0.5f;
 
         currentSlideCtrl = currentSlide.GetComponentInChildren<SlideController>(true);
         if (currentSlideCtrl == null)
