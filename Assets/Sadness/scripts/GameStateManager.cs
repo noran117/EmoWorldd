@@ -200,7 +200,7 @@ public class GameStateManager : MonoBehaviour
     IEnumerator LoadSceneAfterDelay()
     {
         yield return new WaitForSeconds(20f);
-       // SceneManager.LoadScene("Main_Scene");
+       SceneManager.LoadScene("Main_Scene");
     }
 
 }
