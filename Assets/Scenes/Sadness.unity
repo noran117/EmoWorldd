@@ -3464,12 +3464,12 @@ PrefabInstance:
     - target: {fileID: 5871340995359877124, guid: 225b1a48ecec867499223c0324c43b22,
         type: 3}
       propertyPath: m_text
-      value: "!\uFE94\uFECC\uFE8B\u0627\u0631 \u062A\uFE8E\uFEDB\uFEAE\uFEA3 !\u0648\u0627\u0648"
+      value: "!\uFEAE\uFEE4\uFE98\uFEB3\u0627 !\uFECA\uFE8B\u0627\u0631"
       objectReference: {fileID: 0}
     - target: {fileID: 5871340995359877124, guid: 225b1a48ecec867499223c0324c43b22,
         type: 3}
       propertyPath: m_fontSize
-      value: 6.39
+      value: 8.22
       objectReference: {fileID: 0}
     - target: {fileID: 5871340995359877124, guid: 225b1a48ecec867499223c0324c43b22,
         type: 3}
@@ -3479,7 +3479,7 @@ PrefabInstance:
     - target: {fileID: 5871340995359877124, guid: 225b1a48ecec867499223c0324c43b22,
         type: 3}
       propertyPath: m_fontSizeBase
-      value: 6.39
+      value: 8.22
       objectReference: {fileID: 0}
     - target: {fileID: 6039485818585181980, guid: 225b1a48ecec867499223c0324c43b22,
         type: 3}
@@ -3609,7 +3609,7 @@ PrefabInstance:
     - target: {fileID: 9199693175545952492, guid: 225b1a48ecec867499223c0324c43b22,
         type: 3}
       propertyPath: originalText
-      value: "\u0648\u0627\u0648! \u062D\u0631\u0643\u0627\u062A \u0631\u0627\u0626\u0639\u0629!"
+      value: "\u0631\u0627\u0626\u0639! \u0627\u0633\u062A\u0645\u0631!"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18037,7 +18037,12 @@ PrefabInstance:
     - target: {fileID: 5871340995359877124, guid: 225b1a48ecec867499223c0324c43b22,
         type: 3}
       propertyPath: m_fontSize
-      value: 5.23
+      value: 6.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871340995359877124, guid: 225b1a48ecec867499223c0324c43b22,
+        type: 3}
+      propertyPath: m_margin.x
+      value: -5.2164993
       objectReference: {fileID: 0}
     - target: {fileID: 5871340995359877124, guid: 225b1a48ecec867499223c0324c43b22,
         type: 3}
@@ -18047,12 +18052,12 @@ PrefabInstance:
     - target: {fileID: 5871340995359877124, guid: 225b1a48ecec867499223c0324c43b22,
         type: 3}
       propertyPath: m_margin.z
-      value: 108.77984
+      value: 112.568954
       objectReference: {fileID: 0}
     - target: {fileID: 5871340995359877124, guid: 225b1a48ecec867499223c0324c43b22,
         type: 3}
       propertyPath: m_fontSizeBase
-      value: 5.23
+      value: 6.07
       objectReference: {fileID: 0}
     - target: {fileID: 6039485818585181980, guid: 225b1a48ecec867499223c0324c43b22,
         type: 3}
