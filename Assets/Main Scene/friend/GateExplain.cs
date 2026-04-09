@@ -7,9 +7,12 @@ public class GateExplain : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"Triggered {other.gameObject.name}");
         if (other.CompareTag("Player"))
-        {
+        {        Debug.Log("Match Tag");
+
             companion.ExplainGates(player);
+            
         }
     }
 }

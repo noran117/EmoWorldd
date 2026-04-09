@@ -551,12 +551,6 @@ public class followPlayer : MonoBehaviour
 
 
 
-
-   
-
-
-
-
     IEnumerator IntroHappyAfterWave()
     {
         introPlaying = false;
@@ -587,25 +581,6 @@ public class followPlayer : MonoBehaviour
 
         agent.isStopped = false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
