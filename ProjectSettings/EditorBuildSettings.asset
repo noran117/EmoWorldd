@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Main_Scene.unity
+    guid: 28a565b6799548941bf844c4f9ece9b5
+  - enabled: 1
     path: Assets/Scenes/Anger.unity
     guid: 4b0febfd30153f64b857c8ed8d9b23c5
   - enabled: 1
@@ -14,9 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Happiness.unity
     guid: 3e607920eb16ed148a6c8c5f546d061f
-  - enabled: 1
-    path: Assets/Scenes/Main_Scene.unity
-    guid: 28a565b6799548941bf844c4f9ece9b5
   - enabled: 1
     path: Assets/Scenes/Sadness.unity
     guid: 1fc580235fb722c4eb5b4bce5d519068
